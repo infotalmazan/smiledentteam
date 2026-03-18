@@ -6,7 +6,7 @@ import { Logo } from './Logo'
 /* ─── Demo doctors data ──────────────────── */
 const DOCTORS = [
   { id:1, name:'Dr. Stanislav Eni',    dept:'Chirurgie',     title:'Medic chirurg dento-alveolar', years:12, rating:4.9, photo:'https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=400&h=500&fit=crop&crop=face', bio:'Specialist în chirurgie ghidată 3D, extracții complexe și augmentări osoase. Peste 3.000 de intervenții chirurgicale realizate.', education:['Universitatea de Stat de Medicină, Chișinău','Masterclass Implantologie, Berlin','Certificare Straumann, Elveția'], review:{ text:'Profesionalism desăvârșit. M-am simțit în siguranță pe tot parcursul intervenției.', author:'Elena M.' } },
-  { id:2, name:'Dr. Victoria Potîngă', dept:'Chirurgie',     title:'Medic chirurg oral', years:8, rating:4.8, photo:'https://images.unsplash.com/photo-1594824476967-48c8b964ac31?w=400&h=500&fit=crop&crop=face', bio:'Specializată în implantologie și chirurgie reconstructivă. Focus pe cazuri complexe All-On-4/6.', education:['USMF Nicolae Testemițanu','Cursuri Nobel Biocare, Zürich'], review:{ text:'Foarte atentă și delicată. Recomand cu încredere!', author:'Alexandru C.' } },
+  { id:2, name:'Dr. Victoria Potîngă', dept:'Chirurgie',     title:'Medic chirurg oral', years:8, rating:4.8, photo:'https://images.unsplash.com/photo-1643297654416-05795d62e39c?w=400&h=500&fit=crop&crop=face', bio:'Specializată în implantologie și chirurgie reconstructivă. Focus pe cazuri complexe All-On-4/6.', education:['USMF Nicolae Testemițanu','Cursuri Nobel Biocare, Zürich'], review:{ text:'Foarte atentă și delicată. Recomand cu încredere!', author:'Alexandru C.' } },
   { id:3, name:'Dr. Rustam Anatolie',  dept:'Implantologie', title:'Medic implantolog', years:10, rating:4.9, photo:'https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=400&h=500&fit=crop&crop=face', bio:'Specialist în implantologie digitală, planificare 3D și încărcare imediată. Peste 5.000 de implanturi inserate.', education:['USMF Chișinău','Fellowship Implantologie, ITI Basel','Certificare 3Shape'], review:{ text:'Cel mai bun implantolog din Moldova. Rezultat impecabil.', author:'Denis P.' } },
   { id:4, name:'Dr. Ana Cosovan',      dept:'Estetică',      title:'Medic stomatolog estetician', years:7, rating:4.9, photo:'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=400&h=500&fit=crop&crop=face', bio:'Expert în Digital Smile Design, fațete ceramice E-max și albire profesională. Transformă zâmbete cu precizie digitală.', education:['USMF Chișinău','Digital Smile Design Academy, Madrid','Masterclass Fațete, Milano'], review:{ text:'Zâmbetul pe care l-am visat! Ana a fost extraordinară.', author:'Maria T.' } },
   { id:5, name:'Dr. Iulian Spataru',   dept:'Estetică',      title:'Medic stomatolog', years:6, rating:4.8, photo:'https://images.unsplash.com/photo-1537368910025-700350fe46c7?w=400&h=500&fit=crop&crop=face', bio:'Specializat în restaurări estetice minimale, bonding direct și smile makeover digital.', education:['USMF Chișinău','Cursuri Style Italiano'], review:{ text:'Rezultat natural, nimeni nu a observat că am fațete.', author:'Ksenia D.' } },
@@ -49,13 +49,7 @@ function SectionBadge({ children }: { children: string }) {
 function Nav() {
   return (
     <>
-      <div style={{ background:B.p, padding:'8px 48px', display:'flex', justifyContent:'space-between', alignItems:'center', fontSize:12, color:'rgba(255,255,255,.7)' }}>
-        <div style={{ display:'flex', gap:24 }}>
-          <span>📍 str. Ismail 88, Chișinău</span>
-          <span>🕐 Lun–Vin 09:00–19:00 · Sâm 09:00–14:00</span>
-        </div>
-        <span style={{ fontWeight:600, color:B.wh }}>+373 22 881 414</span>
-      </div>
+      <div style={{ height:3, background:B.a }}/>
       <nav style={{
         position:'sticky', top:0, zIndex:100, background:'rgba(255,255,255,.97)',
         backdropFilter:'blur(12px)', borderBottom:`1px solid ${B.bdr}`,
@@ -67,11 +61,13 @@ function Nav() {
             <a key={l} href={h} style={{
               fontSize:14, fontWeight: l==='Echipa' ? 700 : 500,
               color: l==='Echipa' ? B.p : '#3a5a50', textDecoration:'none',
-              borderBottom: l==='Echipa' ? `2px solid ${B.p}` : '2px solid transparent', paddingBottom:2,
             }}>{l}</a>
           ))}
         </div>
-        <Btn pink style={{ fontSize:13, padding:'10px 22px' }}>Programează-te</Btn>
+        <div style={{ display:'flex', gap:10, alignItems:'center' }}>
+          <a href="/login" style={{ textDecoration:'none' }}><button style={{ background:'transparent', color:B.p, border:`1.5px solid ${B.p}`, padding:'8px 18px', borderRadius:8, fontSize:13, fontWeight:600, cursor:'pointer', fontFamily:"'DM Sans',sans-serif" }}>Autentificare</button></a>
+          <Btn pink style={{ fontSize:13, padding:'10px 22px' }}>Programează-te</Btn>
+        </div>
       </nav>
     </>
   )
@@ -92,7 +88,7 @@ function Hero() {
           </p>
         </div>
         <div style={{ display:'flex', gap:24 }}>
-          {[['600+','specialiști'],['15','ani experiență'],['9','filiale'],['4.9','Google rating']].map(([n,l]) => (
+          {[['600+','specialiști'],['15','ani experiență'],['3','filiale']].map(([n,l]) => (
             <div key={l} style={{ textAlign:'center' }}>
               <div style={{ fontFamily:"'Syne',sans-serif", fontSize:24, fontWeight:800, color:B.p }}>{n}</div>
               <div style={{ fontSize:11, color:B.gr }}>{l}</div>

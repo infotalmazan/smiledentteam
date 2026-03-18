@@ -43,13 +43,7 @@ function SectionBadge({ children, light }: { children: string; light?: boolean }
 function Nav() {
   return (
     <>
-      <div style={{ background:B.p, padding:'8px 48px', display:'flex', justifyContent:'space-between', alignItems:'center', fontSize:12, color:'rgba(255,255,255,.7)' }}>
-        <div style={{ display:'flex', gap:24 }}>
-          <span>📍 str. Ismail 88, Chișinău</span>
-          <span>🕐 Lun–Vin 09:00–19:00 · Sâm 09:00–14:00</span>
-        </div>
-        <span style={{ fontWeight:600, color:B.wh }}>+373 22 881 414</span>
-      </div>
+      <div style={{ height:3, background:B.a }}/>
       <nav style={{
         position:'sticky', top:0, zIndex:100, background:'rgba(255,255,255,.97)',
         backdropFilter:'blur(12px)', borderBottom:`1px solid ${B.bdr}`,
@@ -60,12 +54,14 @@ function Nav() {
           {[['Servicii','/servicii'],['Digital Check-Up','/digital-checkup'],['Consultație Online','/consultatie-online'],['Echipa','/echipa'],['Recenzii','/']].map(([l,h]) => (
             <a key={l} href={h} style={{
               fontSize:14, fontWeight: l==='Consultație Online' ? 700 : 500,
-              color: l==='Consultație Online' ? B.a : '#3a5a50', textDecoration:'none',
-              borderBottom: l==='Consultație Online' ? `2px solid ${B.a}` : '2px solid transparent', paddingBottom:2,
+              color: l==='Consultație Online' ? B.p : '#3a5a50', textDecoration:'none',
             }}>{l}</a>
           ))}
         </div>
-        <Btn pink style={{ fontSize:13, padding:'10px 22px' }}>Programează-te</Btn>
+        <div style={{ display:'flex', gap:10, alignItems:'center' }}>
+          <a href="/login" style={{ textDecoration:'none' }}><button style={{ background:'transparent', color:B.p, border:`1.5px solid ${B.p}`, padding:'8px 18px', borderRadius:8, fontSize:13, fontWeight:600, cursor:'pointer', fontFamily:"'DM Sans',sans-serif" }}>Autentificare</button></a>
+          <Btn pink style={{ fontSize:13, padding:'10px 22px' }}>Programează-te</Btn>
+        </div>
       </nav>
     </>
   )

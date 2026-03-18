@@ -144,23 +144,28 @@ function Btn({ children, pink, outline, style, ...p }: any) {
 /* ─── Nav ──────────────────────────────────── */
 function Nav() {
   return (
-    <nav style={{
-      position:'sticky', top:0, zIndex:100, background:'rgba(255,255,255,.97)',
-      backdropFilter:'blur(12px)', borderBottom:`1px solid ${B.bdr}`,
-      padding:'14px 48px', display:'flex', justifyContent:'space-between', alignItems:'center',
-    }}>
-      <a href="/" style={{ textDecoration:'none' }}><Logo height={36}/></a>
-      <div style={{ display:'flex', gap:28, alignItems:'center' }}>
-        {[['Servicii','/servicii'],['Digital Check-Up','/digital-checkup'],['Consultație Online','/consultatie-online'],['Echipa','/echipa'],['Recenzii','/']].map(([l,h]) => (
-          <a key={l} href={h} style={{
-            fontSize:14, fontWeight:500,
-            color:'#3a5a50', textDecoration:'none',
-            borderBottom:'2px solid transparent', paddingBottom:2,
-          }}>{l}</a>
-        ))}
-      </div>
-      <Btn pink style={{ fontSize:13, padding:'10px 22px' }}>Programează-te</Btn>
-    </nav>
+    <>
+      <div style={{ height:3, background:B.a }}/>
+      <nav style={{
+        position:'sticky', top:0, zIndex:100, background:'rgba(255,255,255,.97)',
+        backdropFilter:'blur(12px)', borderBottom:`1px solid ${B.bdr}`,
+        padding:'14px 48px', display:'flex', justifyContent:'space-between', alignItems:'center',
+      }}>
+        <a href="/" style={{ textDecoration:'none' }}><Logo height={36}/></a>
+        <div style={{ display:'flex', gap:28, alignItems:'center' }}>
+          {[['Servicii','/servicii'],['Digital Check-Up','/digital-checkup'],['Consultație Online','/consultatie-online'],['Echipa','/echipa'],['Recenzii','/']].map(([l,h]) => (
+            <a key={l} href={h} style={{
+              fontSize:14, fontWeight:500,
+              color:'#3a5a50', textDecoration:'none',
+            }}>{l}</a>
+          ))}
+        </div>
+        <div style={{ display:'flex', gap:10, alignItems:'center' }}>
+          <a href="/login" style={{ textDecoration:'none' }}><button style={{ background:'transparent', color:B.p, border:`1.5px solid ${B.p}`, padding:'8px 18px', borderRadius:8, fontSize:13, fontWeight:600, cursor:'pointer', fontFamily:"'DM Sans',sans-serif" }}>Autentificare</button></a>
+          <Btn pink style={{ fontSize:13, padding:'10px 22px' }}>Programează-te</Btn>
+        </div>
+      </nav>
+    </>
   )
 }
 

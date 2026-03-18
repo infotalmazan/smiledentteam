@@ -115,6 +115,8 @@ function Navbar() {
     return () => window.removeEventListener('scroll', fn)
   }, [])
   return (
+    <>
+    <div style={{ height:3, background:B.a }}/>
     <nav style={{
       display:'flex', justifyContent:'space-between', alignItems:'center',
       padding:'0 52px', height:70, background:'rgba(255,255,255,.97)',
@@ -149,6 +151,7 @@ function Navbar() {
         <Btn style={{ fontSize:13, padding:'9px 22px' }}>Programează-te</Btn>
       </div>
     </nav>
+    </>
   )
 }
 
