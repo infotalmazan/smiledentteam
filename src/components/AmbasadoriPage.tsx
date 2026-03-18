@@ -202,15 +202,31 @@ function AmbassadorProfile({ amb, onNav }: { amb: typeof AMBASSADORS[number]; on
 
       {/* Content */}
       <div className="mx-auto max-w-[1100px] px-12">
-        {/* Bio + Story */}
-        <div className="grid grid-cols-2 gap-12 border-b border-sdt-600/10 py-12">
-          <div>
-            <div className="mb-3 text-[11px] font-bold uppercase tracking-[.12em] text-sdt-600">Despre</div>
-            <p className="m-0 text-[15px] leading-[1.8] text-[#5a7a6e]">{detail.bio}</p>
-          </div>
-          <div>
-            <div className="mb-3 text-[11px] font-bold uppercase tracking-[.12em] text-pink-500">Povestea cu SDT</div>
-            <p className="m-0 text-[15px] leading-[1.8] text-[#0a1e18]">{detail.story}</p>
+        {/* Despre — full width */}
+        <div className="border-b border-sdt-600/10 py-12">
+          <div className="mb-3 text-[11px] font-bold uppercase tracking-[.12em] text-sdt-600">Despre</div>
+          <p className="m-0 max-w-[700px] text-[16px] leading-[1.85] text-[#5a7a6e]">{detail.bio}</p>
+        </div>
+
+        {/* Experienta cu SDT — story + inline gallery */}
+        <div className="border-b border-sdt-600/10 py-12">
+          <div className="mb-4 text-[11px] font-bold uppercase tracking-[.12em] text-pink-500">Experienta cu SDT</div>
+          <div className="grid grid-cols-[1fr_1fr] gap-10 items-start">
+            <div>
+              <p className="m-0 text-[16px] leading-[1.85] text-[#0a1e18]">{detail.story}</p>
+              <div className="mt-5 flex items-center gap-2.5">
+                <Badge variant="accent" className="text-[10px] font-bold">{detail.service}</Badge>
+                <span className="text-[12px] text-[#5a7a6e]">Serviciu recomandat</span>
+              </div>
+            </div>
+            {/* Story gallery — stacked photos */}
+            <div className="flex flex-col gap-3">
+              {detail.gallery.slice(0, 2).map((img, i) => (
+                <div key={i} className="h-[180px] overflow-hidden rounded-xl">
+                  <img src={img} alt={`${amb.name} ${i+1}`} className="h-full w-full object-cover transition-transform duration-[400ms] hover:scale-[1.04]" />
+                </div>
+              ))}
+            </div>
           </div>
         </div>
 
@@ -222,24 +238,19 @@ function AmbassadorProfile({ amb, onNav }: { amb: typeof AMBASSADORS[number]; on
           <div className="mt-3 text-sm font-bold text-pink-500">— {amb.name}</div>
         </div>
 
-        {/* Gallery */}
-        <div className="border-b border-sdt-600/10 py-10">
-          <div className="mb-4 text-[11px] font-bold uppercase tracking-[.12em] text-sdt-600">Galerie</div>
-          <div className={cn(
-            'grid gap-3.5',
-            detail.gallery.length >= 3 ? 'grid-cols-3' : detail.gallery.length === 2 ? 'grid-cols-2' : 'grid-cols-1'
-          )}>
-            {detail.gallery.map((img, i) => (
-              <div key={i} className="h-[220px] overflow-hidden rounded-xl">
-                <img
-                  src={img}
-                  alt={`${amb.name} gallery ${i+1}`}
-                  className="h-full w-full object-cover transition-transform duration-[400ms] hover:scale-[1.04]"
-                />
-              </div>
-            ))}
+        {/* Full Gallery — if more than 2 photos */}
+        {detail.gallery.length > 2 && (
+          <div className="border-b border-sdt-600/10 py-10">
+            <div className="mb-4 text-[11px] font-bold uppercase tracking-[.12em] text-sdt-600">Galerie</div>
+            <div className={cn('grid gap-3.5', detail.gallery.length >= 3 ? 'grid-cols-3' : 'grid-cols-2')}>
+              {detail.gallery.map((img, i) => (
+                <div key={i} className="h-[220px] overflow-hidden rounded-xl">
+                  <img src={img} alt={`${amb.name} gallery ${i+1}`} className="h-full w-full object-cover transition-transform duration-[400ms] hover:scale-[1.04]" />
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Video placeholder */}
         <div className="border-b border-sdt-600/10 py-10">
@@ -268,14 +279,15 @@ function AmbassadorProfile({ amb, onNav }: { amb: typeof AMBASSADORS[number]; on
           </Button>
         </div>
 
-        {/* Navigation between ambassadors */}
+        {/* Navigation between ambassadors — with photos */}
         <div className="flex items-center justify-between py-8">
           {prev ? (
             <button
               onClick={() => onNav(prev.slug)}
-              className="flex cursor-pointer items-center gap-2.5 border-none bg-transparent font-sans"
+              className="flex cursor-pointer items-center gap-3 border-none bg-transparent font-sans"
             >
-              <ChevronLeft className="h-4 w-4 text-sdt-600" strokeWidth={2} />
+              <ChevronLeft className="h-4 w-4 text-sdt-600 shrink-0" strokeWidth={2} />
+              <img src={prev.photo} alt={prev.name} className="h-10 w-10 rounded-full object-cover shrink-0" />
               <div className="text-left">
                 <div className="text-[10px] text-[#5a7a6e]">Anterior</div>
                 <div className="text-sm font-bold text-[#0a1e18]">{prev.name}</div>
@@ -291,13 +303,14 @@ function AmbassadorProfile({ amb, onNav }: { amb: typeof AMBASSADORS[number]; on
           {next ? (
             <button
               onClick={() => onNav(next.slug)}
-              className="flex cursor-pointer items-center gap-2.5 border-none bg-transparent font-sans"
+              className="flex cursor-pointer items-center gap-3 border-none bg-transparent font-sans"
             >
               <div className="text-right">
                 <div className="text-[10px] text-[#5a7a6e]">Următor</div>
                 <div className="text-sm font-bold text-[#0a1e18]">{next.name}</div>
               </div>
-              <ChevronRight className="h-4 w-4 text-sdt-600" strokeWidth={2} />
+              <img src={next.photo} alt={next.name} className="h-10 w-10 rounded-full object-cover shrink-0" />
+              <ChevronRight className="h-4 w-4 text-sdt-600 shrink-0" strokeWidth={2} />
             </button>
           ) : <div/>}
         </div>
