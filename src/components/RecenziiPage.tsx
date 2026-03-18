@@ -398,45 +398,46 @@ function AppointmentForm() {
   )
 }
 
-/* ─── Footer ─── */
+/* ─── Footer (matches Servicii dark footer) ─── */
 function Footer() {
   return (
-    <footer className="border-t border-sdt-600/10 bg-[#f7f5f2] px-12 py-12">
-      <div className="mx-auto flex max-w-[1200px] justify-between text-sm text-[#5a7a6e]">
+    <footer className="bg-[#0a1e18] px-12 pb-8 pt-14">
+      <div className="mx-auto grid max-w-[1200px] grid-cols-[1.5fr_1fr_1fr_1.2fr] gap-10 mb-10">
         <div>
-          <Logo height={32} />
-          <p className="mt-3 max-w-[260px] text-[13px] leading-relaxed">Smile Dent Team — retea internationala de clinici stomatologice. {STATS.years} ani de excelenta.</p>
+          <Logo height={32} light />
+          <p className="mt-4 max-w-[260px] text-[13px] leading-relaxed text-white/[.45]">
+            Clinica stomatologica digitala. {STATS.years} ani de excelenta, {STATS.team} specialisti, {STATS.patients} pacienti.
+          </p>
         </div>
-        <div className="flex gap-16">
-          <div>
-            <div className="mb-3 text-[11px] font-bold uppercase tracking-widest text-sdt-600">Servicii</div>
-            {SERVICES.slice(0, 5).map(s => (
-              <a key={s.slug} href={`/servicii`} className="block text-[13px] text-[#5a7a6e] no-underline mb-1.5 hover:text-sdt-600">{s.name}</a>
-            ))}
-          </div>
-          <div>
-            <div className="mb-3 text-[11px] font-bold uppercase tracking-widest text-sdt-600">Locatii</div>
-            {LOCATIONS.map(l => (
-              <div key={l.city} className="flex items-center gap-1.5 text-[13px] mb-1.5">
-                <MapPin className="h-3 w-3 text-sdt-600" />{l.city}
-              </div>
-            ))}
-          </div>
-          <div>
-            <div className="mb-3 text-[11px] font-bold uppercase tracking-widest text-sdt-600">Contact</div>
-            {LOCATIONS.slice(0, 3).map(l => (
-              <div key={l.city} className="flex items-center gap-1.5 text-[13px] mb-1.5">
-                <Phone className="h-3 w-3 text-sdt-600" />{l.phone}
-              </div>
-            ))}
-            <div className="flex items-center gap-1.5 text-[13px] mt-3">
-              <Clock className="h-3 w-3 text-sdt-600" />Lun–Vin 09–19 · Sâm 09–14
+        <div>
+          <div className="mb-[18px] text-[11px] font-bold uppercase tracking-[.15em] text-white">Servicii</div>
+          {SERVICES.map(s => (
+            <div key={s.slug} className="mb-[9px] text-[13px] text-white/50 cursor-pointer">{s.name}</div>
+          ))}
+        </div>
+        <div>
+          <div className="mb-[18px] text-[11px] font-bold uppercase tracking-[.15em] text-white">Clinica</div>
+          {[['Despre noi','/'],['Echipa','/echipa'],['Ambasadori','/ambasadori'],['Tehnologii','/'],['Blog','/'],['Contacte','/']].map(([s, h]) => (
+            <a key={s} href={h} className="block mb-[9px] text-[13px] text-white/50 no-underline">{s}</a>
+          ))}
+        </div>
+        <div>
+          <div className="mb-[18px] text-[11px] font-bold uppercase tracking-[.15em] text-white">Contact</div>
+          {LOCATIONS.slice(0, 3).map(l => (
+            <div key={l.city} className="mb-3.5">
+              <div className="text-[13px] font-semibold text-white">{l.city}</div>
+              <div className="text-xs text-white/[.45]">{l.address} &middot; {l.phone}</div>
             </div>
-          </div>
+          ))}
         </div>
       </div>
-      <div className="mx-auto mt-8 max-w-[1200px] border-t border-sdt-600/10 pt-6 text-center text-[12px] text-[#5a7a6e]">
-        © 2026 Smile Dent Team. Toate drepturile rezervate.
+      <div className="border-t border-white/[.07] pt-5 flex justify-between items-center">
+        <span className="text-[11px] text-white/25">&copy; 2026 Smile Dent Team</span>
+        <div className="flex gap-1.5">
+          {['RO','RU','EN'].map(l => (
+            <span key={l} className="rounded-full bg-white/[.08] px-2 py-0.5 text-[10px] font-bold text-white/50">{l}</span>
+          ))}
+        </div>
       </div>
     </footer>
   )
