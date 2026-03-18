@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { Logo } from './Logo'
-import { BRAND as B, STATS, SERVICES, LOCATIONS, CAMPAIGN_2026 } from '@/lib/brand'
+import { BRAND as B, STATS, SERVICES, LOCATIONS, CAMPAIGN_2026, AMBASSADORS } from '@/lib/brand'
 
 /* ─── helpers ─────────────────────────────── */
 function TeamPhoto({ style }: { style?: React.CSSProperties }) {
@@ -269,7 +269,7 @@ function Hero() {
 
       {/* Stats strip — full width, pinned to bottom */}
       <div style={{ background:`linear-gradient(135deg,${B.p},${B.pm})`, padding:'16px 52px', display:'flex', justifyContent:'space-between', alignItems:'center', flexShrink:0 }}>
-        {[[STATS.years,'ani de excelență'],[STATS.team,'specialiști'],[STATS.patients,'pacienți tratați'],[STATS.locations,'filiale']].map(([n,l]) => (
+        {[[STATS.years,'ani de excelență'],[STATS.team,'specialiști'],[STATS.patients,'pacienți tratați'],[STATS.locations,'filiale'],['0%','dobândă la rate']].map(([n,l]) => (
           <div key={String(l)} style={{ display:'flex', alignItems:'baseline', gap:8 }}>
             <div style={{ fontFamily:"'Syne',sans-serif", fontSize:26, fontWeight:800, color:B.wh, lineHeight:1 }}>{n}</div>
             <div style={{ fontSize:11, color:'rgba(255,255,255,.65)', fontWeight:500 }}>{l}</div>
@@ -489,6 +489,42 @@ const FAQS = [
   { q:'Pot vedea rezultatul înainte de tratament?', a:'Absolut! Cu Digital Smile Design și 3Shape Trios, simulăm 3D rezultatul în cabinet. Aprobi designul înainte de orice intervenție.' },
 ]
 
+/* ─── Ambasadori ─────────────────────────── */
+function Ambasadori() {
+  const colors = ['#0a6b5c','#0d8a72','#e8157a','#074d42','#D97706','#2563EB','#059669','#6366f1','#DC2626','#0D9488','#EC4899','#6C3FA0']
+  return (
+    <section id="ambasadori" style={{ background:B.wh, padding:'72px 52px', borderTop:`1px solid ${B.bdr}` }}>
+      <div style={{ textAlign:'center', marginBottom:44 }}>
+        <Badge>Ambasadori SDT</Badge>
+        <SHead title={<>Oamenii care<br/>aleg <span style={{ color:B.a }}>Smile Dent Team</span></>}/>
+        <p style={{ fontSize:15, color:B.gr, maxWidth:500, margin:'0 auto' }}>
+          Personalități care ne-au ales și ne reprezintă. Fiecare zâmbet — o poveste de încredere.
+        </p>
+      </div>
+      <div style={{ display:'grid', gridTemplateColumns:'repeat(6, 1fr)', gap:16 }}>
+        {AMBASSADORS.map((amb, i) => (
+          <div key={amb.slug} style={{
+            padding:'24px 16px', borderRadius:14, border:`1px solid ${B.bdr}`,
+            textAlign:'center', transition:'all .25s', cursor:'pointer', background:B.wh,
+          }}
+            onMouseEnter={e => { const t = e.currentTarget; t.style.transform='translateY(-3px)'; t.style.borderColor=B.p; t.style.boxShadow=`0 8px 24px ${B.bdr}` }}
+            onMouseLeave={e => { const t = e.currentTarget; t.style.transform=''; t.style.borderColor=B.bdr; t.style.boxShadow='' }}
+          >
+            <div style={{
+              width:56, height:56, borderRadius:'50%', margin:'0 auto 12px',
+              background:`linear-gradient(135deg, ${colors[i % colors.length]}, ${colors[(i+3) % colors.length]})`,
+              display:'flex', alignItems:'center', justifyContent:'center',
+              fontSize:18, fontWeight:800, color:B.wh, fontFamily:"'Syne',sans-serif",
+            }}>{amb.name.split(' ').map(n => n[0]).join('')}</div>
+            <div style={{ fontSize:13, fontWeight:700, color:B.nv, marginBottom:2 }}>{amb.name}</div>
+            <div style={{ fontSize:11, color:B.gr }}>{amb.role}</div>
+          </div>
+        ))}
+      </div>
+    </section>
+  )
+}
+
 function FAQ() {
   const [open, setOpen] = useState<number|null>(null)
   return (
@@ -680,6 +716,7 @@ export function Homepage() {
       <Technologies/>
       <BeforeAfter/>
       <Reviews/>
+      <Ambasadori/>
       <FAQ/>
       <Appointment/>
       <Footer/>
