@@ -443,32 +443,34 @@ const TECHS = [
 function Technologies() {
   return (
     <section id="tehnologii" className="bg-white py-20 px-[52px]">
-      <div className="flex gap-9 items-start">
-        <div className="w-[300px] shrink-0">
-          <SHead eyebrow="Tehnologii 2026" title={<>Viitorul<br/>e digital</>}
-            sub="Investim in tehnologii de ultima generatie pentru rezultate perfecte."
-          />
-          <Button className="btn-shine font-bold rounded-full">
-            Analog &rarr; digital <ArrowRight className="w-4 h-4 ml-1" />
-          </Button>
-          <div className="mt-8 p-[22px] rounded-[14px] text-white" style={{ background: `linear-gradient(135deg, ${B.pm}, ${B.p})` }}>
-            <div className="font-display text-[44px] font-semibold leading-none">6</div>
-            <div className="text-xs font-semibold opacity-[.85] mt-1">tehnologii certificate</div>
-            <div className="text-[11px] opacity-60 mt-1">utilizate zilnic in clinica noastra</div>
-          </div>
-        </div>
-        <div className="flex-1 grid grid-cols-2 gap-3.5">
-          {TECHS.map(t => (
-            <Card key={t.n} className="glass hover-glow border-transparent p-[22px] transition-all">
-              <div className="flex justify-between items-start mb-3">
-                <span className="font-display text-[26px] font-semibold text-sdt-600/[.18] leading-none">{t.n}</span>
-                <Badge variant="accent" className="text-[9px] font-bold px-2 py-0.5">{t.tag}</Badge>
+      <div className="text-center mb-12">
+        <SdtBadge>Tehnologii 2026</SdtBadge>
+        <h2 className="font-display text-[28px] font-semibold text-[#0a1e18] tracking-[-0.03em] leading-[1.1] mb-3 mt-2">
+          Viitorul e digital
+        </h2>
+        <p className="text-[14px] text-[#5a7a6e] max-w-[480px] mx-auto leading-[1.6]">
+          Investim in tehnologii de ultima generatie pentru rezultate perfecte si o experienta confortabila.
+        </p>
+      </div>
+      <div className="grid grid-cols-3 gap-4">
+        {TECHS.map((t, i) => (
+          <Card key={t.n} className="group relative overflow-hidden rounded-2xl border border-transparent p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:border-sdt-600/20"
+            style={{ background: i === 0 ? `linear-gradient(135deg, ${B.p}08, ${B.a}06)` : undefined }}
+          >
+            <div className="flex justify-between items-start mb-4">
+              <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-sdt-100 group-hover:bg-sdt-600 transition-colors">
+                <span className="font-display text-base font-bold text-sdt-600 group-hover:text-white transition-colors">{t.n}</span>
               </div>
-              <h4 className="text-sm font-bold text-[#0a1e18] mb-2">{t.name}</h4>
-              <p className="text-xs leading-[1.65] text-[#4a6a58]">{t.desc}</p>
-            </Card>
-          ))}
-        </div>
+              <Badge variant="accent" className="text-[9px] font-bold px-2.5 py-0.5">{t.tag}</Badge>
+            </div>
+            <h4 className="font-display text-[15px] font-semibold text-[#0a1e18] mb-2">{t.name}</h4>
+            <p className="text-[12px] leading-[1.7] text-[#4a6a58]">{t.desc}</p>
+            {/* Hover glow effect */}
+            <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
+              style={{ background: `radial-gradient(circle at 50% 0%, ${B.p}08 0%, transparent 70%)` }}
+            />
+          </Card>
+        ))}
       </div>
     </section>
   )
