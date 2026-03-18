@@ -1,0 +1,341 @@
+'use client'
+import { useState } from 'react'
+import { BRAND as B, STATS, LOCATIONS, CAMPAIGN_2026, SERVICES, AMBASSADORS } from '@/lib/brand'
+import { Logo } from './Logo'
+
+/* ─── Demo doctors data ──────────────────── */
+const DOCTORS = [
+  { id:1, name:'Dr. Stanislav Eni',   dept:'Chirurgie',      title:'Medic chirurg dento-alveolar', years:12, rating:4.9, bio:'Specialist în chirurgie ghidată 3D, extracții complexe și augmentări osoase. Peste 3.000 de intervenții chirurgicale realizate.', education:['Universitatea de Stat de Medicină, Chișinău','Masterclass Implantologie, Berlin','Certificare Straumann, Elveția'], review:{ text:'Profesionalism desăvârșit. M-am simțit în siguranță pe tot parcursul intervenției.', author:'Elena M.' } },
+  { id:2, name:'Dr. Victoria Potîngă', dept:'Chirurgie',      title:'Medic chirurg oral', years:8, rating:4.8, bio:'Specializată în implantologie și chirurgie reconstructivă. Focus pe cazuri complexe All-On-4/6.', education:['USMF Nicolae Testemițanu','Cursuri Nobel Biocare, Zürich'], review:{ text:'Foarte atentă și delicată. Recomand cu încredere!', author:'Alexandru C.' } },
+  { id:3, name:'Dr. Rustam Anatolie',  dept:'Implantologie',  title:'Medic implantolog', years:10, rating:4.9, bio:'Specialist în implantologie digitală, planificare 3D și încărcare imediată. Peste 5.000 de implanturi inserate.', education:['USMF Chișinău','Fellowship Implantologie, ITI Basel','Certificare 3Shape'], review:{ text:'Cel mai bun implantolog din Moldova. Rezultat impecabil.', author:'Denis P.' } },
+  { id:4, name:'Dr. Ana Cosovan',      dept:'Estetică',       title:'Medic stomatolog estetician', years:7, rating:4.9, bio:'Expert în Digital Smile Design, fațete ceramice E-max și albire profesională. Transformă zâmbete cu precizie digitală.', education:['USMF Chișinău','Digital Smile Design Academy, Madrid','Masterclass Fațete, Milano'], review:{ text:'Zâmbetul pe care l-am visat! Ana a fost extraordinară.', author:'Maria T.' } },
+  { id:5, name:'Dr. Iulian Spataru',   dept:'Estetică',       title:'Medic stomatolog', years:6, rating:4.8, bio:'Specializat în restaurări estetice minimale, bonding direct și smile makeover digital.', education:['USMF Chișinău','Cursuri Style Italiano'], review:{ text:'Rezultat natural, nimeni nu a observat că am fațete.', author:'Ksenia D.' } },
+  { id:6, name:'Dr. Mariana Cojocaru', dept:'Terapie',        title:'Medic terapeut', years:14, rating:4.7, bio:'Expert în tratamente endodontice sub microscop, restaurări complexe și profilaxie digitală.', education:['USMF Chișinău','Certificare Microscop Zeiss'], review:{ text:'Foarte atentă, tratament fără durere. Recomand!', author:'Nadejda B.' } },
+  { id:7, name:'Dr. Cristina Radu',    dept:'Ortodonție',     title:'Medic ortodont', years:9, rating:4.9, bio:'Specializată în ortodonție digitală cu Invisalign și brackets autoligaturante. Tratamente pentru copii și adulți.', education:['USMF Chișinău','Invisalign Certified Provider','Cursuri Damon System'], review:{ text:'Copilul meu adoră vizitele! Cea mai bună ortodontistă.', author:'Svetlana L.' } },
+  { id:8, name:'Dr. Andrei Munteanu',  dept:'Protetică',      title:'Medic protetician', years:11, rating:4.8, bio:'Expert în protetică digitală CAD/CAM, coroane zirconiu și reabilitări complete pe implanturi.', education:['USMF Chișinău','Certificare Cerec/inLab','Masterclass Zirconiu, Germania'], review:{ text:'Coroanele arată perfect, nu se deosebesc de dinții naturali.', author:'Ion V.' } },
+  { id:9, name:'Dumitru Talmazan',     dept:'Management',     title:'Fondator & CEO', years:16, rating:5.0, bio:'Vizionar și fondator al Smile Dent Team. A transformat o clinică locală într-o rețea internațională cu 9 filiale în 4 țări.', education:['Business Management','Strategie & Leadership'], review:{ text:'Un lider care inspiră întreaga echipă și comunitate.', author:'Echipa SDT' } },
+  { id:10, name:'Maria Rotari',        dept:'Management',     title:'Director Marketing', years:5, rating:4.9, bio:'Arhitectul strategiei de marketing SDT. A crescut brandul de la nivel local la recunoaștere națională cu ROMI 1106%.', education:['Marketing Digital','Brand Strategy'], review:{ text:'Creativitate și strategie la cel mai înalt nivel.', author:'Board SDT' } },
+]
+
+const DEPARTMENTS = ['Toți','Chirurgie','Implantologie','Estetică','Terapie','Ortodonție','Protetică','Management']
+
+/* ─── Shared UI ──────────────────────────── */
+function Btn({ children, pink, outline, style, ...p }: any) {
+  const bg = pink ? B.a : outline ? 'transparent' : B.p
+  const clr = outline ? B.p : B.wh
+  const brd = outline ? `1.5px solid ${B.p}` : pink ? `1.5px solid ${B.a}` : 'none'
+  return (
+    <button style={{
+      background:bg, color:clr, border:brd, padding:'14px 32px', borderRadius:8,
+      fontSize:15, fontWeight:700, cursor:'pointer', fontFamily:"'DM Sans',sans-serif",
+      transition:'all .2s', display:'inline-flex', alignItems:'center', gap:8, ...style
+    }} {...p}>{children}</button>
+  )
+}
+
+function SectionBadge({ children }: { children: string }) {
+  return (
+    <div style={{
+      display:'inline-flex', alignItems:'center', gap:6,
+      background:B.pl, border:`1px solid ${B.bdr}`, padding:'5px 14px', borderRadius:100, marginBottom:16,
+    }}>
+      <span style={{ width:6, height:6, borderRadius:'50%', background:B.p }}/>
+      <span style={{ fontSize:11, fontWeight:700, letterSpacing:'.12em', textTransform:'uppercase', color:B.p }}>{children}</span>
+    </div>
+  )
+}
+
+/* ─── Nav ─────────────────────────────────── */
+function Nav() {
+  return (
+    <>
+      <div style={{ background:B.p, padding:'8px 48px', display:'flex', justifyContent:'space-between', alignItems:'center', fontSize:12, color:'rgba(255,255,255,.7)' }}>
+        <div style={{ display:'flex', gap:24 }}>
+          <span>📍 str. Ismail 88, Chișinău</span>
+          <span>🕐 Lun–Vin 09:00–19:00 · Sâm 09:00–14:00</span>
+        </div>
+        <span style={{ fontWeight:600, color:B.wh }}>+373 22 881 414</span>
+      </div>
+      <nav style={{
+        position:'sticky', top:0, zIndex:100, background:'rgba(255,255,255,.97)',
+        backdropFilter:'blur(12px)', borderBottom:`1px solid ${B.bdr}`,
+        padding:'14px 48px', display:'flex', justifyContent:'space-between', alignItems:'center',
+      }}>
+        <a href="/" style={{ textDecoration:'none' }}><Logo height={36}/></a>
+        <div style={{ display:'flex', gap:28, alignItems:'center' }}>
+          {[['Servicii','/servicii'],['Digital Check-Up','/digital-checkup'],['Consultație Online','/consultatie-online'],['Echipa','/echipa'],['Recenzii','/']].map(([l,h]) => (
+            <a key={l} href={h} style={{
+              fontSize:14, fontWeight: l==='Echipa' ? 700 : 500,
+              color: l==='Echipa' ? B.p : '#3a5a50', textDecoration:'none',
+              borderBottom: l==='Echipa' ? `2px solid ${B.p}` : '2px solid transparent', paddingBottom:2,
+            }}>{l}</a>
+          ))}
+        </div>
+        <Btn pink style={{ fontSize:13, padding:'10px 22px' }}>Programează-te</Btn>
+      </nav>
+    </>
+  )
+}
+
+/* ─── Hero ──────────────────────────────── */
+function Hero() {
+  return (
+    <section style={{ background:B.ps, padding:'56px 48px 48px', borderBottom:`1px solid ${B.bdr}` }}>
+      <div style={{ maxWidth:1200, margin:'0 auto', display:'flex', justifyContent:'space-between', alignItems:'flex-end' }}>
+        <div>
+          <SectionBadge>Echipa noastră</SectionBadge>
+          <h1 style={{ fontFamily:"'Syne',sans-serif", fontSize:42, fontWeight:800, color:B.nv, letterSpacing:'-.03em', lineHeight:1.08, margin:'0 0 14px' }}>
+            Echipa ta de<br/><span style={{ color:B.p }}>specialiști</span>
+          </h1>
+          <p style={{ fontSize:15, lineHeight:1.7, color:B.gr, maxWidth:460, margin:0 }}>
+            {STATS.team} specialiști, {STATS.years} ani de experiență și un singur obiectiv — zâmbetul tău.
+          </p>
+        </div>
+        <div style={{ display:'flex', gap:24 }}>
+          {[['600+','specialiști'],['15','ani experiență'],['9','filiale'],['4.9','Google rating']].map(([n,l]) => (
+            <div key={l} style={{ textAlign:'center' }}>
+              <div style={{ fontFamily:"'Syne',sans-serif", fontSize:24, fontWeight:800, color:B.p }}>{n}</div>
+              <div style={{ fontSize:11, color:B.gr }}>{l}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+/* ─── Doctors Section ────────────────────── */
+function DoctorsSection() {
+  const [dept, setDept] = useState('Toți')
+  const [expanded, setExpanded] = useState<number|null>(null)
+  const filtered = dept === 'Toți' ? DOCTORS : DOCTORS.filter(d => d.dept === dept)
+  const deptColors: Record<string,string> = { Chirurgie:B.p, Implantologie:'#0d8a72', Estetică:B.a, Terapie:'#059669', Ortodonție:'#6366f1', Protetică:'#D97706', Management:B.nv }
+
+  return (
+    <section style={{ background:B.wh, padding:'56px 48px' }}>
+      <div style={{ maxWidth:1200, margin:'0 auto' }}>
+        {/* Filter tabs */}
+        <div style={{ display:'flex', gap:8, marginBottom:32, flexWrap:'wrap' }}>
+          {DEPARTMENTS.map(d => (
+            <button key={d} onClick={() => { setDept(d); setExpanded(null) }} style={{
+              padding:'8px 18px', borderRadius:100, fontSize:13, fontWeight:600, cursor:'pointer',
+              fontFamily:"'DM Sans',sans-serif", transition:'all .15s',
+              background: dept===d ? B.p : B.ps, color: dept===d ? B.wh : B.nv,
+              border: dept===d ? `1.5px solid ${B.p}` : `1.5px solid ${B.bdr}`,
+            }}>{d}</button>
+          ))}
+        </div>
+
+        {/* Doctor cards grid */}
+        <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:20 }}>
+          {filtered.map(doc => {
+            const isOpen = expanded === doc.id
+            const color = deptColors[doc.dept] || B.p
+            return (
+              <div key={doc.id} style={{
+                background:B.wh, borderRadius:16, border: isOpen ? `2px solid ${color}` : `1px solid ${B.bdr}`,
+                overflow:'hidden', transition:'all .3s',
+                boxShadow: isOpen ? `0 12px 40px ${B.bdr}` : 'none',
+              }}>
+                {/* Card header */}
+                <div onClick={() => setExpanded(isOpen ? null : doc.id)} style={{
+                  padding:'24px', cursor:'pointer', display:'flex', alignItems:'center', gap:16,
+                }}>
+                  <div style={{
+                    width:56, height:56, borderRadius:'50%', flexShrink:0,
+                    background:`linear-gradient(135deg, ${color}, ${color}88)`,
+                    display:'flex', alignItems:'center', justifyContent:'center',
+                    fontSize:18, fontWeight:800, color:B.wh, fontFamily:"'Syne',sans-serif",
+                  }}>{doc.name.split(' ').filter((_,i) => i>0).map(n => n[0]).join('')}</div>
+                  <div style={{ flex:1 }}>
+                    <div style={{ fontSize:15, fontWeight:700, color:B.nv }}>{doc.name}</div>
+                    <div style={{ fontSize:12, color:B.gr }}>{doc.title}</div>
+                    <div style={{ display:'flex', gap:8, marginTop:4 }}>
+                      <span style={{ fontSize:10, fontWeight:600, color, background:`${color}15`, padding:'2px 8px', borderRadius:100 }}>{doc.dept}</span>
+                      <span style={{ fontSize:10, color:B.gr }}>{doc.years} ani exp.</span>
+                      <span style={{ fontSize:10, color:'#fbb040' }}>★ {doc.rating}</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Expanded detail */}
+                <div style={{ maxHeight: isOpen ? 600 : 0, overflow:'hidden', transition:'max-height .4s ease' }}>
+                  <div style={{ padding:'0 24px 24px', borderTop:`1px solid ${B.bdr}`, paddingTop:20 }}>
+                    <p style={{ fontSize:13, lineHeight:1.65, color:B.gr, margin:'0 0 14px' }}>{doc.bio}</p>
+                    <div style={{ fontSize:10, fontWeight:700, color:B.p, letterSpacing:'.1em', textTransform:'uppercase', marginBottom:6 }}>Educație & Certificări</div>
+                    <div style={{ display:'flex', flexDirection:'column', gap:4, marginBottom:14 }}>
+                      {doc.education.map(e => (
+                        <div key={e} style={{ display:'flex', alignItems:'center', gap:6 }}>
+                          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={B.p} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                          <span style={{ fontSize:12, color:B.nv }}>{e}</span>
+                        </div>
+                      ))}
+                    </div>
+                    {doc.review && (
+                      <div style={{ background:B.ps, borderRadius:10, padding:'14px 16px', borderLeft:`3px solid ${color}` }}>
+                        <div style={{ color:'#fbb040', fontSize:11, marginBottom:4 }}>★★★★★</div>
+                        <p style={{ fontSize:12, lineHeight:1.6, color:B.nv, margin:'0 0 4px', fontStyle:'italic' }}>&ldquo;{doc.review.text}&rdquo;</p>
+                        <div style={{ fontSize:11, color:B.gr, fontWeight:600 }}>— {doc.review.author}</div>
+                      </div>
+                    )}
+                    <Btn style={{ marginTop:14, width:'100%', justifyContent:'center', fontSize:13, padding:'10px 20px' }}>
+                      Programează cu {doc.name.split(' ')[0]} {doc.name.split(' ').slice(-1)[0]} →
+                    </Btn>
+                  </div>
+                </div>
+              </div>
+            )
+          })}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+/* ─── Ambasadori ─────────────────────────── */
+function AmbasadoriSection() {
+  const colors = ['#0a6b5c','#0d8a72','#e8157a','#074d42','#D97706','#2563EB','#059669','#6366f1','#DC2626','#0D9488','#EC4899','#6C3FA0']
+  return (
+    <section style={{ background:B.ps, padding:'64px 48px' }}>
+      <div style={{ maxWidth:1200, margin:'0 auto' }}>
+        <div style={{ textAlign:'center', marginBottom:40 }}>
+          <SectionBadge>Ambasadori SDT</SectionBadge>
+          <h2 style={{ fontFamily:"'Syne',sans-serif", fontSize:32, fontWeight:800, color:B.nv, margin:'0 0 10px' }}>
+            Personalități care ne <span style={{ color:B.a }}>reprezintă</span>
+          </h2>
+          <p style={{ fontSize:14, color:B.gr, maxWidth:440, margin:'0 auto' }}>Fiecare zâmbet — o poveste de încredere în Smile Dent Team.</p>
+        </div>
+        <div style={{ display:'grid', gridTemplateColumns:'repeat(6,1fr)', gap:14 }}>
+          {AMBASSADORS.map((amb, i) => (
+            <div key={amb.slug} style={{
+              padding:'20px 14px', borderRadius:12, border:`1px solid ${B.bdr}`, textAlign:'center',
+              background:B.wh, transition:'all .2s', cursor:'pointer',
+            }}
+              onMouseEnter={e => { e.currentTarget.style.transform='translateY(-2px)'; e.currentTarget.style.boxShadow=`0 6px 20px ${B.bdr}` }}
+              onMouseLeave={e => { e.currentTarget.style.transform=''; e.currentTarget.style.boxShadow='' }}
+            >
+              <div style={{
+                width:48, height:48, borderRadius:'50%', margin:'0 auto 10px',
+                background:`linear-gradient(135deg, ${colors[i%colors.length]}, ${colors[(i+4)%colors.length]})`,
+                display:'flex', alignItems:'center', justifyContent:'center',
+                fontSize:15, fontWeight:800, color:B.wh, fontFamily:"'Syne',sans-serif",
+              }}>{amb.name.split(' ').map(n => n[0]).join('')}</div>
+              <div style={{ fontSize:12, fontWeight:700, color:B.nv }}>{amb.name}</div>
+              <div style={{ fontSize:10, color:B.gr }}>{amb.role}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+/* ─── CTA Strip ──────────────────────────── */
+function CtaStrip() {
+  return (
+    <section style={{ background:`linear-gradient(135deg,${B.p},${B.pm})`, padding:'52px 48px' }}>
+      <div style={{ maxWidth:900, margin:'0 auto', textAlign:'center' }}>
+        <h2 style={{ fontFamily:"'Syne',sans-serif", fontSize:30, fontWeight:800, color:B.wh, margin:'0 0 12px' }}>
+          Alege-ți specialistul. Programează-te acum.
+        </h2>
+        <p style={{ fontSize:15, color:'rgba(255,255,255,.7)', margin:'0 0 24px' }}>
+          {STATS.team} specialiști pregătiți să aibă grijă de zâmbetul tău.
+        </p>
+        <Btn pink style={{ fontSize:15, padding:'14px 32px' }}>Programează-te →</Btn>
+      </div>
+    </section>
+  )
+}
+
+/* ─── Appointment Form ───────────────────── */
+function AppointmentForm() {
+  const inp: React.CSSProperties = {
+    width:'100%', padding:'12px 16px', border:`1px solid ${B.bdr}`, borderRadius:8,
+    fontSize:14, fontFamily:"'DM Sans',sans-serif", background:B.wh, outline:'none', boxSizing:'border-box',
+  }
+  return (
+    <section style={{ background:B.wh, padding:'64px 48px' }}>
+      <div style={{ maxWidth:700, margin:'0 auto', background:B.ps, borderRadius:20, padding:'40px 36px', border:`1px solid ${B.bdr}` }}>
+        <div style={{ textAlign:'center', marginBottom:28 }}>
+          <h2 style={{ fontFamily:"'Syne',sans-serif", fontSize:26, fontWeight:800, color:B.nv, margin:'0 0 8px' }}>Programează-te acum</h2>
+          <p style={{ fontSize:13, color:B.gr }}>Completează formularul — te contactăm rapid.</p>
+        </div>
+        <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:12, marginBottom:12 }}>
+          <input placeholder="Prenume" style={inp}/>
+          <input placeholder="Nume" style={inp}/>
+        </div>
+        <input placeholder="Telefon *" type="tel" style={{ ...inp, marginBottom:12 }}/>
+        <select defaultValue="" style={{ ...inp, marginBottom:12, color:B.gr }}>
+          <option value="" disabled>Alege specialistul</option>
+          {DOCTORS.map(d => <option key={d.id}>{d.name} — {d.dept}</option>)}
+        </select>
+        <select defaultValue="" style={{ ...inp, marginBottom:12, color:B.gr }}>
+          <option value="" disabled>Selectează locația</option>
+          {LOCATIONS.map(l => <option key={l.city}>{l.city} — {l.address}</option>)}
+        </select>
+        <Btn pink style={{ width:'100%', justifyContent:'center', fontSize:15, padding:'14px' }}>Trimite cererea →</Btn>
+      </div>
+    </section>
+  )
+}
+
+/* ─── Footer ─────────────────────────────── */
+function Footer() {
+  return (
+    <footer style={{ background:B.nv, padding:'56px 48px 32px' }}>
+      <div style={{ maxWidth:1200, margin:'0 auto', display:'grid', gridTemplateColumns:'1.5fr 1fr 1fr 1.2fr', gap:40, marginBottom:40 }}>
+        <div>
+          <Logo height={32} light/>
+          <p style={{ fontSize:13, color:'rgba(255,255,255,.45)', marginTop:16, lineHeight:1.7, maxWidth:260 }}>
+            Clinică stomatologică digitală. {STATS.years} ani de excelență, {STATS.team} specialiști, {STATS.patients} pacienți.
+          </p>
+          <div style={{ fontFamily:"'Syne',sans-serif", fontSize:16, fontWeight:800, color:B.a, marginTop:16 }}>{CAMPAIGN_2026.slogan}</div>
+        </div>
+        <div>
+          <div style={{ fontSize:11, fontWeight:700, color:B.wh, letterSpacing:'.15em', textTransform:'uppercase', marginBottom:18 }}>Servicii</div>
+          {SERVICES.slice(0,7).map(s => (
+            <div key={s.slug} style={{ fontSize:13, marginBottom:9, color:'rgba(255,255,255,.5)', cursor:'pointer' }}>{s.name}</div>
+          ))}
+        </div>
+        <div>
+          <div style={{ fontSize:11, fontWeight:700, color:B.wh, letterSpacing:'.15em', textTransform:'uppercase', marginBottom:18 }}>Clinică</div>
+          {['Despre noi','Echipa','Tehnologii','Blog','Cariere','Contacte'].map(s => (
+            <div key={s} style={{ fontSize:13, marginBottom:9, color:'rgba(255,255,255,.5)', cursor:'pointer' }}>{s}</div>
+          ))}
+        </div>
+        <div>
+          <div style={{ fontSize:11, fontWeight:700, color:B.wh, letterSpacing:'.15em', textTransform:'uppercase', marginBottom:18 }}>Contact</div>
+          {LOCATIONS.slice(0,2).map(l => (
+            <div key={l.city} style={{ marginBottom:14 }}>
+              <div style={{ fontSize:13, fontWeight:600, color:B.wh }}>{l.city}</div>
+              <div style={{ fontSize:12, color:'rgba(255,255,255,.45)' }}>{l.address} · {l.phone}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div style={{ borderTop:'1px solid rgba(255,255,255,.07)', paddingTop:20, display:'flex', justifyContent:'space-between', alignItems:'center' }}>
+        <span style={{ fontSize:11, color:'rgba(255,255,255,.25)' }}>© {CAMPAIGN_2026.year} Smile Dent Team</span>
+        <div style={{ display:'flex', gap:6 }}>
+          {['RO','RU','EN'].map(l => (
+            <span key={l} style={{ background:'rgba(255,255,255,.08)', color:'rgba(255,255,255,.5)', padding:'3px 8px', borderRadius:40, fontSize:10, fontWeight:700, cursor:'pointer' }}>{l}</span>
+          ))}
+        </div>
+      </div>
+    </footer>
+  )
+}
+
+/* ─── Main Export ─────────────────────────── */
+export function EchipaPage() {
+  return (
+    <>
+      <Nav/>
+      <Hero/>
+      <DoctorsSection/>
+      <AmbasadoriSection/>
+      <CtaStrip/>
+      <AppointmentForm/>
+      <Footer/>
+    </>
+  )
+}
