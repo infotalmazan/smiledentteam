@@ -37,15 +37,16 @@ export const LOCATIONS = [
   { city: 'București',          address: 'str. G. Puccini 8A',     phone: '+40 31 433 7004' },
 ] as const
 
-// ─── Services (8 categories — from Servicii & Audiență SDT 2025) ───
+// ─── Services (9 categories — ordered by business priority) ───
 export const SERVICES = [
-  { slug: 'estetica',           name: 'Estetică & Smile Design',  tag: 'Smile Design',        icon: '✦', price: 'de la 7000€',  rate: false, audience: 'Top management, business, persoane publice' },
-  { slug: 'terapie',            name: 'Terapie & Profilaxie',     tag: 'Fără durere',         icon: '◎', price: 'de la 25€',    rate: false, audience: '14–65 ani, toți pacienții' },
-  { slug: 'chirurgie',          name: 'Chirurgie Orală',          tag: 'Ghid 3D',             icon: '⊕', price: 'de la 200€',   rate: false, audience: '25+ ani, cazuri complexe' },
-  { slug: 'implantologie',      name: 'Implantologie 3D',         tag: 'Planificare 3D',      icon: '◈', price: 'de la 350€',   rate: true,  audience: '35+ ani, lipsa dinților, parodontită' },
-  { slug: 'protetica',          name: 'Protetică CAD/CAM',        tag: 'Garanție pe viață',    icon: '◇', price: 'de la 200€',   rate: true,  audience: '36–65 ani, coroane, punți' },
-  { slug: 'ortodontie',         name: 'Ortodonție Digitală',      tag: 'Aligners & Brackets',  icon: '◌', price: 'de la 1000€',  rate: true,  audience: '14+ ani, copii și părinți' },
+  { slug: 'implantologie',      name: 'Implant Dentar',            tag: 'Planificare 3D',       icon: '◈', price: 'de la 350€',   rate: true,  audience: '35+ ani, lipsa dinților, parodontită' },
+  { slug: 'protetica',          name: 'Coroane Dentare',           tag: 'Garanție pe viață',    icon: '◇', price: 'de la 200€',   rate: true,  audience: '36–65 ani, coroane, punți' },
   { slug: 'allon',              name: 'Dinți Ficși / All-On',     tag: 'Reabilitare completă', icon: '⬡', price: 'de la 2997€',  rate: true,  audience: '50+ ani, parodontită, proteze mobile' },
+  { slug: 'estetica',           name: 'Fațete Dentare',           tag: 'Smile Design',         icon: '✦', price: 'de la 7000€',  rate: false, audience: 'Top management, business, persoane publice' },
+  { slug: 'ortodontie',         name: 'Ortodonție Digitală',      tag: 'Aligners & Brackets',  icon: '◌', price: 'de la 1000€',  rate: true,  audience: '14+ ani, copii și părinți' },
+  { slug: 'digital-checkup',    name: 'Digital Check-Up',         tag: 'Evaluare completă',    icon: '◎', price: 'de la 25€',    rate: false, audience: 'Toți pacienții — primul pas' },
+  { slug: 'terapie',            name: 'Terapie & Profilaxie',     tag: 'Fără durere',          icon: '◎', price: 'de la 25€',    rate: false, audience: '14–65 ani, toți pacienții' },
+  { slug: 'chirurgie',          name: 'Chirurgie Orală',          tag: 'Ghid 3D',              icon: '⊕', price: 'de la 200€',   rate: false, audience: '25+ ani, cazuri complexe' },
   { slug: 'consultatie-online', name: 'Consultație Online',       tag: 'Diaspora',             icon: '◉', price: 'de la 25€',    rate: false, audience: 'Diaspora: UK, Germania, Franța, USA' },
 ] as const
 
