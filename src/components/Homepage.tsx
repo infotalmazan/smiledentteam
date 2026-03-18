@@ -156,10 +156,9 @@ function Navbar() {
 const SVC_LIST = SERVICES.map(s => s.name)
 
 function Hero() {
-  // 34px topbar + 64px navbar + 4px gradient = 102px above hero
+  // 34px topbar + 64px navbar = 98px above hero
   return (
-    <section style={{ background:B.wh, height:'calc(100vh - 102px)', display:'flex', flexDirection:'column' }}>
-      <div style={{ height:4, background:`linear-gradient(90deg,${B.p},${B.pm},${B.a})`, transformOrigin:'left', animation:'barGrow .8s ease both', flexShrink:0 }}/>
+    <section style={{ background:B.wh, height:'calc(100vh - 98px)', display:'flex', flexDirection:'column' }}>
       <div style={{ display:'grid', gridTemplateColumns:'1fr 1px 1.35fr 1px 0.85fr', flex:1, minHeight:0 }}>
 
         {/* COL 1 — Headline */}
@@ -238,7 +237,7 @@ function Hero() {
           {/* Locații */}
           <div style={{ marginTop:16, paddingTop:14, borderTop:`1px solid ${B.bdr}` }}>
             <div style={{ fontSize:10, fontWeight:700, color:B.p, letterSpacing:'.15em', textTransform:'uppercase', marginBottom:6 }}>Locații</div>
-            {[['Chișinău, Centru','str. Ismail 88'],['Chișinău, Râșcani','Bd. Moscova 17/A'],['Iași','str. Arcu 18'],['București','str. G. Puccini 8A']].map(([city,addr]) => (
+            {[['Chișinău, Centru','str. Ismail 88'],['Chișinău, Râșcani','Bd. Moscova 17/A'],['Chișinău, Botanica','Bd. Dacia 44']].map(([city,addr]) => (
               <div key={city} style={{ display:'flex', alignItems:'flex-start', gap:6, padding:'3px 0' }}>
                 <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke={B.p} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{marginTop:2,flexShrink:0}}><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
                 <div>
@@ -267,11 +266,11 @@ function Hero() {
       </div>
 
       {/* Stats strip — full width, pinned to bottom */}
-      <div style={{ background:`linear-gradient(135deg,${B.p},${B.pm})`, padding:'16px 52px', display:'flex', justifyContent:'space-between', alignItems:'center', flexShrink:0 }}>
+      <div style={{ background:`linear-gradient(135deg,${B.p},${B.pm})`, padding:'22px 52px', display:'flex', justifyContent:'center', gap:48, alignItems:'center', flexShrink:0 }}>
         {[[STATS.years,'ani de excelență'],[STATS.team,'specialiști'],[STATS.patients,'pacienți tratați'],[STATS.locations,'filiale'],['0%','dobândă la rate']].map(([n,l]) => (
-          <div key={String(l)} style={{ display:'flex', alignItems:'baseline', gap:8 }}>
-            <div style={{ fontFamily:"'Syne',sans-serif", fontSize:26, fontWeight:800, color:B.wh, lineHeight:1 }}>{n}</div>
-            <div style={{ fontSize:11, color:'rgba(255,255,255,.65)', fontWeight:500 }}>{l}</div>
+          <div key={String(l)} style={{ display:'flex', alignItems:'baseline', gap:8, textAlign:'center' }}>
+            <div style={{ fontFamily:"'Syne',sans-serif", fontSize:28, fontWeight:800, color:B.wh, lineHeight:1 }}>{n}</div>
+            <div style={{ fontSize:12, color:'rgba(255,255,255,.65)', fontWeight:500 }}>{l}</div>
           </div>
         ))}
       </div>

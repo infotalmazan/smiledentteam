@@ -30,10 +30,11 @@ export const STATS = {
 
 // ─── Locations ───
 export const LOCATIONS = [
-  { city: 'Chișinău, Centru',  address: 'str. Ismail 88',        phone: '+373 22 881 414' },
-  { city: 'Chișinău, Râșcani', address: 'Bd. Moscova 17/A',      phone: '+373 22 011 061' },
-  { city: 'Iași',              address: 'str. Arcu 18',           phone: '+40 33 240 2505' },
-  { city: 'București',         address: 'str. G. Puccini 8A',     phone: '+40 31 433 7004' },
+  { city: 'Chișinău, Centru',   address: 'str. Ismail 88',        phone: '+373 22 881 414' },
+  { city: 'Chișinău, Râșcani',  address: 'Bd. Moscova 17/A',      phone: '+373 22 011 061' },
+  { city: 'Chișinău, Botanica', address: 'Bd. Dacia 44',          phone: '+373 22 881 414' },
+  { city: 'Iași',               address: 'str. Arcu 18',           phone: '+40 33 240 2505' },
+  { city: 'București',          address: 'str. G. Puccini 8A',     phone: '+40 31 433 7004' },
 ] as const
 
 // ─── Services (8 categories — from Servicii & Audiență SDT 2025) ───
