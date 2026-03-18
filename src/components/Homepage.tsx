@@ -378,15 +378,15 @@ function CheckUpStrip() {
 
 /* ─── Services ────────────────────────────── */
 const SVC_DATA: { photo:string; desc:string }[] = [
-  { photo:'https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=400&h=260&fit=crop', desc:'Dinti noi, ficsi, fara durere. Planificare 3D completa pentru un rezultat predictibil si natural.' },
-  { photo:'https://images.unsplash.com/photo-1606811841689-23dfddce3e95?w=400&h=260&fit=crop', desc:'Zambet restaurat cu coroane premium. Materiale de ultima generatie, garantie pe viata.' },
-  { photo:'https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?w=400&h=260&fit=crop', desc:'Arcada completa intr-o zi. Alternativa moderna la proteze — dinti ficsi pe implanturi.' },
-  { photo:'https://images.unsplash.com/photo-1606265752439-1f18756aa5fc?w=400&h=260&fit=crop', desc:'Zambetul pe care l-ai visat. Fatete ceramice personalizate cu Digital Smile Design.' },
-  { photo:'https://images.unsplash.com/photo-1606811971618-4486d14f3f99?w=400&h=260&fit=crop', desc:'Dinti drepti, discret si rapid. Aliniere invizibila pentru copii si adulti.' },
-  { photo:'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=400&h=260&fit=crop', desc:'Primul pas catre un zambet sanatos. Evaluare completa, digitala, fara disconfort.' },
-  { photo:'https://images.unsplash.com/photo-1598256989800-fe5f95da9787?w=400&h=260&fit=crop', desc:'Preventie fara durere. Igienizare profesionala si detectie timpurie cu scanner digital.' },
-  { photo:'https://images.unsplash.com/photo-1609840114035-3c981b782dfe?w=400&h=260&fit=crop', desc:'Interventii precise cu ghidaj 3D. Extractii, augmentari si chirurgie ghidata digital.' },
-  { photo:'https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=400&h=260&fit=crop', desc:'Consultatie video de oriunde din lume. Plan personalizat inainte de a ajunge la clinica.' },
+  { photo:'https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=400&h=260&fit=crop', desc:'Dinti noi, ficsi, fara durere. Planificare 3D completa pentru un rezultat predictibil si natural. Implanturi Straumann si Nobel Biocare cu garantie pe viata.' },
+  { photo:'https://images.unsplash.com/photo-1606811841689-23dfddce3e95?w=400&h=260&fit=crop', desc:'Zambet restaurat cu coroane premium. Materiale de ultima generatie — zirconiu si E-max, garantie pe viata. Scanare digitala, fara amprenta clasica.' },
+  { photo:'https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?w=400&h=260&fit=crop', desc:'Arcada completa intr-o zi. Alternativa moderna la proteze — dinti ficsi pe implanturi. Planificare 3D, sedare constienta, Rate 0% disponibile.' },
+  { photo:'https://images.unsplash.com/photo-1606265752439-1f18756aa5fc?w=400&h=260&fit=crop', desc:'Zambetul pe care l-ai visat. Fatete ceramice personalizate cu Digital Smile Design. Vizualizezi rezultatul 3D inainte de orice procedura.' },
+  { photo:'https://images.unsplash.com/photo-1606811971618-4486d14f3f99?w=400&h=260&fit=crop', desc:'Dinti drepti, discret si rapid. Aliniere invizibila cu Invisalign pentru copii si adulti. Simulare ClinCheck a rezultatului final.' },
+  { photo:'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=400&h=260&fit=crop', desc:'Primul pas catre un zambet sanatos. Evaluare completa cu scanare 3D si tomografie CBCT. Plan transparent cu preturi clare, in 30 minute.' },
+  { photo:'https://images.unsplash.com/photo-1598256989800-fe5f95da9787?w=400&h=260&fit=crop', desc:'Preventie fara durere. Igienizare profesionala cu ultrasunete si detectie timpurie cu scanner digital. Plan personalizat de preventie.' },
+  { photo:'https://images.unsplash.com/photo-1609840114035-3c981b782dfe?w=400&h=260&fit=crop', desc:'Interventii precise cu ghidaj 3D. Extractii complexe, augmentari osoase si sinus lifting. Piezosurgery pentru recuperare rapida.' },
+  { photo:'https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=400&h=260&fit=crop', desc:'Consultatie video de oriunde din lume. Trimite tomografia, discutam la distanta. Plan personalizat complet inainte de a ajunge la clinica.' },
 ]
 
 function Services() {
@@ -414,7 +414,7 @@ function Services() {
               'animate-slide-up',
               i < 3 ? `stagger-${i+1}` : i < 6 ? `stagger-${i-2}` : `stagger-${i-5}`
             )}>
-              <div className="relative h-[115px] overflow-hidden">
+              <div className="relative h-[140px] overflow-hidden">
                 <img src={SVC_DATA[i]?.photo || SVC_DATA[0].photo} alt={s.name} className="w-full h-full object-cover" />
                 <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(10,30,24,.25) 0%, transparent 50%)' }} />
               </div>
