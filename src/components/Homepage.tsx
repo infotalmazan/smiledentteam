@@ -176,6 +176,34 @@ function Hero() {
             600+ specialiști, tehnologii 3D și 15 ani de experiență — totul pentru un singur lucru: să știi exact ce ai nevoie, înainte să decizi orice.
           </p>
           <Btn style={{ justifyContent:'center', padding:'12px 24px', fontSize:13 }}>Descoperă Digital Check-Up →</Btn>
+
+          {/* Trust badges */}
+          <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:8, marginTop:20 }}>
+            {[
+              ['M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z','Fără durere'],
+              ['M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0 1 12 2.944a11.955 11.955 0 0 1 8.618 3.04A12.02 12.02 0 0 1 23 12c0 3.074-1.155 5.877-3.054 8.003l.672.672A11.955 11.955 0 0 0 12 24a11.955 11.955 0 0 0-8.618-3.325l.672-.672A12.02 12.02 0 0 1 1 12c0-3.074 1.155-5.877 3.054-8.003','Garanție'],
+              ['M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z M14 2v6h6 M16 13H8 M16 17H8 M10 9H8','Plan digital'],
+              ['M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z','Tehnologie 3D'],
+            ].map(([path,label]) => (
+              <div key={label} style={{ display:'flex', alignItems:'center', gap:6, padding:'6px 0' }}>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={B.p} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d={path}/></svg>
+                <span style={{ fontSize:11, fontWeight:600, color:B.gr }}>{label}</span>
+              </div>
+            ))}
+          </div>
+
+          {/* Mini appointment */}
+          <div style={{ marginTop:16, padding:'14px 16px', background:B.ps, borderRadius:8, border:`1px solid ${B.bdr}` }}>
+            <div style={{ fontSize:11, fontWeight:700, color:B.p, marginBottom:8 }}>Programare rapidă</div>
+            <input type="tel" placeholder="+373 __ ___ ___" style={{
+              width:'100%', padding:'8px 12px', border:`1px solid ${B.bdr}`, borderRadius:6,
+              fontSize:13, fontFamily:"'DM Sans',sans-serif", background:B.wh, outline:'none', boxSizing:'border-box',
+            }}/>
+            <button style={{
+              width:'100%', marginTop:8, padding:'9px 16px', background:B.p, color:B.wh, border:'none',
+              borderRadius:6, fontSize:12, fontWeight:700, cursor:'pointer', fontFamily:"'DM Sans',sans-serif",
+            }}>Programează-te →</button>
+          </div>
         </div>
 
         <div style={{ background:B.bdr }}/>
@@ -204,7 +232,28 @@ function Hero() {
               <span style={{ fontSize:15, color:B.gr }}>→</span>
             </div>
           ))}
-          <div style={{ marginTop:12, background:B.pl, padding:'12px 14px', borderLeft:`3px solid ${B.p}`, borderRadius:'0 8px 8px 0' }}>
+          {/* Locații */}
+          <div style={{ marginTop:12, paddingTop:10, borderTop:`1px solid ${B.bdr}` }}>
+            <div style={{ fontSize:10, fontWeight:700, color:B.p, letterSpacing:'.15em', textTransform:'uppercase', marginBottom:6 }}>Locații</div>
+            {[['Chișinău, Centru','str. Ismail 88'],['Chișinău, Râșcani','Bd. Moscova 17/A'],['Iași','str. Arcu 18'],['București','str. G. Puccini 8A']].map(([city,addr]) => (
+              <div key={city} style={{ display:'flex', alignItems:'flex-start', gap:6, padding:'3px 0' }}>
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke={B.p} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{marginTop:2,flexShrink:0}}><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                <div>
+                  <div style={{ fontSize:11, fontWeight:600, color:B.nv, lineHeight:1.2 }}>{city}</div>
+                  <div style={{ fontSize:10, color:B.gr, lineHeight:1.2 }}>{addr}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Program */}
+          <div style={{ marginTop:8, display:'flex', alignItems:'center', gap:6 }}>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={B.p} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <span style={{ fontSize:10, color:B.gr }}>Lun–Vin 09–19:00 · Sâm 09–14:00</span>
+          </div>
+
+          {/* Google Reviews */}
+          <div style={{ marginTop:10, background:B.pl, padding:'10px 14px', borderLeft:`3px solid ${B.p}`, borderRadius:'0 8px 8px 0' }}>
             <div style={{ display:'flex', alignItems:'center', gap:8 }}>
               <div style={{ color:'#fbb040', fontSize:12 }}>★★★★★</div>
               <div style={{ fontFamily:"'Syne',sans-serif", fontSize:18, fontWeight:800, color:B.p }}>4.9</div>
