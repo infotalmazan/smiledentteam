@@ -124,7 +124,7 @@ function Navbar() {
       <a href="/" style={{ textDecoration:'none' }}><Logo height={38}/></a>
       <div style={{ display:'flex', gap:28 }}>
         {[
-          ['Servicii','#servicii'],
+          ['Servicii','/servicii'],
           ['Digital Check-Up','/digital-checkup'],
           ['Tehnologii','#tehnologii'],
           ['Echipa','#echipa'],
