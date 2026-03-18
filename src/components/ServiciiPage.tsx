@@ -229,7 +229,7 @@ const NAV_LINKS: [string, string][] = [
 function Nav() {
   return (
     <nav
-      className="sticky top-0 z-[100] bg-white/97 backdrop-blur-[12px] border-b border-[--bdr] px-12 py-3.5 flex justify-between items-center"
+      className="sticky top-0 z-[100] bg-white border-b border-[--bdr] px-12 py-3.5 flex justify-between items-center"
       style={{ borderTop: `3px solid ${B.a}` }}
     >
       <a href="/" className="no-underline"><Logo height={36}/></a>

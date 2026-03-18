@@ -81,7 +81,7 @@ function Nav() {
 
   return (
     <nav
-      className="sticky top-0 z-[100] bg-white/[.97] backdrop-blur-[12px] px-12 py-3.5 flex justify-between items-center"
+      className="sticky top-0 z-[100] bg-white px-12 py-3.5 flex justify-between items-center"
       style={{ borderTop: `3px solid ${B.a}`, borderBottom: `1px solid ${B.bdr}` }}
     >
       <a href="/" className="no-underline">

@@ -145,7 +145,7 @@ function Navbar() {
   }, [])
   return (
     <nav className={cn(
-      'glass flex justify-between items-center px-[52px] h-[70px] border-t-[3px] border-t-pink-500 sticky top-0 z-[200] transition-shadow',
+      'bg-white flex justify-between items-center px-[52px] h-[70px] border-t-[3px] border-t-pink-500 sticky top-0 z-[200] transition-shadow border-b border-sdt-600/10',
       sc ? 'shadow-sm' : 'shadow-none'
     )}>
       <a href="/" className="no-underline"><Logo height={38}/></a>

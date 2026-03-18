@@ -66,7 +66,7 @@ function SectionBadge({ children, light }: { children: string; light?: boolean }
 /* ─── Nav ─── */
 function Nav() {
   return (
-    <nav className="sticky top-0 z-[100] flex items-center justify-between border-b border-sdt-600/10 bg-white/[.97] px-12 py-3.5 backdrop-blur-sm" style={{ borderTop: `3px solid ${B.a}` }}>
+    <nav className="sticky top-0 z-[100] flex items-center justify-between border-b border-sdt-600/10 bg-white px-12 py-3.5" style={{ borderTop: `3px solid ${B.a}` }}>
       <a href="/" className="no-underline"><Logo height={36} /></a>
       <div className="flex items-center gap-7">
         {[['Servicii','/servicii'],['Digital Check-Up','/digital-checkup'],['Consultatie Online','/consultatie-online'],['Echipa','/echipa'],['Recenzii','/recenzii']].map(([l, h]) => (

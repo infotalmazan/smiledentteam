@@ -39,7 +39,7 @@ function SectionBadge({ children, light }: { children: string; light?: boolean }
 function Nav() {
   return (
     <nav
-      className="sticky top-0 z-[100] flex items-center justify-between border-b border-sdt-600/10 bg-white/[.97] px-12 py-3.5 backdrop-blur-sm"
+      className="sticky top-0 z-[100] flex items-center justify-between border-b border-sdt-600/10 bg-white px-12 py-3.5"
       style={{ borderTop: `3px solid ${B.a}` }}
     >
       <a href="/" className="no-underline"><Logo height={36} /></a>
