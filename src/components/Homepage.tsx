@@ -163,22 +163,22 @@ function Hero() {
       <div style={{ display:'grid', gridTemplateColumns:'1fr 1px 1.35fr 1px 0.85fr', minHeight:'calc(100vh - 114px)' }}>
 
         {/* COL 1 — Headline */}
-        <div style={{ padding:'68px 48px 68px 52px', display:'flex', flexDirection:'column', justifyContent:'center' }}>
-          <h1 style={{ fontFamily:"'Syne',sans-serif", fontSize:50, fontWeight:800, lineHeight:1.02, letterSpacing:'-.04em', margin:'0 0 12px', color:B.a }}>
+        <div style={{ padding:'36px 40px 32px 52px', display:'flex', flexDirection:'column', justifyContent:'center' }}>
+          <h1 style={{ fontFamily:"'Syne',sans-serif", fontSize:44, fontWeight:800, lineHeight:1.02, letterSpacing:'-.04em', margin:'0 0 10px', color:B.a }}>
             ALEGE-TE<br/>PE TINE.
           </h1>
-          <div style={{ width:44, height:3, background:B.p, borderRadius:2, marginBottom:18, transformOrigin:'left', animation:'barGrow .6s .2s ease both' }}/>
-          <h2 style={{ fontFamily:"'Syne',sans-serif", fontSize:22, fontWeight:700, color:B.nv, letterSpacing:'-.02em', margin:'0 0 20px', lineHeight:1.2 }}>
+          <div style={{ width:44, height:3, background:B.p, borderRadius:2, marginBottom:14, transformOrigin:'left', animation:'barGrow .6s .2s ease both' }}/>
+          <h2 style={{ fontFamily:"'Syne',sans-serif", fontSize:20, fontWeight:700, color:B.nv, letterSpacing:'-.02em', margin:'0 0 14px', lineHeight:1.2 }}>
             Începe cu un Digital Check-Up.
           </h2>
-          <p style={{ fontSize:15, lineHeight:1.8, color:'#4a6a58', maxWidth:360, margin:'0 0 32px' }}>
+          <p style={{ fontSize:14, lineHeight:1.7, color:'#4a6a58', maxWidth:340, margin:'0 0 24px' }}>
             600+ specialiști, tehnologii 3D și 15 ani de experiență — totul pentru un singur lucru: să știi exact ce ai nevoie, înainte să decizi orice.
           </p>
-          <div style={{ display:'flex', flexDirection:'column', gap:12 }}>
-            <Btn style={{ justifyContent:'center' }}>Consultație GRATUITĂ →</Btn>
-            <Btn outline style={{ justifyContent:'center' }}>Descoperă Digital Check-Up</Btn>
+          <div style={{ display:'flex', flexDirection:'column', gap:10 }}>
+            <Btn style={{ justifyContent:'center', padding:'12px 24px' }}>Consultație GRATUITĂ →</Btn>
+            <Btn outline style={{ justifyContent:'center', padding:'12px 24px' }}>Descoperă Digital Check-Up</Btn>
           </div>
-          <div style={{ display:'flex', gap:24, marginTop:44, paddingTop:32, borderTop:`1px solid ${B.bdr}` }}>
+          <div style={{ display:'flex', gap:20, marginTop:28, paddingTop:20, borderTop:`1px solid ${B.bdr}` }}>
             {[[STATS.years,'ani'],[STATS.team,'specialiști'],[STATS.patients,'pacienți'],[STATS.locations,'filiale']].map(([n,l]) => (
               <div key={String(l)}>
                 <div style={{ fontFamily:"'Syne',sans-serif", fontSize:24, fontWeight:800, color:B.p, lineHeight:1 }}>{n}</div>
@@ -208,8 +208,8 @@ function Hero() {
         <div style={{ background:B.bdr }}/>
 
         {/* COL 3 — Services list */}
-        <div style={{ padding:'64px 40px', display:'flex', flexDirection:'column', justifyContent:'center' }}>
-          <div style={{ fontSize:10, fontWeight:700, color:B.p, letterSpacing:'.22em', textTransform:'uppercase', marginBottom:24 }}>Servicii</div>
+        <div style={{ padding:'32px 32px', display:'flex', flexDirection:'column', justifyContent:'center' }}>
+          <div style={{ fontSize:10, fontWeight:700, color:B.p, letterSpacing:'.22em', textTransform:'uppercase', marginBottom:16 }}>Servicii</div>
           {SVC_LIST.map((s, i) => (
             <div key={s} style={{ display:'flex', alignItems:'center', justifyContent:'space-between',
               padding:'14px 0', borderBottom:`1px solid ${B.bdr}`, cursor:'pointer', transition:'color .15s', color:B.nv }}
