@@ -181,7 +181,7 @@ const SVC_LIST = SERVICES.map(s => s.name)
 
 function Hero() {
   return (
-    <section className="relative bg-white min-h-screen flex flex-col overflow-hidden">
+    <section className="relative bg-white h-[calc(100vh-52px)] flex flex-col overflow-hidden">
       {/* Decorative circles */}
       <div className="absolute top-20 -left-32 w-[400px] h-[400px] rounded-full bg-sdt-500 opacity-[0.04] pointer-events-none" />
       <div className="absolute bottom-40 -right-24 w-[300px] h-[300px] rounded-full bg-pink-500 opacity-[0.05] pointer-events-none" />
@@ -190,11 +190,11 @@ function Hero() {
       <div className="grid flex-1 min-h-0 relative z-[1]" style={{ gridTemplateColumns: '1fr 1px 1.35fr 1px 0.85fr' }}>
 
         {/* COL 1 — Headline */}
-        <div className="pt-9 pr-9 pb-6 pl-12 flex flex-col justify-start">
-          <h1 className="animate-slide-up font-display text-6xl font-extrabold leading-[0.95] tracking-[-0.04em] mb-5 text-gradient">
+        <div className="pt-6 pr-9 pb-0 pl-12 flex flex-col justify-start">
+          <h1 className="animate-slide-up font-display text-6xl font-extrabold leading-[0.95] tracking-[-0.04em] mb-5 text-pink-500">
             ALEGE-TE<br/>PE TINE.
           </h1>
-          <div className="animate-slide-up stagger-1 w-10 h-[3px] bg-sdt-600 rounded-sm mb-[18px] origin-left" style={{ animation: 'barGrow .6s .2s ease both' }} />
+          <div className="mb-4 h-[3px] w-12 rounded-full bg-pink-500" />
           <h2 className="animate-slide-up stagger-2 font-display text-lg font-bold text-[#0a1e18] tracking-[-0.02em] mb-3.5 leading-[1.2]">
             Incepe cu un Digital Check-Up.
           </h2>
@@ -223,7 +223,17 @@ function Hero() {
           {/* Mini appointment */}
           <div className="mt-6 p-3.5 bg-sdt-50 rounded-xl border border-transparent shadow-sm">
             <div className="text-[11px] font-bold text-sdt-600 mb-2">Programare rapida</div>
-            <Input type="tel" placeholder="+373 __ ___ ___" className="text-[13px] h-9 focus:ring-sdt-600/20" />
+            <div className="flex gap-2">
+              <select className="w-[90px] rounded-lg border border-transparent bg-white px-2 py-2 text-xs font-medium shadow-sm">
+                <option>{'\ud83c\uddf2\ud83c\udde9'} +373</option>
+                <option>{'\ud83c\uddf7\ud83c\uddf4'} +40</option>
+                <option>{'\ud83c\uddec\ud83c\udde7'} +44</option>
+                <option>{'\ud83c\udde9\ud83c\uddea'} +49</option>
+                <option>{'\ud83c\uddeb\ud83c\uddf7'} +33</option>
+                <option>{'\ud83c\uddfa\ud83c\uddf8'} +1</option>
+              </select>
+              <Input placeholder="__ ___ ___" type="tel" className="flex-1" />
+            </div>
             <Button variant="outline" className="btn-shine w-full mt-2 text-sdt-600 border-sdt-600 text-xs font-bold rounded-full">
               Programeaza-te <ArrowRight className="w-3.5 h-3.5 ml-1" />
             </Button>
@@ -241,7 +251,7 @@ function Hero() {
         <div className="bg-sdt-600/10" />
 
         {/* COL 3 — Services list */}
-        <div className="pt-9 px-6 pb-6 flex flex-col justify-start">
+        <div className="pt-6 px-6 pb-0 flex flex-col justify-start">
           <div className="text-[10px] font-bold text-sdt-600 tracking-[.22em] uppercase mb-2.5">Servicii</div>
           {SVC_LIST.map((s, i) => (
             <div key={s}
@@ -255,7 +265,7 @@ function Hero() {
             </div>
           ))}
           {/* Locatii */}
-          <div className="mt-4 pt-3.5 border-t border-sdt-600/10">
+          <div className="mt-2 pt-2.5 border-t border-sdt-600/10">
             <div className="text-[10px] font-bold text-sdt-600 tracking-[.15em] uppercase mb-1.5">Locatii</div>
             {[['Chisinau, Centru','str. Ismail 88'],['Chisinau, Rascani','Bd. Moscova 17/A'],['Chisinau, Botanica','Bd. Dacia 44']].map(([city,addr]) => (
               <div key={city} className="flex items-start gap-1.5 py-[3px]">
@@ -269,13 +279,13 @@ function Hero() {
           </div>
 
           {/* Program */}
-          <div className="mt-3 flex items-center gap-1.5">
+          <div className="mt-2 flex items-center gap-1.5">
             <Clock className="w-3 h-3 text-sdt-600" strokeWidth={2} />
             <span className="text-[10px] text-[#5a7a6e]">Lun-Vin 09-19:00 . Sam 09-14:00</span>
           </div>
 
           {/* Google Reviews */}
-          <div className="mt-3.5 bg-sdt-100 p-2.5 pl-3.5 border-l-[3px] border-l-sdt-600 rounded-r-lg">
+          <div className="mt-2 bg-sdt-100 p-2.5 pl-3.5 border-l-[3px] border-l-sdt-600 rounded-r-lg">
             <div className="flex items-center gap-2">
               <div className="text-[#fbb040] text-xs flex gap-0.5">
                 {[1,2,3,4,5].map(i => <Star key={i} className="w-3 h-3 fill-current" />)}
