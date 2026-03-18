@@ -157,26 +157,27 @@ function Navbar() {
 const SVC_LIST = SERVICES.map(s => s.name)
 
 function Hero() {
+  // 34px topbar + 64px navbar + 4px gradient = 102px above hero
   return (
-    <section style={{ background:B.wh, borderBottom:`1px solid ${B.bdr}` }}>
-      <div style={{ height:4, background:`linear-gradient(90deg,${B.p},${B.pm},${B.a})`, transformOrigin:'left', animation:'barGrow .8s ease both' }}/>
-      <div style={{ display:'grid', gridTemplateColumns:'1fr 1px 1.35fr 1px 0.85fr', minHeight:520 }}>
+    <section style={{ background:B.wh, height:'calc(100vh - 102px)', display:'flex', flexDirection:'column' }}>
+      <div style={{ height:4, background:`linear-gradient(90deg,${B.p},${B.pm},${B.a})`, transformOrigin:'left', animation:'barGrow .8s ease both', flexShrink:0 }}/>
+      <div style={{ display:'grid', gridTemplateColumns:'1fr 1px 1.35fr 1px 0.85fr', flex:1, minHeight:0 }}>
 
         {/* COL 1 — Headline */}
-        <div style={{ padding:'48px 40px 36px 52px', display:'flex', flexDirection:'column', justifyContent:'flex-start' }}>
-          <h1 style={{ fontFamily:"'Syne',sans-serif", fontSize:44, fontWeight:800, lineHeight:1.02, letterSpacing:'-.04em', margin:'0 0 10px', color:B.a }}>
+        <div style={{ padding:'32px 36px 24px 48px', display:'flex', flexDirection:'column', justifyContent:'center' }}>
+          <h1 style={{ fontFamily:"'Syne',sans-serif", fontSize:42, fontWeight:800, lineHeight:1.02, letterSpacing:'-.04em', margin:'0 0 8px', color:B.a }}>
             ALEGE-TE<br/>PE TINE.
           </h1>
-          <div style={{ width:44, height:3, background:B.p, borderRadius:2, marginBottom:14, transformOrigin:'left', animation:'barGrow .6s .2s ease both' }}/>
-          <h2 style={{ fontFamily:"'Syne',sans-serif", fontSize:20, fontWeight:700, color:B.nv, letterSpacing:'-.02em', margin:'0 0 14px', lineHeight:1.2 }}>
+          <div style={{ width:40, height:3, background:B.p, borderRadius:2, marginBottom:12, transformOrigin:'left', animation:'barGrow .6s .2s ease both' }}/>
+          <h2 style={{ fontFamily:"'Syne',sans-serif", fontSize:18, fontWeight:700, color:B.nv, letterSpacing:'-.02em', margin:'0 0 10px', lineHeight:1.2 }}>
             Începe cu un Digital Check-Up.
           </h2>
-          <p style={{ fontSize:14, lineHeight:1.7, color:'#4a6a58', maxWidth:340, margin:'0 0 24px' }}>
+          <p style={{ fontSize:13, lineHeight:1.65, color:'#4a6a58', maxWidth:320, margin:'0 0 18px' }}>
             600+ specialiști, tehnologii 3D și 15 ani de experiență — totul pentru un singur lucru: să știi exact ce ai nevoie, înainte să decizi orice.
           </p>
-          <div style={{ display:'flex', flexDirection:'column', gap:10 }}>
-            <Btn style={{ justifyContent:'center', padding:'12px 24px' }}>Consultație GRATUITĂ →</Btn>
-            <Btn outline style={{ justifyContent:'center', padding:'12px 24px' }}>Descoperă Digital Check-Up</Btn>
+          <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
+            <Btn style={{ justifyContent:'center', padding:'10px 22px', fontSize:13 }}>Consultație GRATUITĂ →</Btn>
+            <Btn outline style={{ justifyContent:'center', padding:'10px 22px', fontSize:13 }}>Descoperă Digital Check-Up</Btn>
           </div>
         </div>
 
@@ -184,29 +185,29 @@ function Hero() {
 
         {/* COL 2 — Photo */}
         <div style={{ position:'relative', overflow:'hidden' }}>
-          <TeamPhoto style={{ objectPosition:'center 30%' }}/>
-          <div style={{ position:'absolute', inset:0, background:'linear-gradient(to top,rgba(10,30,24,.22) 0%,transparent 55%)', pointerEvents:'none' }}/>
+          <TeamPhoto style={{ objectPosition:'center 25%' }}/>
+          <div style={{ position:'absolute', inset:0, background:'linear-gradient(to top,rgba(10,30,24,.18) 0%,transparent 50%)', pointerEvents:'none' }}/>
         </div>
 
         <div style={{ background:B.bdr }}/>
 
         {/* COL 3 — Services list */}
-        <div style={{ padding:'48px 28px 36px', display:'flex', flexDirection:'column', justifyContent:'flex-start' }}>
-          <div style={{ fontSize:10, fontWeight:700, color:B.p, letterSpacing:'.22em', textTransform:'uppercase', marginBottom:12 }}>Servicii</div>
+        <div style={{ padding:'32px 24px 24px', display:'flex', flexDirection:'column', justifyContent:'center' }}>
+          <div style={{ fontSize:10, fontWeight:700, color:B.p, letterSpacing:'.22em', textTransform:'uppercase', marginBottom:10 }}>Servicii</div>
           {SVC_LIST.map((s, i) => (
             <div key={s} style={{ display:'flex', alignItems:'center', justifyContent:'space-between',
-              padding:'12px 0', borderBottom:`1px solid ${B.bdr}`, cursor:'pointer', transition:'color .15s', color:B.nv }}
+              padding:'10px 0', borderBottom:`1px solid ${B.bdr}`, cursor:'pointer', transition:'color .15s', color:B.nv }}
               onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = B.p }}
               onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = B.nv }}
             >
-              <div style={{ display:'flex', alignItems:'center', gap:10 }}>
-                <span style={{ fontSize:11, color:'rgba(10,107,92,.3)', fontWeight:700 }}>{String(i+1).padStart(2,'0')}</span>
+              <div style={{ display:'flex', alignItems:'center', gap:8 }}>
+                <span style={{ fontSize:10, color:'rgba(10,107,92,.3)', fontWeight:700 }}>{String(i+1).padStart(2,'0')}</span>
                 <span style={{ fontSize:13, fontWeight:600 }}>{s}</span>
               </div>
-              <span style={{ fontSize:16, color:B.gr }}>→</span>
+              <span style={{ fontSize:15, color:B.gr }}>→</span>
             </div>
           ))}
-          <div style={{ marginTop:16, background:B.pl, padding:'14px 16px', borderLeft:`3px solid ${B.p}`, borderRadius:'0 8px 8px 0' }}>
+          <div style={{ marginTop:12, background:B.pl, padding:'12px 14px', borderLeft:`3px solid ${B.p}`, borderRadius:'0 8px 8px 0' }}>
             <div style={{ display:'flex', alignItems:'center', gap:8 }}>
               <div style={{ color:'#fbb040', fontSize:12 }}>★★★★★</div>
               <div style={{ fontFamily:"'Syne',sans-serif", fontSize:18, fontWeight:800, color:B.p }}>4.9</div>
@@ -216,12 +217,12 @@ function Hero() {
         </div>
       </div>
 
-      {/* Stats strip — full width */}
-      <div style={{ background:`linear-gradient(135deg,${B.p},${B.pm})`, padding:'20px 52px', display:'flex', justifyContent:'space-between', alignItems:'center' }}>
+      {/* Stats strip — full width, pinned to bottom */}
+      <div style={{ background:`linear-gradient(135deg,${B.p},${B.pm})`, padding:'16px 52px', display:'flex', justifyContent:'space-between', alignItems:'center', flexShrink:0 }}>
         {[[STATS.years,'ani de excelență'],[STATS.team,'specialiști'],[STATS.patients,'pacienți tratați'],[STATS.locations,'filiale']].map(([n,l]) => (
-          <div key={String(l)} style={{ display:'flex', alignItems:'baseline', gap:10 }}>
-            <div style={{ fontFamily:"'Syne',sans-serif", fontSize:28, fontWeight:800, color:B.wh, lineHeight:1 }}>{n}</div>
-            <div style={{ fontSize:12, color:'rgba(255,255,255,.65)', fontWeight:500 }}>{l}</div>
+          <div key={String(l)} style={{ display:'flex', alignItems:'baseline', gap:8 }}>
+            <div style={{ fontFamily:"'Syne',sans-serif", fontSize:26, fontWeight:800, color:B.wh, lineHeight:1 }}>{n}</div>
+            <div style={{ fontSize:11, color:'rgba(255,255,255,.65)', fontWeight:500 }}>{l}</div>
           </div>
         ))}
       </div>
