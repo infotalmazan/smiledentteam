@@ -61,8 +61,8 @@ function FloatCard({ children, cls, style }: {
   )
 }
 
-function Btn({ children, onClick, style, outline }: {
-  children: React.ReactNode; onClick?: ()=>void; style?: React.CSSProperties; outline?: boolean
+function Btn({ children, onClick, style, outline, pink }: {
+  children: React.ReactNode; onClick?: ()=>void; style?: React.CSSProperties; outline?: boolean; pink?: boolean
 }) {
   const base: React.CSSProperties = {
     display:'inline-flex', alignItems:'center', gap:6,
@@ -73,9 +73,10 @@ function Btn({ children, onClick, style, outline }: {
     border:'none',
   }
   const filled: React.CSSProperties = { background:`linear-gradient(135deg,${B.pm},${B.p})`, color:B.wh }
+  const pinkStyle: React.CSSProperties = { background:B.a, color:B.wh, border:`1.5px solid ${B.a}` }
   const out: React.CSSProperties = { background:'transparent', color:B.nv, border:`1.5px solid rgba(10,107,92,.22)` }
   return (
-    <button style={{ ...base, ...(outline ? out : filled), ...style }} onClick={onClick}
+    <button style={{ ...base, ...(outline ? out : pink ? pinkStyle : filled), ...style }} onClick={onClick}
       onMouseEnter={e => { (e.currentTarget).style.transform='translateY(-2px)'; (e.currentTarget).style.boxShadow='0 8px 28px rgba(10,107,92,.28)' }}
       onMouseLeave={e => { (e.currentTarget).style.transform='translateY(0)'; (e.currentTarget).style.boxShadow='none' }}
     >{children}</button>
