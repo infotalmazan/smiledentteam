@@ -419,7 +419,7 @@ function Services() {
                 <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(10,30,24,.25) 0%, transparent 50%)' }} />
               </div>
               <CardContent className="p-3 pt-3">
-                <div className="font-display text-sm font-bold text-[#0a1e18] leading-[1.2] mb-1">{s.name}</div>
+                <div className="font-display text-sm font-semibold text-[#0a1e18] leading-[1.2] mb-1">{s.name}</div>
                 <div className="text-[11px] text-[#5a7a6e] leading-[1.5]">{SVC_DATA[i]?.desc || ''}</div>
               </CardContent>
             </Card>
