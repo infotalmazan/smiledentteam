@@ -76,7 +76,7 @@ function Nav() {
     ['Digital Check-Up', '/digital-checkup'],
     ['Consultație Online', '/consultatie-online'],
     ['Echipa', '/echipa'],
-    ['Recenzii', '/'],
+    ['Recenzii', '/recenzii'],
   ]
 
   return (
@@ -93,13 +93,14 @@ function Nav() {
             key={label}
             href={href}
             className={cn(
-              'text-sm no-underline',
+              'relative text-sm no-underline pb-1',
               label === 'Digital Check-Up'
                 ? 'font-bold text-sdt-600'
                 : 'font-medium text-[#3a5a50]'
             )}
           >
             {label}
+            {label === 'Digital Check-Up' && <span className="absolute bottom-0 left-1/2 -translate-x-1/2 h-[3px] w-5 rounded-full bg-pink-500" />}
           </a>
         ))}
       </div>

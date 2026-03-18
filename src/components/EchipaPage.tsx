@@ -56,15 +56,18 @@ function Nav() {
     <nav className="sticky top-0 z-[100] flex items-center justify-between border-b border-sdt-600/10 bg-white/[.97] px-12 py-3.5 backdrop-blur-md" style={{ borderTop: `3px solid ${B.a}` }}>
       <a href="/" className="no-underline"><Logo height={36}/></a>
       <div className="flex items-center gap-7">
-        {[['Servicii','/servicii'],['Digital Check-Up','/digital-checkup'],['Consultatie Online','/consultatie-online'],['Echipa','/echipa'],['Recenzii','/']].map(([l,h]) => (
+        {[['Servicii','/servicii'],['Digital Check-Up','/digital-checkup'],['Consultatie Online','/consultatie-online'],['Echipa','/echipa'],['Recenzii','/recenzii']].map(([l,h]) => (
           <a
             key={l}
             href={h}
             className={cn(
-              'text-sm no-underline',
+              'relative text-sm no-underline pb-1',
               l === 'Echipa' ? 'font-bold text-sdt-600' : 'font-medium text-[#3a5a50]'
             )}
-          >{l}</a>
+          >
+            {l}
+            {l === 'Echipa' && <span className="absolute bottom-0 left-1/2 -translate-x-1/2 h-[3px] w-5 rounded-full bg-pink-500" />}
+          </a>
         ))}
       </div>
       <div className="flex items-center gap-2.5">

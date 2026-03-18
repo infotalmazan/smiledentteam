@@ -155,7 +155,7 @@ function Navbar() {
           ['Digital Check-Up','/digital-checkup'],
           ['Consultatie Online','/consultatie-online'],
           ['Echipa','/echipa'],
-          ['Recenzii','#recenzii'],
+          ['Recenzii','/recenzii'],
         ].map(([label, href]) => (
           <a key={label} href={href}
             className="text-sm font-medium text-[#3a5a50] no-underline py-1 border-b-2 border-transparent hover:text-pink-500 hover:border-pink-500 transition-all duration-300"

@@ -44,15 +44,18 @@ function Nav() {
     >
       <a href="/" className="no-underline"><Logo height={36} /></a>
       <div className="flex items-center gap-7">
-        {[['Servicii', '/servicii'], ['Digital Check-Up', '/digital-checkup'], ['Consultație Online', '/consultatie-online'], ['Echipa', '/echipa'], ['Recenzii', '/']].map(([l, h]) => (
+        {[['Servicii', '/servicii'], ['Digital Check-Up', '/digital-checkup'], ['Consultație Online', '/consultatie-online'], ['Echipa', '/echipa'], ['Recenzii', '/recenzii']].map(([l, h]) => (
           <a
             key={l}
             href={h}
             className={cn(
-              'text-sm no-underline',
+              'relative text-sm no-underline pb-1',
               l === 'Consultație Online' ? 'font-bold text-sdt-600' : 'font-medium text-[#3a5a50]'
             )}
-          >{l}</a>
+          >
+            {l}
+            {l === 'Consultație Online' && <span className="absolute bottom-0 left-1/2 -translate-x-1/2 h-[3px] w-5 rounded-full bg-pink-500" />}
+          </a>
         ))}
       </div>
       <div className="flex items-center gap-2.5">

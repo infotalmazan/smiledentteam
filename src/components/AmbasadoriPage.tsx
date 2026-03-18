@@ -142,11 +142,11 @@ function Nav() {
     >
       <a href="/" className="no-underline"><Logo height={36}/></a>
       <div className="flex items-center gap-7">
-        {[['Servicii','/servicii'],['Digital Check-Up','/digital-checkup'],['Consultație Online','/consultatie-online'],['Echipa','/echipa'],['Recenzii','/']].map(([l,h]) => (
+        {[['Servicii','/servicii'],['Digital Check-Up','/digital-checkup'],['Consultație Online','/consultatie-online'],['Echipa','/echipa'],['Recenzii','/recenzii']].map(([l,h]) => (
           <a
             key={l}
             href={h}
-            className="text-sm font-medium text-[#3a5a50] no-underline"
+            className="relative text-sm font-medium text-[#3a5a50] no-underline pb-1"
           >{l}</a>
         ))}
       </div>
