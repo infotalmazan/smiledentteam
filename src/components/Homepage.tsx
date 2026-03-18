@@ -552,6 +552,66 @@ const FAQS = [
   { q:'Pot vedea rezultatul înainte de tratament?', a:'Absolut! Cu Digital Smile Design și 3Shape Trios, simulăm 3D rezultatul în cabinet. Aprobi designul înainte de orice intervenție.' },
 ]
 
+/* ─── Video Reels Slider ─────────────────── */
+function VideoReels() {
+  const videos = [
+    { name:'Denis P.', service:'Implant Dentar', thumb:'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=240&h=420&fit=crop&crop=face' },
+    { name:'Elena M.', service:'Coroane Dentare', thumb:'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=240&h=420&fit=crop&crop=face' },
+    { name:'Alexandru C.', service:'All-On-4', thumb:'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=240&h=420&fit=crop&crop=face' },
+    { name:'Maria T.', service:'Fațete Dentare', thumb:'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=240&h=420&fit=crop&crop=face' },
+    { name:'Ion V.', service:'Digital Check-Up', thumb:'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=240&h=420&fit=crop&crop=face' },
+    { name:'Nadejda B.', service:'Ortodonție', thumb:'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=240&h=420&fit=crop&crop=face' },
+    { name:'Svetlana L.', service:'Terapie', thumb:'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=240&h=420&fit=crop&crop=face' },
+  ]
+  return (
+    <section style={{ background:B.ps, padding:'56px 52px', overflow:'hidden' }}>
+      <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-end', marginBottom:24 }}>
+        <div>
+          <Badge>Video feedback</Badge>
+          <h2 style={{ fontFamily:"'Syne',sans-serif", fontSize:28, fontWeight:800, color:B.nv, letterSpacing:'-.03em', margin:0, lineHeight:1.1 }}>
+            Povești <span style={{ color:B.a }}>reale</span>
+          </h2>
+        </div>
+        <div style={{ display:'flex', gap:8 }}>
+          <button style={{ width:36, height:36, borderRadius:'50%', border:`1.5px solid ${B.bdr}`, background:B.wh, cursor:'pointer', display:'flex', alignItems:'center', justifyContent:'center' }}>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={B.nv} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+          </button>
+          <button style={{ width:36, height:36, borderRadius:'50%', border:`1.5px solid ${B.p}`, background:B.p, cursor:'pointer', display:'flex', alignItems:'center', justifyContent:'center' }}>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={B.wh} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
+        </div>
+      </div>
+      <div style={{ display:'flex', gap:14, overflowX:'auto', paddingBottom:8, scrollSnapType:'x mandatory' }}>
+        {videos.map((v,i) => (
+          <div key={i} style={{
+            width:180, height:320, borderRadius:18, flexShrink:0, cursor:'pointer',
+            position:'relative', overflow:'hidden', transition:'transform .2s',
+            scrollSnapAlign:'start',
+          }}
+            onMouseEnter={e => e.currentTarget.style.transform='translateY(-4px)'}
+            onMouseLeave={e => e.currentTarget.style.transform=''}
+          >
+            <img src={v.thumb} alt={v.name} style={{ width:'100%', height:'100%', objectFit:'cover' }}/>
+            <div style={{ position:'absolute', inset:0, background:'linear-gradient(to top, rgba(10,30,24,.7) 0%, transparent 40%)' }}/>
+            <div style={{ position:'absolute', inset:0, display:'flex', alignItems:'center', justifyContent:'center' }}>
+              <div style={{ width:48, height:48, borderRadius:'50%', background:B.a, display:'flex', alignItems:'center', justifyContent:'center', opacity:.9 }}>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill={B.wh} stroke="none"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              </div>
+            </div>
+            <div style={{ position:'absolute', top:10, right:10, background:'rgba(0,0,0,.4)', borderRadius:4, padding:'2px 6px' }}>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={B.wh} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+            </div>
+            <div style={{ position:'absolute', bottom:14, left:12, right:12 }}>
+              <div style={{ fontSize:13, fontWeight:700, color:B.wh }}>{v.name}</div>
+              <div style={{ fontSize:10, color:'rgba(255,255,255,.6)', marginTop:2 }}>{v.service}</div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+  )
+}
+
 /* ─── Ambasadori ─────────────────────────── */
 function Ambasadori() {
   return (
@@ -795,6 +855,7 @@ export function Homepage() {
       <CheckUpStrip/>
       <BeforeAfter/>
       <Reviews/>
+      <VideoReels/>
       <Ambasadori/>
       <FAQ/>
       <Appointment/>
