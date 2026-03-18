@@ -4,18 +4,56 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --p:   #0a6b5c;
-  --pm:  #0d8a72;
-  --pd:  #074d42;
-  --pl:  #e6f4f0;
-  --ps:  #f0faf7;
-  --a:   #e8157a;
-  --al:  #fde6f0;
-  --nv:  #0a1e18;
-  --cr:  #f7f5f2;
-  --gr:  #5a7a6e;
-  --bdr: rgba(10,107,92,0.1);
+@layer base {
+  :root {
+    /* shadcn/ui theme — SDT brand mapped */
+    --background: 0 0% 100%;
+    --foreground: 160 50% 8%;
+    --card: 0 0% 100%;
+    --card-foreground: 160 50% 8%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 160 50% 8%;
+    --primary: 167 80% 20%;        /* #0a6b5c — SDT teal */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 150 10% 96%;      /* #f0faf7 — soft teal */
+    --secondary-foreground: 160 50% 8%;
+    --muted: 30 14% 96%;           /* #f7f5f2 — cream */
+    --muted-foreground: 160 15% 41%; /* #5a7a6e — gray-green */
+    --accent: 335 83% 50%;          /* #e8157a — SDT pink */
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 167 80% 20% / 0.1;
+    --input: 167 80% 20% / 0.15;
+    --ring: 167 80% 20%;
+    --radius: 0.5rem;
+
+    /* SDT brand direct vars (legacy support) */
+    --p:   #0a6b5c;
+    --pm:  #0d8a72;
+    --pd:  #074d42;
+    --pl:  #e6f4f0;
+    --ps:  #f0faf7;
+    --a:   #e8157a;
+    --al:  #fde6f0;
+    --nv:  #0a1e18;
+    --cr:  #f7f5f2;
+    --gr:  #5a7a6e;
+    --bdr: rgba(10,107,92,0.1);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'DM Sans', sans-serif;
+  }
+  h1, h2, h3, h4, h5 {
+    font-family: 'Syne', sans-serif;
+  }
 }
 
 * {
@@ -26,16 +64,6 @@
 
 html {
   scroll-behavior: smooth;
-}
-
-body {
-  font-family: 'DM Sans', sans-serif;
-  background: #ffffff;
-  color: var(--nv);
-}
-
-h1, h2, h3, h4, h5 {
-  font-family: 'Syne', sans-serif;
 }
 
 /* Scrollbar */
@@ -59,6 +87,14 @@ h1, h2, h3, h4, h5 {
 @keyframes barGrow {
   from { transform: scaleX(0); }
   to   { transform: scaleX(1); }
+}
+@keyframes pulse {
+  0%, 100% { opacity: .6; transform: scale(1); }
+  50%      { opacity: 1; transform: scale(1.08); }
+}
+@keyframes orbit {
+  from { transform: rotate(0deg) translateX(var(--r)) rotate(0deg); }
+  to   { transform: rotate(360deg) translateX(var(--r)) rotate(-360deg); }
 }
 
 .animate-fadeUp { animation: fadeUp .65s both; }
