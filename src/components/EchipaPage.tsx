@@ -81,20 +81,28 @@ function Nav() {
   )
 }
 
-/* ─── Animations ─── */
+/* ─── Animations — Team constellation ─── */
 const ANIM_ECHIPA = `
-  @keyframes orbit{from{transform:rotate(0deg) translateX(var(--r)) rotate(0deg)}to{transform:rotate(360deg) translateX(var(--r)) rotate(-360deg)}}
-  @keyframes pulse{0%,100%{opacity:.6;transform:scale(1)}50%{opacity:1;transform:scale(1.05)}}
-  @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+  @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+  @keyframes nodePulse{0%,100%{opacity:.6;transform:scale(.95)}50%{opacity:1;transform:scale(1.05)}}
+  @keyframes lineDraw{from{stroke-dashoffset:100}to{stroke-dashoffset:0}}
+  @keyframes nodeGlow{0%,100%{box-shadow:0 0 0 0 rgba(10,107,92,0)}50%{box-shadow:0 0 15px 5px rgba(10,107,92,.2)}}
 `
 
-const MEDICAL_ICONS = [
-  { Icon: Stethoscope, label: 'Chirurgie' },
-  { Icon: Heart, label: 'Cardiologie' },
-  { Icon: Shield, label: 'Siguranță' },
-  { Icon: Brain, label: 'Neurologie' },
-  { Icon: Activity, label: 'Monitorizare' },
-  { Icon: Smile, label: 'Estetică' },
+/* ─── Constellation nodes (departments as interconnected nodes) ─── */
+const CONSTELLATION_NODES = [
+  { x: 150, y: 30,  Icon: Stethoscope, label: 'Chirurgie',  color: '#0a6b5c' },
+  { x: 260, y: 80,  Icon: Shield,      label: 'Implant',    color: '#0d8a72' },
+  { x: 280, y: 190, Icon: Smile,       label: 'Estetica',   color: '#e8157a' },
+  { x: 200, y: 280, Icon: Activity,    label: 'Ortodontie', color: '#6366f1' },
+  { x: 80,  y: 260, Icon: Heart,       label: 'Terapie',    color: '#059669' },
+  { x: 40,  y: 150, Icon: Brain,       label: 'Protetica',  color: '#D97706' },
+  { x: 100, y: 60,  Icon: Star,        label: 'Management', color: '#0a1e18' },
+]
+
+/* ─── Lines connecting nodes (index pairs) ─── */
+const CONSTELLATION_LINES = [
+  [0,1],[1,2],[2,3],[3,4],[4,5],[5,6],[6,0],[0,2],[1,3],[4,6],[5,2],
 ]
 
 /* ─── Hero ──────────────────────────────── */
@@ -125,58 +133,59 @@ function Hero() {
             ))}
           </div>
         </div>
-        {/* Right — Orbiting medical icons */}
+        {/* Right — Team constellation network */}
         <div className="relative flex h-[400px] items-center justify-center">
-          {/* Orbit rings */}
-          {[130, 185, 240].map((r, i) => (
-            <div
-              key={i}
-              className="absolute rounded-full border border-white/[.06]"
-              style={{ width: r * 2, height: r * 2 }}
-            />
-          ))}
-          {/* Orbiting icons */}
-          {MEDICAL_ICONS.map(({ Icon }, i) => {
-            const orbit = [130, 185, 240][i % 3]
-            const duration = 18 + (i % 3) * 10
-            const delay = -(i * 3.3)
-            return (
+          <div className="relative" style={{ width: 320, height: 320 }}>
+            {/* SVG connection lines */}
+            <svg className="absolute inset-0" width="320" height="320" fill="none">
+              {CONSTELLATION_LINES.map(([a, b], i) => {
+                const na = CONSTELLATION_NODES[a], nb = CONSTELLATION_NODES[b]
+                return (
+                  <line
+                    key={i}
+                    x1={na.x} y1={na.y} x2={nb.x} y2={nb.y}
+                    stroke="rgba(255,255,255,.08)"
+                    strokeWidth="1"
+                    strokeDasharray="4 4"
+                    style={{ animation: `lineDraw 2s ${i * 0.15}s ease-out forwards` }}
+                  />
+                )
+              })}
+            </svg>
+            {/* Department nodes */}
+            {CONSTELLATION_NODES.map(({ x, y, Icon, label, color }, i) => (
               <div
                 key={i}
-                className="absolute z-[1]"
+                className="absolute z-[2] flex flex-col items-center"
                 style={{
-                  animation: `orbit ${duration}s ${delay}s linear infinite`,
-                  ['--r' as string]: `${orbit}px`,
+                  left: x - 24,
+                  top: y - 24,
+                  animation: `nodePulse ${3 + (i % 3) * 0.8}s ${i * 0.4}s ease-in-out infinite`,
                 }}
               >
-                <div className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/[.08] backdrop-blur-sm">
-                  <Icon className="h-5 w-5 text-white/70" strokeWidth={1.5} />
+                <div
+                  className="flex h-12 w-12 items-center justify-center rounded-full border border-white/15 backdrop-blur-sm"
+                  style={{
+                    background: `${color}22`,
+                    animation: `nodeGlow ${4 + i * 0.5}s ${i * 0.3}s ease-in-out infinite`,
+                  }}
+                >
+                  <Icon className="h-5 w-5 text-white/80" strokeWidth={1.5} />
                 </div>
+                <span className="mt-1 text-[8px] font-medium text-white/40">{label}</span>
               </div>
-            )
-          })}
-          {/* Center — stat bubble */}
-          <div
-            className="z-[2] flex h-36 w-36 flex-col items-center justify-center rounded-full"
-            style={{
-              background: `radial-gradient(circle, ${B.p}33 0%, ${B.p}11 60%, transparent 70%)`,
-              border: `2px solid ${B.p}44`,
-              animation: 'pulse 3s ease-in-out infinite',
-            }}
-          >
-            <div className="font-display text-[30px] font-semibold leading-none text-pink-500">600+</div>
-            <div className="mt-1 text-center text-[11px] leading-tight text-white/60">specialisti<br/>in echipa</div>
+            ))}
           </div>
-          {/* Floating cards */}
+          {/* Floating stat cards */}
           <div
-            className="absolute right-0 top-[30px] z-[3] rounded-xl bg-white px-[18px] py-3 shadow-[0_8px_32px_rgba(0,0,0,.15)]"
+            className="absolute right-0 top-[20px] z-[3] rounded-xl bg-white px-[18px] py-3 shadow-[0_8px_32px_rgba(0,0,0,.15)]"
             style={{ animation: 'float 4s ease-in-out infinite' }}
           >
             <div className="mb-0.5 text-[11px] text-[#5a7a6e]">Experienta</div>
             <div className="font-display text-xl font-semibold text-sdt-600">15 ani</div>
           </div>
           <div
-            className="absolute bottom-[40px] left-0 z-[3] rounded-xl bg-white px-[18px] py-3 shadow-[0_8px_32px_rgba(0,0,0,.15)]"
+            className="absolute bottom-[20px] left-[10px] z-[3] rounded-xl bg-white px-[18px] py-3 shadow-[0_8px_32px_rgba(0,0,0,.15)]"
             style={{ animation: 'float 4.5s 1s ease-in-out infinite' }}
           >
             <div className="text-[13px] text-[#fbb040]">★★★★★</div>

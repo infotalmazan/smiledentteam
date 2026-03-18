@@ -24,15 +24,15 @@ import {
   Banknote,
 } from 'lucide-react'
 
-/* ─── Keyframe animations (kept as global style) ─── */
+/* ─── Keyframe animations — scan beam theme ─── */
 const ANIM = `
   @keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
   @keyframes fadeIn{from{opacity:0}to{opacity:1}}
-  @keyframes pulse{0%,100%{transform:scale(1);opacity:.6}50%{transform:scale(1.05);opacity:1}}
   @keyframes barGrow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
   @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
-  @keyframes orbit{from{transform:rotate(0deg) translateX(var(--r)) rotate(0deg)}to{transform:rotate(360deg) translateX(var(--r)) rotate(-360deg)}}
-  @keyframes spin-slow{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+  @keyframes scanBeam{0%{top:-10%;opacity:0}10%{opacity:1}90%{opacity:1}100%{top:100%;opacity:0}}
+  @keyframes scanPulse{0%,100%{opacity:.3;box-shadow:0 0 30px 10px rgba(232,21,122,0)}50%{opacity:.7;box-shadow:0 0 40px 15px rgba(232,21,122,.15)}}
+  @keyframes dataFade{0%,15%{opacity:0;transform:translateX(8px)}20%,80%{opacity:1;transform:translateX(0)}85%,100%{opacity:0;transform:translateX(-8px)}}
 `
 
 /* ─── Icon map for data-driven sections ─── */
@@ -162,60 +162,66 @@ function Hero() {
           </div>
         </div>
 
-        {/* Right — Animated scanner orbit */}
+        {/* Right — 3D Scan visualization */}
         <div className="relative flex h-[420px] items-center justify-center">
-          {/* Orbit rings */}
-          {[120, 175, 230].map((r, i) => (
-            <div
-              key={i}
-              className="absolute rounded-full border border-white/[.06]"
-              style={{ width: r * 2, height: r * 2 }}
-            />
-          ))}
-          {/* Orbiting tech icons */}
-          {[
-            { Icon: Monitor, orbit: 120, dur: 16, delay: 0 },
-            { Icon: Shield, orbit: 120, dur: 16, delay: -8 },
-            { Icon: Eye, orbit: 175, dur: 22, delay: -3 },
-            { Icon: FileText, orbit: 175, dur: 22, delay: -14 },
-            { Icon: Heart, orbit: 230, dur: 28, delay: -5 },
-            { Icon: User, orbit: 230, dur: 28, delay: -19 },
-          ].map(({ Icon, orbit, dur, delay }, i) => (
-            <div
-              key={i}
-              className="absolute z-[1]"
-              style={{
-                animation: `orbit ${dur}s ${delay}s linear infinite`,
-                ['--r' as string]: `${orbit}px`,
-              }}
-            >
-              <div className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/[.08] backdrop-blur-sm">
-                <Icon className="h-5 w-5 text-white/70" strokeWidth={1.5} />
-              </div>
-            </div>
-          ))}
-          {/* Center — CheckCircle pulse */}
+          {/* Scanner frame */}
           <div
-            className="z-[2] flex h-36 w-36 flex-col items-center justify-center rounded-full"
-            style={{
-              background: `radial-gradient(circle, ${B.a}33 0%, ${B.a}11 60%, transparent 70%)`,
-              border: `2px solid ${B.a}44`,
-              animation: 'pulse 3s ease-in-out infinite',
-            }}
+            className="relative flex h-[340px] w-[280px] items-center justify-center overflow-hidden rounded-[24px] border border-white/[.08]"
+            style={{ background: `linear-gradient(180deg, ${B.pm}11 0%, ${B.a}08 100%)` }}
           >
-            <CheckCircle className="mb-1 h-12 w-12 text-pink-500" strokeWidth={1.2} />
-            <div className="text-center text-[11px] leading-tight text-white/60">Scanare 3D<br />Completă</div>
+            {/* Scan beam — horizontal line sweeping */}
+            <div
+              className="absolute left-0 z-[1] h-[2px] w-full"
+              style={{
+                background: `linear-gradient(90deg, transparent 0%, ${B.a} 50%, transparent 100%)`,
+                animation: 'scanBeam 3.5s ease-in-out infinite',
+                boxShadow: `0 0 20px 8px ${B.a}33`,
+              }}
+            />
+            {/* Grid lines (scanner aesthetic) */}
+            {[...Array(7)].map((_, i) => (
+              <div key={`h${i}`} className="absolute left-0 h-px w-full bg-white/[.03]" style={{ top: `${(i + 1) * 12.5}%` }} />
+            ))}
+            {[...Array(5)].map((_, i) => (
+              <div key={`v${i}`} className="absolute top-0 w-px h-full bg-white/[.03]" style={{ left: `${(i + 1) * 16.6}%` }} />
+            ))}
+            {/* Tooth icon center */}
+            <div className="z-[2] flex flex-col items-center">
+              <svg width="80" height="96" viewBox="0 0 80 96" fill="none" className="opacity-40">
+                <path d="M40 8c-12 0-20 6-24 14s-4 18 0 28c3 8 6 18 10 28 2 5 4 10 8 14 2 2 4 2 6 0 4-4 6-9 8-14 4-10 7-20 10-28 4-10 4-20 0-28S52 8 40 8z" stroke="white" strokeWidth="1.5" strokeLinecap="round"/>
+              </svg>
+              <div className="mt-3 text-center text-[11px] font-medium text-white/40">Scanare 3D activa</div>
+            </div>
+            {/* Data readouts floating in */}
+            {[
+              { label: 'Carii detectate', val: '0', y: '18%', delay: 0 },
+              { label: 'Gingivita', val: 'Nu', y: '38%', delay: 1.5 },
+              { label: 'Os alveolar', val: 'OK', y: '58%', delay: 3 },
+              { label: 'Parodontal', val: 'Sanatos', y: '78%', delay: 4.5 },
+            ].map((d, i) => (
+              <div
+                key={i}
+                className="absolute right-3 z-[3] flex items-center gap-1.5 rounded-md border border-sdt-600/20 bg-sdt-900/60 px-2 py-1 backdrop-blur-sm"
+                style={{ top: d.y, animation: `dataFade 6s ${d.delay}s ease-in-out infinite` }}
+              >
+                <CheckCircle className="h-3 w-3 text-emerald-400" strokeWidth={2} />
+                <div>
+                  <div className="text-[8px] text-white/40">{d.label}</div>
+                  <div className="text-[10px] font-bold text-emerald-400">{d.val}</div>
+                </div>
+              </div>
+            ))}
           </div>
           {/* Floating stat cards */}
           <div
-            className="absolute right-0 top-[30px] z-[3] rounded-xl bg-white px-[18px] py-3 shadow-[0_8px_32px_rgba(0,0,0,.15)]"
+            className="absolute -right-[10px] top-[20px] z-[3] rounded-xl bg-white px-[18px] py-3 shadow-[0_8px_32px_rgba(0,0,0,.15)]"
             style={{ animation: 'float 4s ease-in-out infinite' }}
           >
             <div className="mb-0.5 text-[11px] text-[#5a7a6e]">Precizie</div>
             <div className="font-display text-xl font-semibold text-sdt-600">99.8%</div>
           </div>
           <div
-            className="absolute bottom-[40px] left-0 z-[3] rounded-xl bg-white px-[18px] py-3 shadow-[0_8px_32px_rgba(0,0,0,.15)]"
+            className="absolute bottom-[30px] -left-[20px] z-[3] rounded-xl bg-white px-[18px] py-3 shadow-[0_8px_32px_rgba(0,0,0,.15)]"
             style={{ animation: 'float 4.5s 1s ease-in-out infinite' }}
           >
             <div className="text-[13px] text-[#fbb040]">★★★★★</div>

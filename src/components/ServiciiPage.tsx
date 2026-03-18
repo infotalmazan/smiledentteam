@@ -11,12 +11,31 @@ import {
   Heart, Video, Star, Play, ArrowRight, ChevronRight, Smile, Zap, Sparkles,
 } from 'lucide-react'
 
-/* ─── Animations ─── */
+/* ─── Animations — Hexagonal grid ─── */
 const ANIM_SVC = `
-  @keyframes orbit{from{transform:rotate(0deg) translateX(var(--r)) rotate(0deg)}to{transform:rotate(360deg) translateX(var(--r)) rotate(-360deg)}}
-  @keyframes pulse{0%,100%{opacity:.6;transform:scale(1)}50%{opacity:1;transform:scale(1.05)}}
-  @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+  @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+  @keyframes hexPulse{0%,100%{opacity:.5;transform:scale(.95)}50%{opacity:1;transform:scale(1)}}
+  @keyframes hexGlow{0%,100%{box-shadow:0 0 0 0 rgba(232,21,122,0)}50%{box-shadow:0 0 20px 4px rgba(232,21,122,.15)}}
 `
+
+/* ─── Hex positions for honeycomb grid (3 rows: 3-3-3) ─── */
+const HEX_GRID = [
+  /* Row 1 */  { x: 0, y: 0 },   { x: 72, y: 0 },   { x: 144, y: 0 },
+  /* Row 2 */  { x: 36, y: 62 },  { x: 108, y: 62 },  { x: 180, y: 62 },
+  /* Row 3 */  { x: 0, y: 124 },  { x: 72, y: 124 },  { x: 144, y: 124 },
+]
+
+const SVC_HEX_ICONS = [
+  { Icon: Shield, label: 'Implant' },
+  { Icon: Monitor, label: 'Coroane' },
+  { Icon: Bookmark, label: 'All-On' },
+  { Icon: Sparkles, label: 'Fațete' },
+  { Icon: CheckCircle, label: 'Orto' },
+  { Icon: Heart, label: 'Check-Up' },
+  { Icon: FileText, label: 'Terapie' },
+  { Icon: Zap, label: 'Chirurgie' },
+  { Icon: Video, label: 'Online' },
+]
 
 /* ─── Rich service detail data ────────────── */
 const SVC_DETAILS: Record<string, {
@@ -469,56 +488,48 @@ export function ServiciiPage() {
               ))}
             </div>
           </div>
-          {/* Right — Orbiting service icons */}
+          {/* Right — Honeycomb service grid */}
           <div className="relative flex h-[400px] items-center justify-center">
-            {[130, 185].map((r, i) => (
-              <div
-                key={i}
-                className="absolute rounded-full border border-white/[.06]"
-                style={{ width: r * 2, height: r * 2 }}
-              />
-            ))}
-            {[
-              { Icon: Heart, orbit: 130, dur: 18, delay: 0 },
-              { Icon: Shield, orbit: 130, dur: 18, delay: -9 },
-              { Icon: Smile, orbit: 185, dur: 24, delay: -4 },
-              { Icon: Zap, orbit: 185, dur: 24, delay: -12 },
-              { Icon: Sparkles, orbit: 185, dur: 24, delay: -20 },
-            ].map(({ Icon, orbit, dur, delay }, i) => (
-              <div
-                key={i}
-                className="absolute z-[1]"
-                style={{
-                  animation: `orbit ${dur}s ${delay}s linear infinite`,
-                  ['--r' as string]: `${orbit}px`,
-                }}
-              >
-                <div className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/[.08] backdrop-blur-sm">
-                  <Icon className="h-5 w-5 text-white/70" strokeWidth={1.5} />
-                </div>
-              </div>
-            ))}
-            {/* Center */}
-            <div
-              className="z-[2] flex h-36 w-36 flex-col items-center justify-center rounded-full"
-              style={{
-                background: `radial-gradient(circle, ${B.p}33 0%, ${B.p}11 60%, transparent 70%)`,
-                border: `2px solid ${B.p}44`,
-                animation: 'pulse 3s ease-in-out infinite',
-              }}
-            >
-              <div className="font-display text-[30px] font-semibold leading-none text-pink-500">{SERVICES.length}</div>
-              <div className="mt-1 text-center text-[11px] leading-tight text-white/60">specialitati<br/>disponibile</div>
+            <div className="relative" style={{ width: 216, height: 190 }}>
+              {SVC_HEX_ICONS.map(({ Icon, label }, i) => {
+                const pos = HEX_GRID[i]
+                const delay = i * 0.3
+                return (
+                  <div
+                    key={i}
+                    className="absolute flex flex-col items-center justify-center"
+                    style={{
+                      left: pos.x,
+                      top: pos.y,
+                      width: 64,
+                      height: 64,
+                      animation: `float ${3 + (i % 3) * 0.5}s ${delay}s ease-in-out infinite, hexPulse ${4 + (i % 4)}s ${delay}s ease-in-out infinite`,
+                    }}
+                  >
+                    <div
+                      className="flex h-[58px] w-[58px] flex-col items-center justify-center rounded-2xl border border-white/10 backdrop-blur-sm"
+                      style={{
+                        background: i === 4 ? `linear-gradient(135deg, ${B.a}33, ${B.a}11)` : `linear-gradient(135deg, ${B.p}22, ${B.pm}11)`,
+                        animation: i === 4 ? 'hexGlow 3s ease-in-out infinite' : undefined,
+                      }}
+                    >
+                      <Icon className={cn('h-5 w-5', i === 4 ? 'text-pink-400' : 'text-white/70')} strokeWidth={1.5} />
+                      <span className={cn('mt-1 text-[8px] font-medium', i === 4 ? 'text-pink-300' : 'text-white/40')}>{label}</span>
+                    </div>
+                  </div>
+                )
+              })}
             </div>
+            {/* Floating stat cards */}
             <div
-              className="absolute right-0 top-[40px] z-[3] rounded-xl bg-white px-[18px] py-3 shadow-[0_8px_32px_rgba(0,0,0,.15)]"
+              className="absolute right-0 top-[30px] z-[3] rounded-xl bg-white px-[18px] py-3 shadow-[0_8px_32px_rgba(0,0,0,.15)]"
               style={{ animation: 'float 4s ease-in-out infinite' }}
             >
               <div className="mb-0.5 text-[11px] text-[#5a7a6e]">Rate</div>
               <div className="font-display text-xl font-semibold text-pink-500">0%</div>
             </div>
             <div
-              className="absolute bottom-[50px] left-0 z-[3] rounded-xl bg-white px-[18px] py-3 shadow-[0_8px_32px_rgba(0,0,0,.15)]"
+              className="absolute bottom-[30px] left-[10px] z-[3] rounded-xl bg-white px-[18px] py-3 shadow-[0_8px_32px_rgba(0,0,0,.15)]"
               style={{ animation: 'float 4.5s 1s ease-in-out infinite' }}
             >
               <div className="text-[13px] text-[#fbb040]">★★★★★</div>
