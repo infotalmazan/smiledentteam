@@ -557,13 +557,11 @@ function Appointment() {
               <input placeholder="Nume" style={inp}/>
             </div>
             <input placeholder="Telefon *" style={inp}/>
-            <input placeholder="Email" style={inp}/>
             <select defaultValue="" style={{ ...inp }}>
               <option value="" disabled>Selectează serviciul</option>
               <option>⭐ Digital Check-Up</option>
               {SVC_LIST.map(s => <option key={s}>{s}</option>)}
             </select>
-            <textarea placeholder="Mesaj opțional" rows={3} style={{ ...inp, resize:'none' }}/>
             <Btn style={{ justifyContent:'center', padding:'15px', fontSize:15 }}>Trimite cererea →</Btn>
             <p style={{ fontSize:11, color:B.gr, textAlign:'center' }}>
               Prin trimitere ești de acord cu <span style={{ color:B.p, cursor:'pointer' }}>Politica de confidențialitate</span>
