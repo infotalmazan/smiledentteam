@@ -28,9 +28,11 @@ import {
 const ANIM = `
   @keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
   @keyframes fadeIn{from{opacity:0}to{opacity:1}}
-  @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+  @keyframes pulse{0%,100%{transform:scale(1);opacity:.6}50%{transform:scale(1.05);opacity:1}}
   @keyframes barGrow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
   @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+  @keyframes orbit{from{transform:rotate(0deg) translateX(var(--r)) rotate(0deg)}to{transform:rotate(360deg) translateX(var(--r)) rotate(-360deg)}}
+  @keyframes spin-slow{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
 `
 
 /* ─── Icon map for data-driven sections ─── */
@@ -160,33 +162,63 @@ function Hero() {
           </div>
         </div>
 
-        {/* Right — Visual card */}
-        <div className="relative flex justify-center">
+        {/* Right — Animated scanner orbit */}
+        <div className="relative flex h-[420px] items-center justify-center">
+          {/* Orbit rings */}
+          {[120, 175, 230].map((r, i) => (
+            <div
+              key={i}
+              className="absolute rounded-full border border-white/[.06]"
+              style={{ width: r * 2, height: r * 2 }}
+            />
+          ))}
+          {/* Orbiting tech icons */}
+          {[
+            { Icon: Monitor, orbit: 120, dur: 16, delay: 0 },
+            { Icon: Shield, orbit: 120, dur: 16, delay: -8 },
+            { Icon: Eye, orbit: 175, dur: 22, delay: -3 },
+            { Icon: FileText, orbit: 175, dur: 22, delay: -14 },
+            { Icon: Heart, orbit: 230, dur: 28, delay: -5 },
+            { Icon: User, orbit: 230, dur: 28, delay: -19 },
+          ].map(({ Icon, orbit, dur, delay }, i) => (
+            <div
+              key={i}
+              className="absolute z-[1]"
+              style={{
+                animation: `orbit ${dur}s ${delay}s linear infinite`,
+                ['--r' as string]: `${orbit}px`,
+              }}
+            >
+              <div className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/[.08] backdrop-blur-sm">
+                <Icon className="h-5 w-5 text-white/70" strokeWidth={1.5} />
+              </div>
+            </div>
+          ))}
+          {/* Center — CheckCircle pulse */}
           <div
-            className="w-[380px] h-[420px] rounded-[20px] overflow-hidden border border-white/[.08] flex items-center justify-center flex-col gap-5"
-            style={{ background: `linear-gradient(135deg, ${B.pm}22, ${B.a}11)` }}
+            className="z-[2] flex h-36 w-36 flex-col items-center justify-center rounded-full"
+            style={{
+              background: `radial-gradient(circle, ${B.a}33 0%, ${B.a}11 60%, transparent 70%)`,
+              border: `2px solid ${B.a}44`,
+              animation: 'pulse 3s ease-in-out infinite',
+            }}
           >
-            <CheckCircle className="w-20 h-20 text-pink-500" strokeWidth={1.2} />
-            <div className="font-display text-[22px] font-semibold text-white text-center">
-              Scanare 3D<br />Completă
-            </div>
-            <div className="text-[13px] text-white/50 text-center max-w-[240px]">
-              Tehnologie de ultimă generație pentru un diagnostic precis
-            </div>
+            <CheckCircle className="mb-1 h-12 w-12 text-pink-500" strokeWidth={1.2} />
+            <div className="text-center text-[11px] leading-tight text-white/60">Scanare 3D<br />Completă</div>
           </div>
-          {/* Float cards */}
+          {/* Floating stat cards */}
           <div
-            className="absolute top-[30px] -right-[10px] bg-white rounded-xl px-[18px] py-3 shadow-[0_8px_32px_rgba(0,0,0,.15)]"
+            className="absolute right-0 top-[30px] z-[3] rounded-xl bg-white px-[18px] py-3 shadow-[0_8px_32px_rgba(0,0,0,.15)]"
             style={{ animation: 'float 4s ease-in-out infinite' }}
           >
-            <div className="text-[11px] text-[#5a7a6e] mb-0.5">Precizie</div>
+            <div className="mb-0.5 text-[11px] text-[#5a7a6e]">Precizie</div>
             <div className="font-display text-xl font-semibold text-sdt-600">99.8%</div>
           </div>
           <div
-            className="absolute bottom-[40px] -left-[20px] bg-white rounded-xl px-[18px] py-3 shadow-[0_8px_32px_rgba(0,0,0,.15)]"
+            className="absolute bottom-[40px] left-0 z-[3] rounded-xl bg-white px-[18px] py-3 shadow-[0_8px_32px_rgba(0,0,0,.15)]"
             style={{ animation: 'float 4.5s 1s ease-in-out infinite' }}
           >
-            <div className="text-[#fbb040] text-[13px] mb-0.5">★★★★★</div>
+            <div className="text-[13px] text-[#fbb040]">★★★★★</div>
             <div className="text-xs font-bold text-sdt-900">4.9 / 5.0</div>
           </div>
         </div>

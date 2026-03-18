@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Input } from '@/components/ui/input'
-import { Check, Star, X, MapPin, Clock, Phone, ArrowRight } from 'lucide-react'
+import { Check, Star, X, MapPin, Clock, Phone, ArrowRight, Stethoscope, Heart, Shield, Brain, Activity, Smile } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 /* ─── Demo doctors data ──────────────────── */
@@ -36,10 +36,15 @@ const deptColors: Record<string,string> = {
 }
 
 /* ─── Shared UI ──────────────────────────── */
-function SectionBadge({ children }: { children: string }) {
+function SectionBadge({ children, light }: { children: string; light?: boolean }) {
   return (
-    <Badge variant="outline" className="mb-4 gap-1.5 border-sdt-600/10 bg-sdt-100 px-3.5 py-1 text-[11px] font-bold uppercase tracking-[.12em] text-sdt-600 rounded-full">
-      <span className="h-1.5 w-1.5 rounded-full bg-sdt-600" />
+    <Badge variant="outline" className={cn(
+      'mb-4 gap-1.5 rounded-full px-3.5 py-1 text-[11px] font-bold uppercase tracking-[.12em]',
+      light
+        ? 'border-white/20 bg-white/[.12] text-white'
+        : 'border-sdt-600/10 bg-sdt-100 text-sdt-600'
+    )}>
+      <span className={cn('h-1.5 w-1.5 rounded-full', light ? 'bg-white' : 'bg-sdt-600')} />
       {children}
     </Badge>
   )
@@ -76,27 +81,107 @@ function Nav() {
   )
 }
 
+/* ─── Animations ─── */
+const ANIM_ECHIPA = `
+  @keyframes orbit{from{transform:rotate(0deg) translateX(var(--r)) rotate(0deg)}to{transform:rotate(360deg) translateX(var(--r)) rotate(-360deg)}}
+  @keyframes pulse{0%,100%{opacity:.6;transform:scale(1)}50%{opacity:1;transform:scale(1.05)}}
+  @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+`
+
+const MEDICAL_ICONS = [
+  { Icon: Stethoscope, label: 'Chirurgie' },
+  { Icon: Heart, label: 'Cardiologie' },
+  { Icon: Shield, label: 'Siguranță' },
+  { Icon: Brain, label: 'Neurologie' },
+  { Icon: Activity, label: 'Monitorizare' },
+  { Icon: Smile, label: 'Estetică' },
+]
+
 /* ─── Hero ──────────────────────────────── */
 function Hero() {
   return (
-    <section className="border-b border-sdt-600/10 bg-sdt-50 px-12 pb-12 pt-14">
-      <div className="mx-auto flex max-w-[1200px] items-end justify-between">
+    <section className="relative overflow-hidden" style={{ background: `linear-gradient(160deg, ${B.nv} 0%, #0f2e24 50%, ${B.pd} 100%)` }}>
+      <style dangerouslySetInnerHTML={{ __html: ANIM_ECHIPA }} />
+      <div className="mx-auto grid max-w-[1200px] grid-cols-2 items-center gap-10 px-12 pb-16 pt-[72px]">
         <div>
-          <SectionBadge>Echipa noastra</SectionBadge>
-          <h1 className="font-display mb-3.5 text-[42px] font-semibold leading-[1.08] tracking-[-0.03em] text-[#0a1e18]">
-            Echipa ta de<br/><span className="text-sdt-600">specialisti</span>
+          <SectionBadge light>Echipa noastra</SectionBadge>
+          <h1 className="font-display mb-[18px] text-[44px] font-semibold leading-[1.08] tracking-tight text-white">
+            Echipa ta de<br/><span className="text-pink-500">specialisti</span>
           </h1>
-          <p className="max-w-[460px] text-[15px] leading-[1.7] text-[#5a7a6e]">
-            {STATS.team} specialisti, {STATS.years} ani de experienta si un singur obiectiv — zambetul tau.
+          <p className="mb-7 max-w-[440px] text-base leading-relaxed text-white/[.65]">
+            {STATS.team} specialisti, {STATS.years} ani de experienta si un singur obiectiv — zambetul tau perfect.
           </p>
+          <div className="flex gap-3.5">
+            <Button variant="accent" className="gap-2 px-8 py-3.5 text-[15px] font-bold">
+              Cunoaste echipa <ArrowRight className="h-4 w-4" />
+            </Button>
+          </div>
+          <div className="mt-11 flex gap-8">
+            {[['600+','specialisti'],['15','ani experienta'],['3','filiale']].map(([n,l]) => (
+              <div key={l}>
+                <div className="font-display text-[28px] font-semibold text-pink-500">{n}</div>
+                <div className="mt-0.5 text-xs text-white/[.45]">{l}</div>
+              </div>
+            ))}
+          </div>
         </div>
-        <div className="flex gap-6">
-          {[['600+','specialisti'],['15','ani experienta'],['3','filiale']].map(([n,l]) => (
-            <div key={l} className="text-center">
-              <div className="font-display text-2xl font-semibold text-sdt-600">{n}</div>
-              <div className="text-[11px] text-[#5a7a6e]">{l}</div>
-            </div>
+        {/* Right — Orbiting medical icons */}
+        <div className="relative flex h-[400px] items-center justify-center">
+          {/* Orbit rings */}
+          {[130, 185, 240].map((r, i) => (
+            <div
+              key={i}
+              className="absolute rounded-full border border-white/[.06]"
+              style={{ width: r * 2, height: r * 2 }}
+            />
           ))}
+          {/* Orbiting icons */}
+          {MEDICAL_ICONS.map(({ Icon }, i) => {
+            const orbit = [130, 185, 240][i % 3]
+            const duration = 18 + (i % 3) * 10
+            const delay = -(i * 3.3)
+            return (
+              <div
+                key={i}
+                className="absolute z-[1]"
+                style={{
+                  animation: `orbit ${duration}s ${delay}s linear infinite`,
+                  ['--r' as string]: `${orbit}px`,
+                }}
+              >
+                <div className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/[.08] backdrop-blur-sm">
+                  <Icon className="h-5 w-5 text-white/70" strokeWidth={1.5} />
+                </div>
+              </div>
+            )
+          })}
+          {/* Center — stat bubble */}
+          <div
+            className="z-[2] flex h-36 w-36 flex-col items-center justify-center rounded-full"
+            style={{
+              background: `radial-gradient(circle, ${B.p}33 0%, ${B.p}11 60%, transparent 70%)`,
+              border: `2px solid ${B.p}44`,
+              animation: 'pulse 3s ease-in-out infinite',
+            }}
+          >
+            <div className="font-display text-[30px] font-semibold leading-none text-pink-500">600+</div>
+            <div className="mt-1 text-center text-[11px] leading-tight text-white/60">specialisti<br/>in echipa</div>
+          </div>
+          {/* Floating cards */}
+          <div
+            className="absolute right-0 top-[30px] z-[3] rounded-xl bg-white px-[18px] py-3 shadow-[0_8px_32px_rgba(0,0,0,.15)]"
+            style={{ animation: 'float 4s ease-in-out infinite' }}
+          >
+            <div className="mb-0.5 text-[11px] text-[#5a7a6e]">Experienta</div>
+            <div className="font-display text-xl font-semibold text-sdt-600">15 ani</div>
+          </div>
+          <div
+            className="absolute bottom-[40px] left-0 z-[3] rounded-xl bg-white px-[18px] py-3 shadow-[0_8px_32px_rgba(0,0,0,.15)]"
+            style={{ animation: 'float 4.5s 1s ease-in-out infinite' }}
+          >
+            <div className="text-[13px] text-[#fbb040]">★★★★★</div>
+            <div className="text-xs font-bold text-sdt-900">4.9 / 5.0</div>
+          </div>
         </div>
       </div>
     </section>

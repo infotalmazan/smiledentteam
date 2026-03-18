@@ -8,8 +8,15 @@ import { Badge } from '@/components/ui/badge'
 import { cn } from '@/lib/utils'
 import {
   FileText, Monitor, Bookmark, Moon, CheckCircle, Shield, User, Clock,
-  Heart, Video, Star, Play, ArrowRight, ChevronRight,
+  Heart, Video, Star, Play, ArrowRight, ChevronRight, Smile, Zap, Sparkles,
 } from 'lucide-react'
+
+/* ─── Animations ─── */
+const ANIM_SVC = `
+  @keyframes orbit{from{transform:rotate(0deg) translateX(var(--r)) rotate(0deg)}to{transform:rotate(360deg) translateX(var(--r)) rotate(-360deg)}}
+  @keyframes pulse{0%,100%{opacity:.6;transform:scale(1)}50%{opacity:1;transform:scale(1.05)}}
+  @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+`
 
 /* ─── Rich service detail data ────────────── */
 const SVC_DETAILS: Record<string, {
@@ -432,22 +439,96 @@ export function ServiciiPage() {
   return (
     <>
       <Nav/>
+      <style dangerouslySetInnerHTML={{ __html: ANIM_SVC }} />
+
+      {/* Hero */}
+      <section className="relative overflow-hidden" style={{ background: `linear-gradient(160deg, ${B.nv} 0%, #0f2e24 50%, ${B.pd} 100%)` }}>
+        <div className="mx-auto grid max-w-[1200px] grid-cols-2 items-center gap-10 px-12 pb-16 pt-[72px]">
+          <div>
+            <div className="mb-4 inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-white/[.12] px-3.5 py-1">
+              <span className="h-1.5 w-1.5 rounded-full bg-white" />
+              <span className="text-[11px] font-bold uppercase tracking-[.12em] text-white">Servicii complete</span>
+            </div>
+            <h1 className="font-display mb-[18px] text-[44px] font-semibold leading-[1.08] tracking-tight text-white">
+              Tot ce ai nevoie,<br/>intr-un <span className="text-pink-500">singur loc.</span>
+            </h1>
+            <p className="mb-7 max-w-[440px] text-base leading-relaxed text-white/[.65]">
+              {SERVICES.length} specialitati, tehnologie digitala de ultima generatie — totul pentru zambetul tau.
+            </p>
+            <div className="flex gap-3.5">
+              <Button variant="accent" className="gap-2 px-8 py-3.5 text-[15px] font-bold">
+                Exploreaza serviciile <ArrowRight className="h-4 w-4" />
+              </Button>
+            </div>
+            <div className="mt-11 flex gap-8">
+              {[[SERVICES.length.toString(),'servicii'],['15','ani experienta'],['40.000+','pacienti']].map(([n,l]) => (
+                <div key={l}>
+                  <div className="font-display text-[28px] font-semibold text-pink-500">{n}</div>
+                  <div className="mt-0.5 text-xs text-white/[.45]">{l}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+          {/* Right — Orbiting service icons */}
+          <div className="relative flex h-[400px] items-center justify-center">
+            {[130, 185].map((r, i) => (
+              <div
+                key={i}
+                className="absolute rounded-full border border-white/[.06]"
+                style={{ width: r * 2, height: r * 2 }}
+              />
+            ))}
+            {[
+              { Icon: Heart, orbit: 130, dur: 18, delay: 0 },
+              { Icon: Shield, orbit: 130, dur: 18, delay: -9 },
+              { Icon: Smile, orbit: 185, dur: 24, delay: -4 },
+              { Icon: Zap, orbit: 185, dur: 24, delay: -12 },
+              { Icon: Sparkles, orbit: 185, dur: 24, delay: -20 },
+            ].map(({ Icon, orbit, dur, delay }, i) => (
+              <div
+                key={i}
+                className="absolute z-[1]"
+                style={{
+                  animation: `orbit ${dur}s ${delay}s linear infinite`,
+                  ['--r' as string]: `${orbit}px`,
+                }}
+              >
+                <div className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/[.08] backdrop-blur-sm">
+                  <Icon className="h-5 w-5 text-white/70" strokeWidth={1.5} />
+                </div>
+              </div>
+            ))}
+            {/* Center */}
+            <div
+              className="z-[2] flex h-36 w-36 flex-col items-center justify-center rounded-full"
+              style={{
+                background: `radial-gradient(circle, ${B.p}33 0%, ${B.p}11 60%, transparent 70%)`,
+                border: `2px solid ${B.p}44`,
+                animation: 'pulse 3s ease-in-out infinite',
+              }}
+            >
+              <div className="font-display text-[30px] font-semibold leading-none text-pink-500">{SERVICES.length}</div>
+              <div className="mt-1 text-center text-[11px] leading-tight text-white/60">specialitati<br/>disponibile</div>
+            </div>
+            <div
+              className="absolute right-0 top-[40px] z-[3] rounded-xl bg-white px-[18px] py-3 shadow-[0_8px_32px_rgba(0,0,0,.15)]"
+              style={{ animation: 'float 4s ease-in-out infinite' }}
+            >
+              <div className="mb-0.5 text-[11px] text-[#5a7a6e]">Rate</div>
+              <div className="font-display text-xl font-semibold text-pink-500">0%</div>
+            </div>
+            <div
+              className="absolute bottom-[50px] left-0 z-[3] rounded-xl bg-white px-[18px] py-3 shadow-[0_8px_32px_rgba(0,0,0,.15)]"
+              style={{ animation: 'float 4.5s 1s ease-in-out infinite' }}
+            >
+              <div className="text-[13px] text-[#fbb040]">★★★★★</div>
+              <div className="text-xs font-bold text-sdt-900">Google Reviews</div>
+            </div>
+          </div>
+        </div>
+      </section>
 
       <section className="max-w-[1200px] mx-auto px-12 py-10">
-        {/* Header */}
-        <div className="mb-8">
-          <div className="inline-flex items-center gap-1.5 bg-sdt-100 border border-[--bdr] px-3.5 py-1.5 rounded-full mb-4">
-            <span className="w-1.5 h-1.5 rounded-full bg-pink-500"/>
-            <span className="text-[11px] font-bold tracking-[.12em] uppercase text-pink-500">Servicii complete</span>
-          </div>
-          <h1 className="font-display text-[38px] font-semibold text-[--nv] leading-[1.08] mb-3">
-            Tot ce ai nevoie,<br/>intr-un <span className="text-sdt-600">singur loc.</span>
-          </h1>
-          <p className="text-[15px] text-[--gr] max-w-[500px]">
-            {SERVICES.length} specialitati, tehnologie digitala de ultima generatie &mdash; totul pentru zambetul tau.
-          </p>
-        </div>
-
         {/* Service Tabs */}
         <div className="flex gap-1.5 flex-wrap mb-2 border-b-2 border-[--bdr] pb-0">
           <button
