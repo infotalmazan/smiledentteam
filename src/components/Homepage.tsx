@@ -126,10 +126,9 @@ function Navbar() {
         {[
           ['Servicii','/servicii'],
           ['Digital Check-Up','/digital-checkup'],
-          ['Tehnologii','#tehnologii'],
-          ['Echipa','#echipa'],
+          ['Consultație Online','/consultatie-online'],
+          ['Echipa','/echipa'],
           ['Recenzii','#recenzii'],
-          ['Blog','/blog'],
         ].map(([label, href]) => (
           <a key={label} href={href} style={{
             fontSize:14, fontWeight: label==='Digital Check-Up'?700:500,
