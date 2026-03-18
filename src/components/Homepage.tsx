@@ -292,63 +292,61 @@ function CheckUpStrip() {
   const steps = [
     { icon:'M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z M14 2v6h6', label:'Înregistrare' },
     { icon:'M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z', label:'Scanare 3D' },
+    { icon:'M15 12a3 3 0 11-6 0 3 3 0 016 0z M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z', label:'Evaluare' },
     { icon:'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z', label:'Plan digital' },
   ]
   return (
-    <section style={{ background:`linear-gradient(135deg,${B.p},${B.pm})`, padding:'52px 52px', position:'relative', overflow:'hidden' }}>
-      {/* Decorative circles */}
+    <section style={{ background:`linear-gradient(135deg,${B.p},${B.pm})`, padding:'44px 52px', position:'relative', overflow:'hidden' }}>
       <div style={{ position:'absolute', top:-60, right:-40, width:200, height:200, borderRadius:'50%', border:'1px solid rgba(255,255,255,.06)' }}/>
-      <div style={{ position:'absolute', bottom:-80, left:-60, width:260, height:260, borderRadius:'50%', border:'1px solid rgba(255,255,255,.04)' }}/>
-      <div style={{ display:'grid', gridTemplateColumns:'1fr auto 1fr', gap:36, alignItems:'center', maxWidth:1200, margin:'0 auto' }}>
-        {/* Left — text */}
+      <div style={{ display:'grid', gridTemplateColumns:'1fr auto 1fr', gap:32, alignItems:'center', maxWidth:1200, margin:'0 auto' }}>
         <div>
           <div style={{ display:'inline-flex', alignItems:'center', gap:8,
             background:'rgba(255,255,255,.15)', border:'1px solid rgba(255,255,255,.25)',
-            padding:'4px 14px', borderRadius:100, marginBottom:14 }}>
+            padding:'4px 14px', borderRadius:100, marginBottom:12 }}>
             <span style={{ fontSize:9, fontWeight:800, color:B.wh, letterSpacing:'.2em', textTransform:'uppercase' }}>
               ✦ PRODUS FLAGSHIP {CAMPAIGN_2026.year}
             </span>
           </div>
-          <h2 style={{ fontFamily:"'Syne',sans-serif", fontSize:32, fontWeight:800, color:B.wh, letterSpacing:'-.03em', lineHeight:1.1, margin:'0 0 10px' }}>
+          <h2 style={{ fontFamily:"'Syne',sans-serif", fontSize:30, fontWeight:800, color:B.wh, letterSpacing:'-.03em', lineHeight:1.1, margin:'0 0 8px' }}>
             Digital Check-Up
           </h2>
-          <p style={{ fontSize:14, color:'rgba(255,255,255,.7)', maxWidth:360, margin:0, lineHeight:1.6 }}>
+          <p style={{ fontSize:13, color:'rgba(255,255,255,.65)', maxWidth:340, margin:0, lineHeight:1.6 }}>
             Primul pas către un zâmbet sănătos. Evaluare completă, digitală și fără disconfort.
           </p>
         </div>
-        {/* Center — 3 step process */}
+        {/* Center — 4 step process with pulse animation */}
         <div style={{ display:'flex', alignItems:'center', gap:0 }}>
           {steps.map((s,i) => (
             <div key={s.label} style={{ display:'flex', alignItems:'center' }}>
               <div style={{ textAlign:'center' }}>
                 <div style={{
-                  width:52, height:52, borderRadius:'50%', background:'rgba(255,255,255,.12)',
-                  border:'1.5px solid rgba(255,255,255,.25)', display:'flex', alignItems:'center', justifyContent:'center',
-                  margin:'0 auto 6px',
+                  width:48, height:48, borderRadius:'50%', background:'rgba(255,255,255,.1)',
+                  border:'1.5px solid rgba(255,255,255,.2)', display:'flex', alignItems:'center', justifyContent:'center',
+                  margin:'0 auto 5px', animation:`pulse ${2 + i * 0.5}s ease-in-out infinite`,
                 }}>
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={B.wh} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d={s.icon}/></svg>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={B.wh} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d={s.icon}/></svg>
                 </div>
-                <div style={{ fontSize:10, fontWeight:600, color:'rgba(255,255,255,.7)', whiteSpace:'nowrap' }}>{s.label}</div>
+                <div style={{ fontSize:9, fontWeight:600, color:'rgba(255,255,255,.6)', whiteSpace:'nowrap' }}>{s.label}</div>
               </div>
               {i < steps.length - 1 && (
-                <div style={{ width:32, height:1, background:'rgba(255,255,255,.2)', margin:'0 6px', marginBottom:18 }}/>
+                <div style={{ width:24, height:1, background:'rgba(255,255,255,.15)', margin:'0 4px', marginBottom:16 }}/>
               )}
             </div>
           ))}
         </div>
         {/* Right — CTA */}
-        <div style={{ display:'flex', flexDirection:'column', gap:10, alignItems:'flex-end' }}>
+        <div style={{ display:'flex', flexDirection:'column', gap:8, alignItems:'flex-end' }}>
           <a href="/digital-checkup" style={{ textDecoration:'none' }}>
             <button style={{
-              background:B.wh, color:B.p, border:'none', padding:'14px 28px', borderRadius:8,
+              background:'transparent', color:B.wh, border:`2px solid ${B.a}`, padding:'13px 26px', borderRadius:8,
               fontSize:14, fontWeight:800, cursor:'pointer', fontFamily:"'DM Sans',sans-serif", whiteSpace:'nowrap',
-              transition:'transform .2s, box-shadow .2s',
+              transition:'all .2s',
             }}
-              onMouseEnter={e => { e.currentTarget.style.transform='translateY(-2px)'; e.currentTarget.style.boxShadow='0 6px 20px rgba(0,0,0,.15)' }}
-              onMouseLeave={e => { e.currentTarget.style.transform=''; e.currentTarget.style.boxShadow='' }}
+              onMouseEnter={e => { e.currentTarget.style.background=B.a; e.currentTarget.style.transform='translateY(-2px)' }}
+              onMouseLeave={e => { e.currentTarget.style.background='transparent'; e.currentTarget.style.transform='' }}
             >Programează Digital Check-Up →</button>
           </a>
-          <span style={{ fontSize:11, color:'rgba(255,255,255,.45)' }}>de la 25€ · Durată ~30 min</span>
+          <span style={{ fontSize:10, color:'rgba(255,255,255,.4)' }}>Durată ~30 min</span>
         </div>
       </div>
     </section>
@@ -356,48 +354,48 @@ function CheckUpStrip() {
 }
 
 /* ─── Services ────────────────────────────── */
-const SVC_PHOTOS = [
-  'https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=200&h=120&fit=crop',
-  'https://images.unsplash.com/photo-1606811841689-23dfddce3e95?w=200&h=120&fit=crop',
-  'https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?w=200&h=120&fit=crop',
-  'https://images.unsplash.com/photo-1606265752439-1f18756aa5fc?w=200&h=120&fit=crop',
-  'https://images.unsplash.com/photo-1606811971618-4486d14f3f99?w=200&h=120&fit=crop',
-  'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=200&h=120&fit=crop',
-  'https://images.unsplash.com/photo-1598256989800-fe5f95da9787?w=200&h=120&fit=crop',
-  'https://images.unsplash.com/photo-1609840114035-3c981b782dfe?w=200&h=120&fit=crop',
-  'https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=200&h=120&fit=crop',
+const SVC_DATA: { photo:string; solution:string }[] = [
+  { photo:'https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=400&h=220&fit=crop', solution:'Dinți noi, ficși, fără durere' },
+  { photo:'https://images.unsplash.com/photo-1606811841689-23dfddce3e95?w=400&h=220&fit=crop', solution:'Zâmbet restaurat, natural' },
+  { photo:'https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?w=400&h=220&fit=crop', solution:'Arcadă completă într-o zi' },
+  { photo:'https://images.unsplash.com/photo-1606265752439-1f18756aa5fc?w=400&h=220&fit=crop', solution:'Zâmbet de Hollywood' },
+  { photo:'https://images.unsplash.com/photo-1606811971618-4486d14f3f99?w=400&h=220&fit=crop', solution:'Dinți drepți, discret' },
+  { photo:'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=400&h=220&fit=crop', solution:'Știi exact ce ai nevoie' },
+  { photo:'https://images.unsplash.com/photo-1598256989800-fe5f95da9787?w=400&h=220&fit=crop', solution:'Prevenție fără durere' },
+  { photo:'https://images.unsplash.com/photo-1609840114035-3c981b782dfe?w=400&h=220&fit=crop', solution:'Intervenții precise, sigure' },
+  { photo:'https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=400&h=220&fit=crop', solution:'Consultație de oriunde' },
 ]
 
 function Services() {
   return (
     <section id="servicii" style={{ background:B.cr, padding:'48px 52px 40px' }}>
-      <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-end', marginBottom:24 }}>
+      <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-end', marginBottom:20 }}>
         <div>
           <Badge>Servicii complete</Badge>
-          <h2 style={{ fontFamily:"'Syne',sans-serif", fontSize:30, fontWeight:800, color:B.nv, letterSpacing:'-.03em', margin:'0', lineHeight:1.1 }}>
+          <h2 style={{ fontFamily:"'Syne',sans-serif", fontSize:28, fontWeight:800, color:B.nv, letterSpacing:'-.03em', margin:'0', lineHeight:1.1 }}>
             Tot ce ai nevoie, într-un singur loc
           </h2>
         </div>
         <a href="/servicii" style={{ fontSize:13, fontWeight:700, color:B.p, textDecoration:'none' }}>Toate serviciile →</a>
       </div>
-      <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:10 }}>
+      <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:12 }}>
         {SERVICES.map((s, i) => (
           <a key={s.slug} href="/servicii" style={{ textDecoration:'none' }}>
             <div style={{
-              background:B.wh, border:`1px solid ${B.bdr}`, borderRadius:10, cursor:'pointer',
-              display:'grid', gridTemplateColumns:'80px 1fr', overflow:'hidden',
-              transition:'transform .2s,box-shadow .2s,border-color .2s', height:72,
+              background:B.wh, border:`1px solid ${B.bdr}`, borderRadius:12, cursor:'pointer',
+              overflow:'hidden', transition:'transform .2s,box-shadow .2s,border-color .2s',
             }}
-            onMouseEnter={e => { const el=e.currentTarget; el.style.transform='translateY(-2px)'; el.style.boxShadow='0 6px 20px rgba(10,107,92,.08)'; el.style.borderColor=B.p }}
+            onMouseEnter={e => { const el=e.currentTarget; el.style.transform='translateY(-3px)'; el.style.boxShadow='0 8px 24px rgba(10,107,92,.1)'; el.style.borderColor=B.p }}
             onMouseLeave={e => { const el=e.currentTarget; el.style.transform=''; el.style.boxShadow=''; el.style.borderColor=B.bdr }}
             >
-              <img src={SVC_PHOTOS[i] || SVC_PHOTOS[0]} alt={s.name} style={{ width:'100%', height:'100%', objectFit:'cover' }}/>
-              <div style={{ padding:'10px 14px', display:'flex', flexDirection:'column', justifyContent:'center' }}>
-                <div style={{ fontFamily:"'Syne',sans-serif", fontSize:13, fontWeight:700, color:B.nv, lineHeight:1.2, marginBottom:2 }}>{s.name}</div>
-                <div style={{ display:'flex', alignItems:'center', gap:6 }}>
-                  <span style={{ fontSize:10, fontWeight:600, color:B.p }}>{s.price}</span>
-                  {s.rate && <span style={{ fontSize:8, fontWeight:800, color:B.a, background:B.al, padding:'1px 5px', borderRadius:100 }}>RATE 0%</span>}
-                </div>
+              <div style={{ position:'relative', height:90, overflow:'hidden' }}>
+                <img src={SVC_DATA[i]?.photo || SVC_DATA[0].photo} alt={s.name} style={{ width:'100%', height:'100%', objectFit:'cover' }}/>
+                <div style={{ position:'absolute', inset:0, background:'linear-gradient(to top, rgba(10,30,24,.4) 0%, transparent 60%)' }}/>
+                {s.rate && <span style={{ position:'absolute', top:6, right:6, fontSize:8, fontWeight:800, color:B.wh, background:B.a, padding:'2px 7px', borderRadius:100 }}>RATE 0%</span>}
+              </div>
+              <div style={{ padding:'10px 14px 12px' }}>
+                <div style={{ fontFamily:"'Syne',sans-serif", fontSize:14, fontWeight:700, color:B.nv, lineHeight:1.2, marginBottom:3 }}>{s.name}</div>
+                <div style={{ fontSize:11, color:B.gr, lineHeight:1.4 }}>{SVC_DATA[i]?.solution || ''}</div>
               </div>
             </div>
           </a>
@@ -767,6 +765,7 @@ const ANIM_CSS = `
   @keyframes fadeIn{from{opacity:0}to{opacity:1}}
   @keyframes floatY{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
   @keyframes barGrow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+  @keyframes pulse{0%,100%{opacity:.6;transform:scale(1)}50%{opacity:1;transform:scale(1.08)}}
   .fl1{animation:floatY 4s ease-in-out infinite}
   .fl2{animation:floatY 4.6s 1.1s ease-in-out infinite}
 `
