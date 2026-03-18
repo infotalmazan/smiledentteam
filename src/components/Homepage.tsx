@@ -13,23 +13,89 @@ const HERO_SLIDES = [
 
 function HeroSlideshow({ style }: { style?: React.CSSProperties }) {
   const [idx, setIdx] = useState(0)
+  const [fullscreen, setFullscreen] = useState(false)
   useEffect(() => {
+    if (fullscreen) return
     const timer = setInterval(() => setIdx(p => (p + 1) % HERO_SLIDES.length), 3000)
     return () => clearInterval(timer)
-  }, [])
+  }, [fullscreen])
   return (
-    <div style={{ width:'100%', height:'100%', position:'relative', overflow:'hidden', ...style }}>
-      {HERO_SLIDES.map((src, i) => (
-        <img key={src} src={src} alt={`SDT Team ${i+1}`}
-          style={{
-            position:'absolute', inset:0, width:'100%', height:'100%', objectFit:'cover',
-            objectPosition:'center 35%',
-            opacity: i === idx ? 1 : 0,
-            transition:'opacity 1s ease-in-out',
-          }}
-        />
-      ))}
-    </div>
+    <>
+      <div style={{ width:'100%', height:'100%', position:'relative', overflow:'hidden', ...style }}>
+        {HERO_SLIDES.map((src, i) => (
+          <img key={src} src={src} alt={`SDT Team ${i+1}`}
+            style={{
+              position:'absolute', inset:0, width:'100%', height:'100%', objectFit:'cover',
+              objectPosition:'center 35%',
+              opacity: i === idx ? 1 : 0,
+              transition:'opacity 1s ease-in-out',
+            }}
+          />
+        ))}
+        {/* Dots */}
+        <div style={{ position:'absolute', bottom:12, left:'50%', transform:'translateX(-50%)', display:'flex', gap:6, zIndex:2 }}>
+          {HERO_SLIDES.map((_, i) => (
+            <button key={i} onClick={() => setIdx(i)} style={{
+              width: i===idx ? 20 : 7, height:7, borderRadius:100, border:'none', cursor:'pointer',
+              background: i===idx ? B.wh : 'rgba(255,255,255,.4)', transition:'all .3s',
+            }}/>
+          ))}
+        </div>
+        {/* Preview button */}
+        <button onClick={() => setFullscreen(true)} style={{
+          position:'absolute', bottom:12, right:12, zIndex:2,
+          background:'rgba(0,0,0,.35)', backdropFilter:'blur(4px)',
+          border:'1px solid rgba(255,255,255,.2)', borderRadius:6,
+          padding:'4px 10px', cursor:'pointer', display:'flex', alignItems:'center', gap:4,
+        }}>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={B.wh} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
+          <span style={{ fontSize:10, fontWeight:600, color:B.wh }}>Preview</span>
+        </button>
+      </div>
+      {/* Fullscreen overlay */}
+      {fullscreen && (
+        <div onClick={() => setFullscreen(false)} style={{
+          position:'fixed', inset:0, zIndex:9999, background:'rgba(0,0,0,.92)',
+          display:'flex', alignItems:'center', justifyContent:'center', cursor:'pointer',
+        }}>
+          <button onClick={e => { e.stopPropagation(); setIdx(p => (p - 1 + HERO_SLIDES.length) % HERO_SLIDES.length) }} style={{
+            position:'absolute', left:24, top:'50%', transform:'translateY(-50%)',
+            width:44, height:44, borderRadius:'50%', background:'rgba(255,255,255,.1)', border:'1px solid rgba(255,255,255,.2)',
+            cursor:'pointer', display:'flex', alignItems:'center', justifyContent:'center',
+          }}>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={B.wh} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+          </button>
+          <img src={HERO_SLIDES[idx]} alt="" style={{ maxWidth:'85vw', maxHeight:'85vh', objectFit:'contain', borderRadius:12 }}/>
+          <button onClick={e => { e.stopPropagation(); setIdx(p => (p + 1) % HERO_SLIDES.length) }} style={{
+            position:'absolute', right:24, top:'50%', transform:'translateY(-50%)',
+            width:44, height:44, borderRadius:'50%', background:'rgba(255,255,255,.1)', border:'1px solid rgba(255,255,255,.2)',
+            cursor:'pointer', display:'flex', alignItems:'center', justifyContent:'center',
+          }}>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={B.wh} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
+          {/* Close */}
+          <button onClick={() => setFullscreen(false)} style={{
+            position:'absolute', top:24, right:24, width:40, height:40, borderRadius:'50%',
+            background:'rgba(255,255,255,.1)', border:'1px solid rgba(255,255,255,.2)',
+            cursor:'pointer', display:'flex', alignItems:'center', justifyContent:'center',
+          }}>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={B.wh} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+          {/* Dots in fullscreen */}
+          <div style={{ position:'absolute', bottom:32, left:'50%', transform:'translateX(-50%)', display:'flex', gap:8 }}>
+            {HERO_SLIDES.map((_, i) => (
+              <button key={i} onClick={e => { e.stopPropagation(); setIdx(i) }} style={{
+                width: i===idx ? 28 : 10, height:10, borderRadius:100, border:'none', cursor:'pointer',
+                background: i===idx ? B.a : 'rgba(255,255,255,.3)', transition:'all .3s',
+              }}/>
+            ))}
+          </div>
+          <div style={{ position:'absolute', bottom:32, right:32, fontSize:12, color:'rgba(255,255,255,.4)' }}>
+            {idx + 1} / {HERO_SLIDES.length}
+          </div>
+        </div>
+      )}
+    </>
   )
 }
 
