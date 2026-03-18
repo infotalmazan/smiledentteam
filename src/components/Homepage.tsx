@@ -156,9 +156,9 @@ function Navbar() {
 const SVC_LIST = SERVICES.map(s => s.name)
 
 function Hero() {
-  // 34px topbar + 64px navbar = 98px above hero
+  // navbar only (~64px) above hero
   return (
-    <section style={{ background:B.wh, height:'calc(100vh - 98px)', display:'flex', flexDirection:'column' }}>
+    <section style={{ background:B.wh, height:'calc(100vh - 64px)', display:'flex', flexDirection:'column' }}>
       <div style={{ display:'grid', gridTemplateColumns:'1fr 1px 1.35fr 1px 0.85fr', flex:1, minHeight:0 }}>
 
         {/* COL 1 — Headline */}
@@ -727,7 +727,6 @@ export function Homepage() {
   return (
     <>
       <style>{ANIM_CSS}</style>
-      <Topbar lang={lang} setLang={setLang}/>
       <Navbar/>
       <Hero/>
       <CheckUpStrip/>
