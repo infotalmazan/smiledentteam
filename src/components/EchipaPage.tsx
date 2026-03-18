@@ -107,9 +107,10 @@ function Hero() {
 /* ─── Doctors Section ────────────────────── */
 function DoctorsSection() {
   const [dept, setDept] = useState('Toți')
-  const [expanded, setExpanded] = useState<number|null>(null)
+  const [selected, setSelected] = useState<number|null>(null)
   const filtered = dept === 'Toți' ? DOCTORS : DOCTORS.filter(d => d.dept === dept)
   const deptColors: Record<string,string> = { Chirurgie:B.p, Implantologie:'#0d8a72', Estetică:B.a, Terapie:'#059669', Ortodonție:'#6366f1', Protetică:'#D97706', Management:B.nv }
+  const selectedDoc = DOCTORS.find(d => d.id === selected)
 
   return (
     <section style={{ background:B.wh, padding:'56px 48px' }}>
@@ -117,7 +118,7 @@ function DoctorsSection() {
         {/* Filter tabs */}
         <div style={{ display:'flex', gap:8, marginBottom:32, flexWrap:'wrap' }}>
           {DEPARTMENTS.map(d => (
-            <button key={d} onClick={() => { setDept(d); setExpanded(null) }} style={{
+            <button key={d} onClick={() => { setDept(d); setSelected(null) }} style={{
               padding:'8px 18px', borderRadius:100, fontSize:13, fontWeight:600, cursor:'pointer',
               fontFamily:"'DM Sans',sans-serif", transition:'all .15s',
               background: dept===d ? B.p : B.ps, color: dept===d ? B.wh : B.nv,
@@ -126,67 +127,100 @@ function DoctorsSection() {
           ))}
         </div>
 
-        {/* Doctor cards grid */}
-        <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:20 }}>
+        {/* Portrait Grid — large photo cards */}
+        <div style={{ display:'grid', gridTemplateColumns:'repeat(4,1fr)', gap:16 }}>
           {filtered.map(doc => {
-            const isOpen = expanded === doc.id
             const color = deptColors[doc.dept] || B.p
             return (
-              <div key={doc.id} style={{
-                background:B.wh, borderRadius:16, border: isOpen ? `2px solid ${color}` : `1px solid ${B.bdr}`,
-                overflow:'hidden', transition:'all .3s',
-                boxShadow: isOpen ? `0 12px 40px ${B.bdr}` : 'none',
-              }}>
-                {/* Card header */}
-                <div onClick={() => setExpanded(isOpen ? null : doc.id)} style={{
-                  padding:'24px', cursor:'pointer', display:'flex', alignItems:'center', gap:16,
-                }}>
-                  <div style={{
-                    width:56, height:56, borderRadius:'50%', flexShrink:0,
-                    background:`linear-gradient(135deg, ${color}, ${color}88)`,
-                    display:'flex', alignItems:'center', justifyContent:'center',
-                    fontSize:18, fontWeight:800, color:B.wh, fontFamily:"'Syne',sans-serif",
-                  }}>{doc.name.split(' ').filter((_,i) => i>0).map(n => n[0]).join('')}</div>
-                  <div style={{ flex:1 }}>
-                    <div style={{ fontSize:15, fontWeight:700, color:B.nv }}>{doc.name}</div>
-                    <div style={{ fontSize:12, color:B.gr }}>{doc.title}</div>
-                    <div style={{ display:'flex', gap:8, marginTop:4 }}>
-                      <span style={{ fontSize:10, fontWeight:600, color, background:`${color}15`, padding:'2px 8px', borderRadius:100 }}>{doc.dept}</span>
-                      <span style={{ fontSize:10, color:B.gr }}>{doc.years} ani exp.</span>
+              <div key={doc.id} onClick={() => setSelected(selected === doc.id ? null : doc.id)} style={{
+                borderRadius:16, overflow:'hidden', cursor:'pointer', position:'relative',
+                border: selected===doc.id ? `2px solid ${color}` : `1px solid ${B.bdr}`,
+                transition:'all .3s', background:B.wh,
+                boxShadow: selected===doc.id ? `0 12px 40px ${B.bdr}` : 'none',
+              }}
+                onMouseEnter={e => { if(selected!==doc.id) { e.currentTarget.style.transform='translateY(-4px)'; e.currentTarget.style.boxShadow=`0 12px 32px ${B.bdr}` } }}
+                onMouseLeave={e => { if(selected!==doc.id) { e.currentTarget.style.transform=''; e.currentTarget.style.boxShadow='' } }}
+              >
+                {/* Photo */}
+                <div style={{ position:'relative', paddingTop:'120%', overflow:'hidden' }}>
+                  <img src={doc.photo} alt={doc.name} style={{
+                    position:'absolute', inset:0, width:'100%', height:'100%', objectFit:'cover',
+                    transition:'transform .4s',
+                  }}
+                    onMouseEnter={e => e.currentTarget.style.transform='scale(1.04)'}
+                    onMouseLeave={e => e.currentTarget.style.transform=''}
+                  />
+                  {/* Gradient overlay */}
+                  <div style={{ position:'absolute', bottom:0, left:0, right:0, height:'55%', background:'linear-gradient(to top, rgba(10,30,24,.85) 0%, rgba(10,30,24,.3) 60%, transparent 100%)', pointerEvents:'none' }}/>
+                  {/* Info overlay */}
+                  <div style={{ position:'absolute', bottom:0, left:0, right:0, padding:'16px' }}>
+                    <div style={{ display:'flex', alignItems:'center', gap:6, marginBottom:4 }}>
+                      <span style={{ fontSize:9, fontWeight:700, color:B.wh, background:color, padding:'2px 8px', borderRadius:100, letterSpacing:'.05em' }}>{doc.dept}</span>
                       <span style={{ fontSize:10, color:'#fbb040' }}>★ {doc.rating}</span>
                     </div>
-                  </div>
-                </div>
-
-                {/* Expanded detail */}
-                <div style={{ maxHeight: isOpen ? 600 : 0, overflow:'hidden', transition:'max-height .4s ease' }}>
-                  <div style={{ padding:'0 24px 24px', borderTop:`1px solid ${B.bdr}`, paddingTop:20 }}>
-                    <p style={{ fontSize:13, lineHeight:1.65, color:B.gr, margin:'0 0 14px' }}>{doc.bio}</p>
-                    <div style={{ fontSize:10, fontWeight:700, color:B.p, letterSpacing:'.1em', textTransform:'uppercase', marginBottom:6 }}>Educație & Certificări</div>
-                    <div style={{ display:'flex', flexDirection:'column', gap:4, marginBottom:14 }}>
-                      {doc.education.map(e => (
-                        <div key={e} style={{ display:'flex', alignItems:'center', gap:6 }}>
-                          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={B.p} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                          <span style={{ fontSize:12, color:B.nv }}>{e}</span>
-                        </div>
-                      ))}
-                    </div>
-                    {doc.review && (
-                      <div style={{ background:B.ps, borderRadius:10, padding:'14px 16px', borderLeft:`3px solid ${color}` }}>
-                        <div style={{ color:'#fbb040', fontSize:11, marginBottom:4 }}>★★★★★</div>
-                        <p style={{ fontSize:12, lineHeight:1.6, color:B.nv, margin:'0 0 4px', fontStyle:'italic' }}>&ldquo;{doc.review.text}&rdquo;</p>
-                        <div style={{ fontSize:11, color:B.gr, fontWeight:600 }}>— {doc.review.author}</div>
-                      </div>
-                    )}
-                    <Btn style={{ marginTop:14, width:'100%', justifyContent:'center', fontSize:13, padding:'10px 20px' }}>
-                      Programează cu {doc.name.split(' ')[0]} {doc.name.split(' ').slice(-1)[0]} →
-                    </Btn>
+                    <div style={{ fontFamily:"'Syne',sans-serif", fontSize:16, fontWeight:700, color:B.wh, lineHeight:1.2 }}>{doc.name}</div>
+                    <div style={{ fontSize:11, color:'rgba(255,255,255,.7)', marginTop:2 }}>{doc.title}</div>
+                    <div style={{ fontSize:10, color:'rgba(255,255,255,.5)', marginTop:3 }}>{doc.years} ani de experiență</div>
                   </div>
                 </div>
               </div>
             )
           })}
         </div>
+
+        {/* Selected doctor detail panel */}
+        {selectedDoc && (() => {
+          const color = deptColors[selectedDoc.dept] || B.p
+          return (
+            <div style={{
+              marginTop:24, borderRadius:20, border:`2px solid ${color}`, overflow:'hidden',
+              display:'grid', gridTemplateColumns:'320px 1fr', background:B.wh,
+              boxShadow:`0 16px 48px ${B.bdr}`, animation:'fadeUp .3s ease',
+            }}>
+              {/* Left — large photo */}
+              <div style={{ position:'relative' }}>
+                <img src={selectedDoc.photo} alt={selectedDoc.name} style={{ width:'100%', height:'100%', objectFit:'cover', minHeight:380 }}/>
+                <div style={{ position:'absolute', bottom:0, left:0, right:0, padding:'20px', background:'linear-gradient(to top, rgba(10,30,24,.8), transparent)' }}>
+                  <span style={{ fontSize:10, fontWeight:700, color:B.wh, background:color, padding:'3px 10px', borderRadius:100 }}>{selectedDoc.dept}</span>
+                </div>
+              </div>
+              {/* Right — info */}
+              <div style={{ padding:'28px 32px' }}>
+                <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-start', marginBottom:4 }}>
+                  <div>
+                    <h3 style={{ fontFamily:"'Syne',sans-serif", fontSize:24, fontWeight:800, color:B.nv, margin:0 }}>{selectedDoc.name}</h3>
+                    <div style={{ fontSize:14, color:B.gr, marginTop:2 }}>{selectedDoc.title}</div>
+                  </div>
+                  <button onClick={() => setSelected(null)} style={{ background:'none', border:'none', cursor:'pointer', fontSize:20, color:B.gr, padding:4 }}>✕</button>
+                </div>
+                <div style={{ display:'flex', gap:12, marginTop:10, marginBottom:16 }}>
+                  <span style={{ fontSize:11, fontWeight:600, color:B.p, background:B.pl, padding:'4px 10px', borderRadius:100 }}>{selectedDoc.years} ani experiență</span>
+                  <span style={{ fontSize:11, fontWeight:600, color:'#fbb040', background:'#fbb04015', padding:'4px 10px', borderRadius:100 }}>★ {selectedDoc.rating} Google</span>
+                </div>
+                <p style={{ fontSize:14, lineHeight:1.7, color:B.gr, margin:'0 0 18px' }}>{selectedDoc.bio}</p>
+                <div style={{ fontSize:10, fontWeight:700, color:B.p, letterSpacing:'.1em', textTransform:'uppercase', marginBottom:8 }}>Educație & Certificări</div>
+                <div style={{ display:'flex', flexDirection:'column', gap:5, marginBottom:18 }}>
+                  {selectedDoc.education.map(e => (
+                    <div key={e} style={{ display:'flex', alignItems:'center', gap:8 }}>
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke={B.p} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                      <span style={{ fontSize:13, color:B.nv, fontWeight:500 }}>{e}</span>
+                    </div>
+                  ))}
+                </div>
+                {selectedDoc.review && (
+                  <div style={{ background:B.ps, borderRadius:12, padding:'16px 18px', borderLeft:`3px solid ${color}`, marginBottom:18 }}>
+                    <div style={{ color:'#fbb040', fontSize:12, marginBottom:4 }}>★★★★★</div>
+                    <p style={{ fontSize:13, lineHeight:1.6, color:B.nv, margin:'0 0 6px', fontStyle:'italic' }}>&ldquo;{selectedDoc.review.text}&rdquo;</p>
+                    <div style={{ fontSize:12, color:B.gr, fontWeight:600 }}>— {selectedDoc.review.author}</div>
+                  </div>
+                )}
+                <Btn style={{ width:'100%', justifyContent:'center', fontSize:14, padding:'13px 24px' }}>
+                  Programează cu {selectedDoc.name} →
+                </Btn>
+              </div>
+            </div>
+          )
+        })()}
       </div>
     </section>
   )
