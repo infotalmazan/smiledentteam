@@ -1,0 +1,336 @@
+'use client'
+import { useState } from 'react'
+import { BRAND as B, STATS, LOCATIONS, CAMPAIGN_2026, DIASPORA, SERVICES } from '@/lib/brand'
+import { Logo } from './Logo'
+
+/* ─── Animations ─────────────────────────── */
+const ANIM = `
+  @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+`
+
+/* ─── Shared UI ──────────────────────────── */
+function Btn({ children, pink, outline, style, ...p }: any) {
+  const bg = pink ? B.a : outline ? 'transparent' : B.p
+  const clr = outline ? B.p : B.wh
+  const brd = outline ? `1.5px solid ${B.p}` : pink ? `1.5px solid ${B.a}` : 'none'
+  return (
+    <button style={{
+      background:bg, color:clr, border:brd, padding:'14px 32px', borderRadius:8,
+      fontSize:15, fontWeight:700, cursor:'pointer', fontFamily:"'DM Sans',sans-serif",
+      transition:'all .2s', display:'inline-flex', alignItems:'center', gap:8, ...style
+    }} {...p}>{children}</button>
+  )
+}
+
+function SectionBadge({ children, light }: { children: string; light?: boolean }) {
+  return (
+    <div style={{
+      display:'inline-flex', alignItems:'center', gap:6,
+      background: light ? 'rgba(255,255,255,.12)' : B.pl,
+      border: light ? '1px solid rgba(255,255,255,.2)' : `1px solid ${B.bdr}`,
+      padding:'5px 14px', borderRadius:100, marginBottom:16,
+    }}>
+      <span style={{ width:6, height:6, borderRadius:'50%', background: light ? B.wh : B.p }}/>
+      <span style={{ fontSize:11, fontWeight:700, letterSpacing:'.12em', textTransform:'uppercase', color: light ? B.wh : B.p }}>{children}</span>
+    </div>
+  )
+}
+
+/* ─── Nav ─────────────────────────────────── */
+function Nav() {
+  return (
+    <>
+      <div style={{ background:B.p, padding:'8px 48px', display:'flex', justifyContent:'space-between', alignItems:'center', fontSize:12, color:'rgba(255,255,255,.7)' }}>
+        <div style={{ display:'flex', gap:24 }}>
+          <span>📍 str. Ismail 88, Chișinău</span>
+          <span>🕐 Lun–Vin 09:00–19:00 · Sâm 09:00–14:00</span>
+        </div>
+        <span style={{ fontWeight:600, color:B.wh }}>+373 22 881 414</span>
+      </div>
+      <nav style={{
+        position:'sticky', top:0, zIndex:100, background:'rgba(255,255,255,.97)',
+        backdropFilter:'blur(12px)', borderBottom:`1px solid ${B.bdr}`,
+        padding:'14px 48px', display:'flex', justifyContent:'space-between', alignItems:'center',
+      }}>
+        <a href="/" style={{ textDecoration:'none' }}><Logo height={36}/></a>
+        <div style={{ display:'flex', gap:28, alignItems:'center' }}>
+          {[['Servicii','/servicii'],['Digital Check-Up','/digital-checkup'],['Consultație Online','/consultatie-online'],['Echipa','/echipa'],['Recenzii','/']].map(([l,h]) => (
+            <a key={l} href={h} style={{
+              fontSize:14, fontWeight: l==='Consultație Online' ? 700 : 500,
+              color: l==='Consultație Online' ? B.a : '#3a5a50', textDecoration:'none',
+              borderBottom: l==='Consultație Online' ? `2px solid ${B.a}` : '2px solid transparent', paddingBottom:2,
+            }}>{l}</a>
+          ))}
+        </div>
+        <Btn pink style={{ fontSize:13, padding:'10px 22px' }}>Programează-te</Btn>
+      </nav>
+    </>
+  )
+}
+
+/* ─── Hero ──────────────────────────────── */
+function Hero() {
+  return (
+    <section style={{ background:`linear-gradient(160deg, ${B.nv} 0%, #0f2e24 50%, ${B.pd} 100%)`, position:'relative', overflow:'hidden' }}>
+      <div style={{ position:'absolute', top:-100, right:-60, width:350, height:350, borderRadius:'50%', border:'1px solid rgba(255,255,255,.04)' }}/>
+      <div style={{ maxWidth:1200, margin:'0 auto', padding:'72px 48px 64px', display:'grid', gridTemplateColumns:'1fr 1fr', gap:60, alignItems:'center' }}>
+        <div>
+          <SectionBadge light>Pentru diaspora</SectionBadge>
+          <h1 style={{ fontFamily:"'Syne',sans-serif", fontSize:46, fontWeight:800, color:B.wh, lineHeight:1.08, letterSpacing:'-.03em', margin:'0 0 18px' }}>
+            Ești în <span style={{ color:B.a }}>străinătate</span>?<br/>Începe cu o consultație online.
+          </h1>
+          <p style={{ fontSize:17, lineHeight:1.7, color:'rgba(255,255,255,.65)', maxWidth:460, margin:'0 0 32px' }}>
+            Discutăm la distanță, îți oferim un plan clar și personalizat, iar tu vii pregătit la prima vizită în clinică. Fără surprize, fără pierdere de timp.
+          </p>
+          <div style={{ display:'flex', gap:14 }}>
+            <Btn pink style={{ fontSize:15 }}>Programează consultație →</Btn>
+            <Btn outline style={{ borderColor:'rgba(255,255,255,.3)', color:B.wh }}>Cum funcționează ↓</Btn>
+          </div>
+        </div>
+        {/* Right — Diaspora markets */}
+        <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:14 }}>
+          {DIASPORA.map(d => (
+            <div key={d.country} style={{
+              background:'rgba(255,255,255,.06)', border:'1px solid rgba(255,255,255,.1)',
+              borderRadius:14, padding:'20px', display:'flex', alignItems:'center', gap:14,
+            }}>
+              <div style={{ fontSize:32 }}>{d.flag}</div>
+              <div>
+                <div style={{ fontFamily:"'Syne',sans-serif", fontSize:18, fontWeight:800, color:B.wh }}>{d.country}</div>
+                <div style={{ fontSize:12, color:'rgba(255,255,255,.45)' }}>{d.population} moldoveni</div>
+              </div>
+            </div>
+          ))}
+          <div style={{
+            background:`linear-gradient(135deg,${B.a}22,${B.a}11)`, border:`1px solid ${B.a}33`,
+            borderRadius:14, padding:'20px', display:'flex', alignItems:'center', justifyContent:'center',
+          }}>
+            <div style={{ textAlign:'center' }}>
+              <div style={{ fontFamily:"'Syne',sans-serif", fontSize:22, fontWeight:800, color:B.a }}>455.000+</div>
+              <div style={{ fontSize:12, color:'rgba(255,255,255,.5)' }}>moldoveni în diasporă</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+/* ─── Process ──────────────────────────── */
+const STEPS = [
+  { num:'01', title:'Trimite tomografia', desc:'Încarcă radiografia panoramică sau CBCT prin formularul nostru securizat. Dacă nu ai — te ghidăm unde poți face.' },
+  { num:'02', title:'Consultație video', desc:'Medicul analizează imaginile și discutați 1:1 prin video call. Primești explicații clare despre situația ta.' },
+  { num:'03', title:'Plan de tratament', desc:'Primești un plan personalizat cu opțiuni, etape, durată și costuri. Totul transparent, fără surprize.' },
+  { num:'04', title:'Vii pregătit', desc:'Când ajungi acasă, totul este deja planificat. Economisești timp și începi tratamentul imediat.' },
+]
+
+function Process() {
+  return (
+    <section style={{ background:B.wh, padding:'72px 48px' }}>
+      <div style={{ maxWidth:1200, margin:'0 auto' }}>
+        <div style={{ textAlign:'center', marginBottom:48 }}>
+          <SectionBadge>Cum funcționează</SectionBadge>
+          <h2 style={{ fontFamily:"'Syne',sans-serif", fontSize:36, fontWeight:800, color:B.nv, letterSpacing:'-.03em', margin:'0 0 12px' }}>
+            4 pași simpli<br/>către <span style={{ color:B.p }}>tratamentul tău</span>
+          </h2>
+        </div>
+        <div style={{ display:'grid', gridTemplateColumns:'repeat(4,1fr)', gap:20 }}>
+          {STEPS.map(s => (
+            <div key={s.num} style={{
+              background:B.ps, borderRadius:14, padding:'28px 24px', border:`1px solid ${B.bdr}`, position:'relative',
+            }}>
+              <div style={{ fontFamily:"'Syne',sans-serif", fontSize:44, fontWeight:800, color:B.pl, position:'absolute', top:14, right:16 }}>{s.num}</div>
+              <div style={{
+                width:36, height:36, borderRadius:8, background:`linear-gradient(135deg,${B.p},${B.pm})`,
+                display:'flex', alignItems:'center', justifyContent:'center', marginBottom:14,
+              }}>
+                <span style={{ color:B.wh, fontSize:13, fontWeight:800 }}>{s.num}</span>
+              </div>
+              <h3 style={{ fontFamily:"'Syne',sans-serif", fontSize:16, fontWeight:700, color:B.nv, margin:'0 0 6px' }}>{s.title}</h3>
+              <p style={{ fontSize:13, lineHeight:1.6, color:B.gr, margin:0 }}>{s.desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+/* ─── Benefits ─────────────────────────── */
+function Benefits() {
+  const items = [
+    { icon:'M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z', title:'De acasă', desc:'Consultație video de oriunde din lume. Nu contează fusul orar.' },
+    { icon:'M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z', title:'Rapid', desc:'Consultația durează 20-30 min. Primești planul în 48h.' },
+    { icon:'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z', title:'Plan complet', desc:'Diagnostic, opțiuni, costuri, etape — totul înainte de a ajunge la clinică.' },
+    { icon:'M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z', title:'Prețuri clare', desc:'Știi exact cât costă înainte de a lua orice decizie.' },
+  ]
+  return (
+    <section style={{ background:B.ps, padding:'72px 48px' }}>
+      <div style={{ maxWidth:1200, margin:'0 auto' }}>
+        <div style={{ textAlign:'center', marginBottom:48 }}>
+          <SectionBadge>De ce online</SectionBadge>
+          <h2 style={{ fontFamily:"'Syne',sans-serif", fontSize:36, fontWeight:800, color:B.nv, letterSpacing:'-.03em', margin:0 }}>
+            Avantajele consultației <span style={{ color:B.p }}>online</span>
+          </h2>
+        </div>
+        <div style={{ display:'grid', gridTemplateColumns:'repeat(4,1fr)', gap:20 }}>
+          {items.map(b => (
+            <div key={b.title} style={{
+              background:B.wh, borderRadius:14, padding:'28px 24px', border:`1px solid ${B.bdr}`,
+              transition:'all .25s',
+            }}
+              onMouseEnter={e => { e.currentTarget.style.transform='translateY(-3px)'; e.currentTarget.style.boxShadow=`0 8px 24px ${B.bdr}` }}
+              onMouseLeave={e => { e.currentTarget.style.transform=''; e.currentTarget.style.boxShadow='' }}
+            >
+              <div style={{ width:44, height:44, borderRadius:12, background:B.pl, display:'flex', alignItems:'center', justifyContent:'center', marginBottom:14 }}>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={B.p} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d={b.icon}/></svg>
+              </div>
+              <h3 style={{ fontFamily:"'Syne',sans-serif", fontSize:16, fontWeight:700, color:B.nv, margin:'0 0 6px' }}>{b.title}</h3>
+              <p style={{ fontSize:13, lineHeight:1.6, color:B.gr, margin:0 }}>{b.desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+/* ─── CTA Strip ──────────────────────────── */
+function CtaStrip() {
+  return (
+    <section style={{ background:`linear-gradient(135deg,${B.p},${B.pm})`, padding:'56px 48px' }}>
+      <div style={{ maxWidth:900, margin:'0 auto', textAlign:'center' }}>
+        <h2 style={{ fontFamily:"'Syne',sans-serif", fontSize:32, fontWeight:800, color:B.wh, margin:'0 0 12px' }}>
+          Oriunde ai fi. În fiecare țară. Alege-te pe tine.
+        </h2>
+        <p style={{ fontSize:15, color:'rgba(255,255,255,.7)', margin:'0 0 28px', maxWidth:480, marginLeft:'auto', marginRight:'auto' }}>
+          Sănătatea nu are sezon. Programează o consultație online și pregătește-ți vizita acasă.
+        </p>
+        <Btn pink style={{ fontSize:16, padding:'16px 36px' }}>Programează consultație online →</Btn>
+      </div>
+    </section>
+  )
+}
+
+/* ─── Appointment Form ───────────────────── */
+function AppointmentForm() {
+  const inp: React.CSSProperties = {
+    width:'100%', padding:'12px 16px', border:`1px solid ${B.bdr}`, borderRadius:8,
+    fontSize:14, fontFamily:"'DM Sans',sans-serif", background:B.wh, outline:'none', boxSizing:'border-box',
+  }
+  return (
+    <section style={{ background:B.wh, padding:'72px 48px' }}>
+      <div style={{ maxWidth:1200, margin:'0 auto', display:'grid', gridTemplateColumns:'1fr 1fr', gap:56, alignItems:'center' }}>
+        <div>
+          <SectionBadge>Programare online</SectionBadge>
+          <h2 style={{ fontFamily:"'Syne',sans-serif", fontSize:32, fontWeight:800, color:B.nv, margin:'0 0 14px', lineHeight:1.1 }}>
+            Completează formularul<br/><span style={{ color:B.a }}>și te contactăm</span>
+          </h2>
+          <p style={{ fontSize:14, lineHeight:1.7, color:B.gr, margin:'0 0 24px', maxWidth:400 }}>
+            Te sunăm în max. 24h pentru a stabili data și ora consultației video. Ai nevoie doar de o radiografie panoramică.
+          </p>
+          <div style={{ display:'flex', flexDirection:'column', gap:12 }}>
+            {['Consultație video 1:1 cu specialistul','Analiză completă a radiografiei','Plan de tratament detaliat cu costuri','Programare prioritară la sosire'].map(t => (
+              <div key={t} style={{ display:'flex', alignItems:'center', gap:10 }}>
+                <div style={{ width:20, height:20, borderRadius:'50%', background:B.pl, display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0 }}>
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke={B.p} strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                </div>
+                <span style={{ fontSize:13, color:B.nv, fontWeight:500 }}>{t}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div style={{ background:B.ps, borderRadius:16, padding:'32px 28px', border:`1px solid ${B.bdr}`, boxShadow:`0 8px 32px ${B.bdr}` }}>
+          <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:12, marginBottom:12 }}>
+            <input placeholder="Prenume" style={inp}/>
+            <input placeholder="Nume" style={inp}/>
+          </div>
+          <input placeholder="Telefon *" type="tel" style={{ ...inp, marginBottom:12 }}/>
+          <input placeholder="Email *" type="email" style={{ ...inp, marginBottom:12 }}/>
+          <select defaultValue="" style={{ ...inp, marginBottom:12, color:B.gr }}>
+            <option value="" disabled>Țara în care locuiești</option>
+            {DIASPORA.map(d => <option key={d.country}>{d.flag} {d.country}</option>)}
+            <option>Altă țară</option>
+          </select>
+          <select defaultValue="" style={{ ...inp, marginBottom:12, color:B.gr }}>
+            <option value="" disabled>Serviciul dorit</option>
+            {SERVICES.map(s => <option key={s.slug}>{s.name}</option>)}
+          </select>
+          <textarea placeholder="Descrie pe scurt problemele tale dentare" rows={3} style={{ ...inp, marginBottom:16, resize:'vertical' }}/>
+          <div style={{ padding:'14px 16px', background:B.pl, borderRadius:8, border:`1px dashed ${B.p}`, textAlign:'center', marginBottom:16, cursor:'pointer' }}>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={B.p} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" style={{marginBottom:4}}><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
+            <div style={{ fontSize:12, fontWeight:600, color:B.p }}>Încarcă radiografia panoramică</div>
+            <div style={{ fontSize:10, color:B.gr }}>JPG, PNG sau DICOM — max 10MB</div>
+          </div>
+          <Btn pink style={{ width:'100%', justifyContent:'center', fontSize:15, padding:'14px' }}>Trimite cererea →</Btn>
+          <p style={{ fontSize:11, color:B.gr, textAlign:'center', marginTop:10 }}>
+            Prin trimitere ești de acord cu <span style={{ color:B.p, cursor:'pointer' }}>Politica de confidențialitate</span>
+          </p>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+/* ─── Footer ─────────────────────────────── */
+function Footer() {
+  return (
+    <footer style={{ background:B.nv, padding:'56px 48px 32px' }}>
+      <div style={{ maxWidth:1200, margin:'0 auto', display:'grid', gridTemplateColumns:'1.5fr 1fr 1fr 1.2fr', gap:40, marginBottom:40 }}>
+        <div>
+          <Logo height={32} light/>
+          <p style={{ fontSize:13, color:'rgba(255,255,255,.45)', marginTop:16, lineHeight:1.7, maxWidth:260 }}>
+            Clinică stomatologică digitală. {STATS.years} ani de excelență, {STATS.team} specialiști, {STATS.patients} pacienți.
+          </p>
+          <div style={{ fontFamily:"'Syne',sans-serif", fontSize:16, fontWeight:800, color:B.a, marginTop:16 }}>{CAMPAIGN_2026.slogan}</div>
+        </div>
+        <div>
+          <div style={{ fontSize:11, fontWeight:700, color:B.wh, letterSpacing:'.15em', textTransform:'uppercase', marginBottom:18 }}>Servicii</div>
+          {SERVICES.slice(0,7).map(s => (
+            <div key={s.slug} style={{ fontSize:13, marginBottom:9, color:'rgba(255,255,255,.5)', cursor:'pointer' }}>{s.name}</div>
+          ))}
+        </div>
+        <div>
+          <div style={{ fontSize:11, fontWeight:700, color:B.wh, letterSpacing:'.15em', textTransform:'uppercase', marginBottom:18 }}>Clinică</div>
+          {['Despre noi','Echipa','Tehnologii','Blog','Cariere','Contacte'].map(s => (
+            <div key={s} style={{ fontSize:13, marginBottom:9, color:'rgba(255,255,255,.5)', cursor:'pointer' }}>{s}</div>
+          ))}
+        </div>
+        <div>
+          <div style={{ fontSize:11, fontWeight:700, color:B.wh, letterSpacing:'.15em', textTransform:'uppercase', marginBottom:18 }}>Contact</div>
+          {LOCATIONS.slice(0,2).map(l => (
+            <div key={l.city} style={{ marginBottom:14 }}>
+              <div style={{ fontSize:13, fontWeight:600, color:B.wh }}>{l.city}</div>
+              <div style={{ fontSize:12, color:'rgba(255,255,255,.45)' }}>{l.address} · {l.phone}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div style={{ borderTop:'1px solid rgba(255,255,255,.07)', paddingTop:20, display:'flex', justifyContent:'space-between', alignItems:'center' }}>
+        <span style={{ fontSize:11, color:'rgba(255,255,255,.25)' }}>© {CAMPAIGN_2026.year} Smile Dent Team</span>
+        <div style={{ display:'flex', gap:6 }}>
+          {['RO','RU','EN'].map(l => (
+            <span key={l} style={{ background:'rgba(255,255,255,.08)', color:'rgba(255,255,255,.5)', padding:'3px 8px', borderRadius:40, fontSize:10, fontWeight:700, cursor:'pointer' }}>{l}</span>
+          ))}
+        </div>
+      </div>
+    </footer>
+  )
+}
+
+/* ─── Main Export ─────────────────────────── */
+export function ConsultatieOnlinePage() {
+  return (
+    <>
+      <style>{ANIM}</style>
+      <Nav/>
+      <Hero/>
+      <Process/>
+      <Benefits/>
+      <CtaStrip/>
+      <AppointmentForm/>
+      <Footer/>
+    </>
+  )
+}
