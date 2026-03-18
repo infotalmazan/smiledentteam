@@ -40,7 +40,7 @@ export function Logo({ height = 38, light = false, className }: LogoProps) {
         lineHeight: 1.1,
       }}>
         <span style={{
-          fontFamily: "'Syne', sans-serif",
+          fontFamily: "'Clash Display', 'Satoshi', sans-serif",
           fontSize: Math.round(height * 0.5),
           fontWeight: 800,
           color: teal,
@@ -50,7 +50,7 @@ export function Logo({ height = 38, light = false, className }: LogoProps) {
           Smile Dent
         </span>
         <span style={{
-          fontFamily: "'Syne', sans-serif",
+          fontFamily: "'Clash Display', 'Satoshi', sans-serif",
           fontSize: Math.round(height * 0.5),
           fontWeight: 800,
           color: teal,

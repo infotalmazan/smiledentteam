@@ -66,8 +66,8 @@ module.exports = {
         },
       },
       fontFamily: {
-        sans: ['DM Sans', 'Helvetica Neue', 'Arial', 'sans-serif'],
-        display: ['Syne', 'sans-serif'],
+        sans: ['Satoshi', 'Helvetica Neue', 'Arial', 'sans-serif'],
+        display: ['Clash Display', 'Satoshi', 'sans-serif'],
       },
       borderRadius: {
         lg: 'var(--radius)',
