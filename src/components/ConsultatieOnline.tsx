@@ -7,6 +7,8 @@ import { Logo } from './Logo'
 const ANIM = `
   @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
   @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+  @keyframes orbit{from{transform:rotate(0deg) translateX(var(--r)) rotate(0deg)}to{transform:rotate(360deg) translateX(var(--r)) rotate(-360deg)}}
+  @keyframes pulse{0%,100%{opacity:.6;transform:scale(1)}50%{opacity:1;transform:scale(1.05)}}
 `
 
 /* ─── Shared UI ──────────────────────────── */
@@ -69,47 +71,56 @@ function Nav() {
   )
 }
 
+/* ─── All world flags for globe effect ──── */
+const FLAGS = ['🇩🇪','🇫🇷','🇬🇧','🇺🇸','🇪🇸','🇮🇹','🇵🇹','🇷🇴','🇦🇹','🇧🇪','🇳🇱','🇸🇪','🇨🇭','🇮🇪','🇨🇦','🇦🇺','🇮🇱','🇬🇷','🇨🇿','🇩🇰','🇳🇴','🇫🇮','🇵🇱','🇭🇺','🇹🇷','🇯🇵','🇰🇷','🇧🇷','🇦🇷','🇲🇽']
+
 /* ─── Hero ──────────────────────────────── */
 function Hero() {
   return (
     <section style={{ background:`linear-gradient(160deg, ${B.nv} 0%, #0f2e24 50%, ${B.pd} 100%)`, position:'relative', overflow:'hidden' }}>
-      <div style={{ position:'absolute', top:-100, right:-60, width:350, height:350, borderRadius:'50%', border:'1px solid rgba(255,255,255,.04)' }}/>
-      <div style={{ maxWidth:1200, margin:'0 auto', padding:'72px 48px 64px', display:'grid', gridTemplateColumns:'1fr 1fr', gap:60, alignItems:'center' }}>
+      <div style={{ maxWidth:1200, margin:'0 auto', padding:'72px 48px 64px', display:'grid', gridTemplateColumns:'1fr 1fr', gap:40, alignItems:'center' }}>
         <div>
           <SectionBadge light>Pentru diaspora</SectionBadge>
-          <h1 style={{ fontFamily:"'Syne',sans-serif", fontSize:46, fontWeight:800, color:B.wh, lineHeight:1.08, letterSpacing:'-.03em', margin:'0 0 18px' }}>
+          <h1 style={{ fontFamily:"'Syne',sans-serif", fontSize:44, fontWeight:800, color:B.wh, lineHeight:1.08, letterSpacing:'-.03em', margin:'0 0 18px' }}>
             Ești în <span style={{ color:B.a }}>străinătate</span>?<br/>Începe cu o consultație online.
           </h1>
-          <p style={{ fontSize:17, lineHeight:1.7, color:'rgba(255,255,255,.65)', maxWidth:460, margin:'0 0 32px' }}>
-            Discutăm la distanță, îți oferim un plan clar și personalizat, iar tu vii pregătit la prima vizită în clinică. Fără surprize, fără pierdere de timp.
+          <p style={{ fontSize:16, lineHeight:1.7, color:'rgba(255,255,255,.65)', maxWidth:440, margin:'0 0 28px' }}>
+            Discutăm la distanță, îți oferim un plan clar și personalizat, iar tu vii pregătit la prima vizită. Fără surprize, fără pierdere de timp.
           </p>
           <div style={{ display:'flex', gap:14 }}>
             <Btn pink style={{ fontSize:15 }}>Programează consultație →</Btn>
             <Btn outline style={{ borderColor:'rgba(255,255,255,.3)', color:B.wh }}>Cum funcționează ↓</Btn>
           </div>
         </div>
-        {/* Right — Diaspora markets */}
-        <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:14 }}>
-          {DIASPORA.map(d => (
-            <div key={d.country} style={{
-              background:'rgba(255,255,255,.06)', border:'1px solid rgba(255,255,255,.1)',
-              borderRadius:14, padding:'20px', display:'flex', alignItems:'center', gap:14,
-            }}>
-              <div style={{ fontSize:32 }}>{d.flag}</div>
-              <div>
-                <div style={{ fontFamily:"'Syne',sans-serif", fontSize:18, fontWeight:800, color:B.wh }}>{d.country}</div>
-                <div style={{ fontSize:12, color:'rgba(255,255,255,.45)' }}>{d.population} moldoveni</div>
-              </div>
-            </div>
+        {/* Right — Globe with floating flags */}
+        <div style={{ display:'flex', justifyContent:'center', alignItems:'center', position:'relative', height:400 }}>
+          {/* Orbiting rings */}
+          {[140,190,240].map((r,ri) => (
+            <div key={ri} style={{ position:'absolute', width:r*2, height:r*2, borderRadius:'50%', border:'1px solid rgba(255,255,255,.06)' }}/>
           ))}
+          {/* Floating flags in orbits */}
+          {FLAGS.map((flag, i) => {
+            const orbit = [140,190,240][i % 3]
+            const duration = 20 + (i % 5) * 8
+            const delay = -(i * 1.2)
+            return (
+              <div key={i} style={{
+                position:'absolute', fontSize: i < 10 ? 22 : 16,
+                animation:`orbit ${duration}s ${delay}s linear infinite`,
+                ['--r' as string]: `${orbit}px`,
+                opacity: i < 15 ? .8 : .4,
+              }}>{flag}</div>
+            )
+          })}
+          {/* Center — stat bubble */}
           <div style={{
-            background:`linear-gradient(135deg,${B.a}22,${B.a}11)`, border:`1px solid ${B.a}33`,
-            borderRadius:14, padding:'20px', display:'flex', alignItems:'center', justifyContent:'center',
+            width:160, height:160, borderRadius:'50%', zIndex:2,
+            background:`radial-gradient(circle, ${B.a}33 0%, ${B.a}11 60%, transparent 70%)`,
+            display:'flex', alignItems:'center', justifyContent:'center', flexDirection:'column',
+            border:`2px solid ${B.a}44`, animation:'pulse 3s ease-in-out infinite',
           }}>
-            <div style={{ textAlign:'center' }}>
-              <div style={{ fontFamily:"'Syne',sans-serif", fontSize:22, fontWeight:800, color:B.a }}>455.000+</div>
-              <div style={{ fontSize:12, color:'rgba(255,255,255,.5)' }}>moldoveni în diasporă</div>
-            </div>
+            <div style={{ fontFamily:"'Syne',sans-serif", fontSize:32, fontWeight:800, color:B.a, lineHeight:1 }}>455K+</div>
+            <div style={{ fontSize:11, color:'rgba(255,255,255,.6)', marginTop:4, textAlign:'center', lineHeight:1.3 }}>moldoveni<br/>în diasporă</div>
           </div>
         </div>
       </div>
@@ -129,28 +140,48 @@ function Process() {
   return (
     <section style={{ background:B.wh, padding:'72px 48px' }}>
       <div style={{ maxWidth:1200, margin:'0 auto' }}>
-        <div style={{ textAlign:'center', marginBottom:48 }}>
-          <SectionBadge>Cum funcționează</SectionBadge>
-          <h2 style={{ fontFamily:"'Syne',sans-serif", fontSize:36, fontWeight:800, color:B.nv, letterSpacing:'-.03em', margin:'0 0 12px' }}>
-            4 pași simpli<br/>către <span style={{ color:B.p }}>tratamentul tău</span>
-          </h2>
-        </div>
-        <div style={{ display:'grid', gridTemplateColumns:'repeat(4,1fr)', gap:20 }}>
-          {STEPS.map(s => (
-            <div key={s.num} style={{
-              background:B.ps, borderRadius:14, padding:'28px 24px', border:`1px solid ${B.bdr}`, position:'relative',
-            }}>
-              <div style={{ fontFamily:"'Syne',sans-serif", fontSize:44, fontWeight:800, color:B.pl, position:'absolute', top:14, right:16 }}>{s.num}</div>
-              <div style={{
-                width:36, height:36, borderRadius:8, background:`linear-gradient(135deg,${B.p},${B.pm})`,
-                display:'flex', alignItems:'center', justifyContent:'center', marginBottom:14,
-              }}>
-                <span style={{ color:B.wh, fontSize:13, fontWeight:800 }}>{s.num}</span>
+        <SectionBadge>Cum funcționează</SectionBadge>
+        <h2 style={{ fontFamily:"'Syne',sans-serif", fontSize:34, fontWeight:800, color:B.nv, letterSpacing:'-.03em', margin:'0 0 36px' }}>
+          4 pași simpli către <span style={{ color:B.p }}>tratamentul tău</span>
+        </h2>
+        <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:40, alignItems:'start' }}>
+          {/* Left — Video */}
+          <div style={{
+            borderRadius:18, overflow:'hidden', position:'relative', height:420,
+            background:`linear-gradient(160deg, ${B.nv}, #0f2e24)`, cursor:'pointer',
+          }}>
+            <div style={{ position:'absolute', inset:0, display:'flex', alignItems:'center', justifyContent:'center' }}>
+              <div style={{ width:72, height:72, borderRadius:'50%', background:B.a, display:'flex', alignItems:'center', justifyContent:'center', transition:'transform .2s' }}>
+                <svg width="28" height="28" viewBox="0 0 24 24" fill={B.wh} stroke="none"><polygon points="5 3 19 12 5 21 5 3"/></svg>
               </div>
-              <h3 style={{ fontFamily:"'Syne',sans-serif", fontSize:16, fontWeight:700, color:B.nv, margin:'0 0 6px' }}>{s.title}</h3>
-              <p style={{ fontSize:13, lineHeight:1.6, color:B.gr, margin:0 }}>{s.desc}</p>
             </div>
-          ))}
+            <div style={{ position:'absolute', bottom:20, left:20, right:20 }}>
+              <div style={{ fontSize:14, fontWeight:700, color:B.wh }}>Cum funcționează Consultația Online?</div>
+              <div style={{ fontSize:12, color:'rgba(255,255,255,.5)', marginTop:4 }}>2:30 min · Explicat de echipa SDT</div>
+            </div>
+          </div>
+          {/* Right — Steps */}
+          <div style={{ display:'flex', flexDirection:'column', gap:18 }}>
+            {STEPS.map((s,i) => (
+              <div key={s.num} style={{
+                display:'flex', gap:16, alignItems:'flex-start', padding:'18px 20px',
+                background: i===0 ? B.ps : B.wh, borderRadius:14, border:`1px solid ${i===0 ? B.p+'33' : B.bdr}`,
+                transition:'all .2s',
+              }}>
+                <div style={{
+                  width:40, height:40, borderRadius:10, flexShrink:0,
+                  background: i===0 ? `linear-gradient(135deg,${B.p},${B.pm})` : B.pl,
+                  display:'flex', alignItems:'center', justifyContent:'center',
+                }}>
+                  <span style={{ color: i===0 ? B.wh : B.p, fontSize:14, fontWeight:800 }}>{s.num}</span>
+                </div>
+                <div>
+                  <h3 style={{ fontFamily:"'Syne',sans-serif", fontSize:16, fontWeight:700, color:B.nv, margin:'0 0 4px' }}>{s.title}</h3>
+                  <p style={{ fontSize:13, lineHeight:1.6, color:B.gr, margin:0 }}>{s.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>
@@ -208,6 +239,131 @@ function CtaStrip() {
           Sănătatea nu are sezon. Programează o consultație online și pregătește-ți vizita acasă.
         </p>
         <Btn pink style={{ fontSize:16, padding:'16px 36px' }}>Programează consultație online →</Btn>
+      </div>
+    </section>
+  )
+}
+
+/* ─── Diaspora Testimonials ──────────────── */
+function DiasporaTestimonials() {
+  const testimonials = [
+    { text:'Am planificat totul din Berlin. Când am ajuns la Chișinău, am început tratamentul imediat. Zero pierdere de timp.', author:'Andrei K.', country:'Germania 🇩🇪', service:'Implant Dentar', rating:5 },
+    { text:'Consultația video a fost exactă și profesionistă. Am primit planul în 24h cu toate costurile clare.', author:'Elena M.', country:'UK 🇬🇧', service:'Coroane Dentare', rating:5 },
+    { text:'Din Paris am trimis tomografia, am discutat pe video, iar când am venit acasă totul era pregătit.', author:'Ion C.', country:'Franța 🇫🇷', service:'All-On-4', rating:5 },
+    { text:'Cel mai bun serviciu pe care l-am întâlnit. Comunicare excelentă, totul transparent.', author:'Maria D.', country:'SUA 🇺🇸', service:'Fațete Dentare', rating:5 },
+    { text:'Am economisit 2 săptămâni de concediu. Totul a fost planificat înainte să ajung.', author:'Cristina R.', country:'Spania 🇪🇸', service:'Digital Check-Up', rating:5 },
+  ]
+  return (
+    <section style={{ background:B.ps, padding:'72px 48px' }}>
+      <div style={{ maxWidth:1200, margin:'0 auto' }}>
+        <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-end', marginBottom:32 }}>
+          <div>
+            <SectionBadge>Feedback din diasporă</SectionBadge>
+            <h2 style={{ fontFamily:"'Syne',sans-serif", fontSize:32, fontWeight:800, color:B.nv, margin:0 }}>
+              Pacienți din <span style={{ color:B.p }}>toată lumea</span>
+            </h2>
+          </div>
+          <div style={{ display:'flex', alignItems:'center', gap:6 }}>
+            <div style={{ fontFamily:"'Syne',sans-serif", fontSize:22, fontWeight:800, color:B.p }}>4.9</div>
+            <div style={{ color:'#fbb040', fontSize:12 }}>★★★★★</div>
+            <div style={{ fontSize:11, color:B.gr }}>Google</div>
+          </div>
+        </div>
+        <div style={{ display:'flex', gap:16, overflowX:'auto', paddingBottom:8 }}>
+          {testimonials.map((t,i) => (
+            <div key={i} style={{ background:B.wh, borderRadius:16, padding:'24px', minWidth:300, flexShrink:0, border:`1px solid ${B.bdr}`, borderTop:`3px solid ${B.p}` }}>
+              <div style={{ display:'flex', justifyContent:'space-between', marginBottom:12 }}>
+                <span style={{ fontSize:11, fontWeight:600, color:B.p, background:B.pl, padding:'3px 10px', borderRadius:100 }}>{t.country}</span>
+                <div style={{ color:'#fbb040', fontSize:11 }}>{'★'.repeat(t.rating)}</div>
+              </div>
+              <p style={{ fontSize:14, lineHeight:1.65, color:B.nv, margin:'0 0 14px', fontStyle:'italic' }}>&ldquo;{t.text}&rdquo;</p>
+              <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center' }}>
+                <div style={{ fontSize:13, fontWeight:700, color:B.nv }}>— {t.author}</div>
+                <span style={{ fontSize:10, color:B.gr }}>{t.service}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+/* ─── Video Reels ────────────────────────── */
+function VideoReels() {
+  const videos = [
+    { name:'Andrei din Berlin', service:'Implant Dentar', flag:'🇩🇪' },
+    { name:'Elena din Londra', service:'Coroane Dentare', flag:'🇬🇧' },
+    { name:'Ion din Paris', service:'All-On-4', flag:'🇫🇷' },
+    { name:'Maria din New York', service:'Fațete', flag:'🇺🇸' },
+    { name:'Cristina din Madrid', service:'Digital Check-Up', flag:'🇪🇸' },
+  ]
+  return (
+    <section style={{ background:B.wh, padding:'72px 48px' }}>
+      <div style={{ maxWidth:1200, margin:'0 auto' }}>
+        <SectionBadge>Video testimoniale</SectionBadge>
+        <h2 style={{ fontFamily:"'Syne',sans-serif", fontSize:32, fontWeight:800, color:B.nv, margin:'0 0 28px' }}>
+          Povești <span style={{ color:B.a }}>reale</span> din diasporă
+        </h2>
+        <div style={{ display:'flex', gap:14, overflowX:'auto', paddingBottom:8 }}>
+          {videos.map((v,i) => (
+            <div key={i} style={{
+              width:200, height:350, borderRadius:18, flexShrink:0, cursor:'pointer',
+              background:`linear-gradient(160deg, ${B.nv}, #0f2e24)`,
+              position:'relative', overflow:'hidden', transition:'transform .2s',
+            }}
+              onMouseEnter={e => e.currentTarget.style.transform='translateY(-4px)'}
+              onMouseLeave={e => e.currentTarget.style.transform=''}
+            >
+              <div style={{ position:'absolute', inset:0, display:'flex', alignItems:'center', justifyContent:'center' }}>
+                <div style={{ width:52, height:52, borderRadius:'50%', background:B.a, display:'flex', alignItems:'center', justifyContent:'center' }}>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill={B.wh} stroke="none"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                </div>
+              </div>
+              <div style={{ position:'absolute', top:12, left:12 }}>
+                <span style={{ fontSize:24 }}>{v.flag}</span>
+              </div>
+              <div style={{ position:'absolute', top:12, right:12 }}>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.4)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+              </div>
+              <div style={{ position:'absolute', bottom:16, left:14, right:14 }}>
+                <div style={{ fontSize:13, fontWeight:700, color:B.wh }}>{v.name}</div>
+                <div style={{ fontSize:10, color:'rgba(255,255,255,.5)', marginTop:2 }}>{v.service}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+/* ─── Why choose section ─────────────────── */
+function WhyChoose() {
+  const reasons = [
+    { num:'01', title:'Zero timp pierdut', desc:'Planifici totul de acasă. Când ajungi — tratamentul începe imediat.' },
+    { num:'02', title:'Prețuri transparente', desc:'Știi exact cât costă înainte de a lua avionul. Fără costuri ascunse.' },
+    { num:'03', title:'Calitate europeană', desc:'Aceleași tehnologii 3D și materiale ca în clinicile din Germania sau Elveția.' },
+    { num:'04', title:'Echipă dedicată', desc:'Un coordonator personal care te ghidează din momentul consultației până la finalizare.' },
+    { num:'05', title:'Rate 0%', desc:'Planuri de finanțare flexibile pentru tratamente complexe. Fără dobândă.' },
+    { num:'06', title:'Garanție pe viață', desc:'Pe implanturi și structuri protetice. Revii oricând pentru control gratuit.' },
+  ]
+  return (
+    <section style={{ background:`linear-gradient(160deg, ${B.nv}, #0f2e24)`, padding:'72px 48px' }}>
+      <div style={{ maxWidth:1200, margin:'0 auto' }}>
+        <SectionBadge light>De ce Smile Dent Team</SectionBadge>
+        <h2 style={{ fontFamily:"'Syne',sans-serif", fontSize:32, fontWeight:800, color:B.wh, margin:'0 0 36px' }}>
+          6 motive să alegi <span style={{ color:B.a }}>SDT</span>
+        </h2>
+        <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:16 }}>
+          {reasons.map(r => (
+            <div key={r.num} style={{ background:'rgba(255,255,255,.05)', border:'1px solid rgba(255,255,255,.08)', borderRadius:14, padding:'24px' }}>
+              <span style={{ fontFamily:"'Syne',sans-serif", fontSize:28, fontWeight:800, color:'rgba(255,255,255,.1)' }}>{r.num}</span>
+              <h3 style={{ fontFamily:"'Syne',sans-serif", fontSize:16, fontWeight:700, color:B.wh, margin:'6px 0 6px' }}>{r.title}</h3>
+              <p style={{ fontSize:13, lineHeight:1.6, color:'rgba(255,255,255,.55)', margin:0 }}>{r.desc}</p>
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   )
@@ -328,6 +484,9 @@ export function ConsultatieOnlinePage() {
       <Hero/>
       <Process/>
       <Benefits/>
+      <DiasporaTestimonials/>
+      <VideoReels/>
+      <WhyChoose/>
       <CtaStrip/>
       <AppointmentForm/>
       <Footer/>
