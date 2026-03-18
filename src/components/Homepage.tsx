@@ -447,33 +447,36 @@ const SVC_DATA: { photo:string; desc:string }[] = [
 
 function Services() {
   return (
-    <section id="servicii" style={{ background:B.cr, padding:'36px 52px 32px' }}>
-      <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-end', marginBottom:14 }}>
-        <div>
+    <section id="servicii" style={{ background:B.cr, padding:'40px 52px 36px' }}>
+      <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-end', marginBottom:16 }}>
+        <div style={{ maxWidth:600 }}>
           <Badge>Servicii complete</Badge>
-          <h2 style={{ fontFamily:"'Syne',sans-serif", fontSize:26, fontWeight:800, color:B.nv, letterSpacing:'-.03em', margin:'0', lineHeight:1.1 }}>
+          <h2 style={{ fontFamily:"'Syne',sans-serif", fontSize:26, fontWeight:800, color:B.nv, letterSpacing:'-.03em', margin:'0 0 8px', lineHeight:1.1 }}>
             Tot ce ai nevoie, într-un singur loc
           </h2>
+          <p style={{ fontSize:13, color:B.gr, lineHeight:1.5, margin:0 }}>
+            De la prevenție la reabilitare completă — 9 specialități stomatologice cu tehnologii 3D de ultimă generație.
+          </p>
         </div>
-        <a href="/servicii" style={{ fontSize:13, fontWeight:700, color:B.p, textDecoration:'none' }}>Toate serviciile →</a>
+        <a href="/servicii" style={{ fontSize:13, fontWeight:700, color:B.p, textDecoration:'none', flexShrink:0 }}>Toate serviciile →</a>
       </div>
-      <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:10 }}>
+      <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:12 }}>
         {SERVICES.map((s, i) => (
           <a key={s.slug} href="/servicii" style={{ textDecoration:'none' }}>
             <div style={{
-              background:B.wh, border:`1px solid ${B.bdr}`, borderRadius:10, cursor:'pointer',
+              background:B.wh, border:`1px solid ${B.bdr}`, borderRadius:12, cursor:'pointer',
               overflow:'hidden', transition:'transform .2s,box-shadow .2s,border-color .2s',
             }}
             onMouseEnter={e => { const el=e.currentTarget; el.style.transform='translateY(-2px)'; el.style.boxShadow='0 6px 20px rgba(10,107,92,.08)'; el.style.borderColor=B.p }}
             onMouseLeave={e => { const el=e.currentTarget; el.style.transform=''; el.style.boxShadow=''; el.style.borderColor=B.bdr }}
             >
-              <div style={{ position:'relative', height:105, overflow:'hidden' }}>
+              <div style={{ position:'relative', height:115, overflow:'hidden' }}>
                 <img src={SVC_DATA[i]?.photo || SVC_DATA[0].photo} alt={s.name} style={{ width:'100%', height:'100%', objectFit:'cover' }}/>
                 <div style={{ position:'absolute', inset:0, background:'linear-gradient(to top, rgba(10,30,24,.25) 0%, transparent 50%)' }}/>
               </div>
-              <div style={{ padding:'10px 13px 11px' }}>
-                <div style={{ fontFamily:"'Syne',sans-serif", fontSize:13, fontWeight:700, color:B.nv, lineHeight:1.2, marginBottom:3 }}>{s.name}</div>
-                <div style={{ fontSize:10.5, color:B.gr, lineHeight:1.45 }}>{SVC_DATA[i]?.desc || ''}</div>
+              <div style={{ padding:'11px 14px 13px' }}>
+                <div style={{ fontFamily:"'Syne',sans-serif", fontSize:14, fontWeight:700, color:B.nv, lineHeight:1.2, marginBottom:4 }}>{s.name}</div>
+                <div style={{ fontSize:11, color:B.gr, lineHeight:1.5 }}>{SVC_DATA[i]?.desc || ''}</div>
               </div>
             </div>
           </a>
@@ -770,9 +773,9 @@ function Appointment() {
     <section style={{ background:`linear-gradient(135deg,${B.p},${B.pm})`, padding:'96px 52px' }}>
       <div style={{ display:'flex', gap:80, alignItems:'center' }}>
         <div style={{ flex:1, color:B.wh }}>
-          <div style={{ marginBottom:32, padding:'20px 24px', background:'rgba(255,255,255,.08)', border:'1px solid rgba(255,255,255,.15)', borderRadius:12 }}>
-            <div style={{ fontFamily:"'Syne',sans-serif", fontSize:32, fontWeight:800, color:B.a, letterSpacing:'-.02em' }}>{CAMPAIGN_2026.slogan}</div>
-            <div style={{ fontSize:14, color:'rgba(255,255,255,.7)', marginTop:6 }}>Investește în sănătatea ta — începe cu Digital Check-Up.</div>
+          <div style={{ marginBottom:32, padding:'20px 24px', background:B.a, borderRadius:12 }}>
+            <div style={{ fontFamily:"'Syne',sans-serif", fontSize:32, fontWeight:800, color:B.wh, letterSpacing:'-.02em' }}>{CAMPAIGN_2026.slogan}</div>
+            <div style={{ fontSize:14, color:'rgba(255,255,255,.8)', marginTop:6 }}>Investește în sănătatea ta — începe cu Digital Check-Up.</div>
           </div>
           <h2 style={{ fontFamily:"'Syne',sans-serif", fontSize:38, fontWeight:800, lineHeight:1.06, letterSpacing:'-.03em', margin:'0 0 20px', color:B.wh }}>
             Fă primul pas<br/>spre zâmbetul perfect
