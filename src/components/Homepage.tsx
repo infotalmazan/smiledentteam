@@ -377,10 +377,10 @@ const TECHS = [
 function Technologies() {
   return (
     <section id="tehnologii" style={{ background:B.wh, padding:'80px 52px' }}>
-      <div style={{ display:'flex', gap:48, alignItems:'flex-start' }}>
-        <div style={{ width:260, flexShrink:0 }}>
-          <SHead eyebrow="Tehnologii 2025" title={<>Viitorul<br/>stomatologiei</>}
-            sub="Investim în cele mai noi tehnologii pentru cel mai bun tratament posibil."
+      <div style={{ display:'flex', gap:36, alignItems:'flex-start' }}>
+        <div style={{ width:300, flexShrink:0 }}>
+          <SHead eyebrow="Tehnologii 2026" title={<>Viitorul<br/>e digital</>}
+            sub="Investim în tehnologii de ultimă generație pentru rezultate perfecte."
           />
           <Btn>Analog → digital →</Btn>
           <div style={{ marginTop:32, padding:'22px', background:`linear-gradient(135deg,${B.pm},${B.p})`, borderRadius:14, color:B.wh }}>
@@ -412,30 +412,33 @@ function Technologies() {
 /* ─── Before / After ──────────────────────── */
 function BeforeAfter() {
   const cases = [
-    { label:'Implanturi + Protetică', before:'Dinți lipsă, carii avansate', after:'Zâmbet complet restaurat' },
-    { label:'Digital Smile Design',   before:'Dinți inegali, decolorați',   after:'Fațete ceramice perfecte' },
-    { label:'Ortodonție Digitală',    before:'Malocluzii, spații',          after:'Aliniere perfectă 3D' },
-    { label:'All-on-4 Complet',       before:'Edentație totală',            after:'Arcadă completă 1 zi' },
+    { label:'Implanturi + Protetică', before:'Dinți lipsă, carii avansate', after:'Zâmbet complet restaurat', photoBefore:'https://images.unsplash.com/photo-1606811841689-23dfddce3e95?w=300&h=200&fit=crop', photoAfter:'https://images.unsplash.com/photo-1581585090421-4b0a0e5e3e44?w=300&h=200&fit=crop' },
+    { label:'Digital Smile Design',   before:'Dinți inegali, decolorați',   after:'Fațete ceramice perfecte', photoBefore:'https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?w=300&h=200&fit=crop', photoAfter:'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=300&h=200&fit=crop' },
+    { label:'Ortodonție Digitală',    before:'Malocluzii, spații',          after:'Aliniere perfectă 3D', photoBefore:'https://images.unsplash.com/photo-1598256989800-fe5f95da9787?w=300&h=200&fit=crop', photoAfter:'https://images.unsplash.com/photo-1609840114035-3c981b782dfe?w=300&h=200&fit=crop' },
+    { label:'All-on-4 Complet',       before:'Edentație totală',            after:'Arcadă completă 1 zi', photoBefore:'https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=300&h=200&fit=crop', photoAfter:'https://images.unsplash.com/photo-1606811971618-4486d14f3f99?w=300&h=200&fit=crop' },
   ]
   return (
-    <section style={{ background:`linear-gradient(135deg,${B.p},${B.pm})`, padding:'88px 52px' }}>
+    <section style={{ background:`linear-gradient(160deg,${B.nv},#0f2e24)`, padding:'72px 52px' }}>
       <SHead center light eyebrow="Rezultate reale" title="Transformări care schimbă vieți"
         sub="Fiecare caz este unic. Iată câteva dintre transformările de care se bucură pacienții noștri."
       />
-      <div style={{ display:'grid', gridTemplateColumns:'repeat(4,1fr)', gap:16 }}>
+      <div style={{ display:'flex', gap:16, overflowX:'auto', paddingBottom:8 }}>
         {cases.map(c => (
-          <div key={c.label} style={{ background:'rgba(255,255,255,.08)', border:'1px solid rgba(255,255,255,.12)', borderRadius:14, overflow:'hidden' }}>
-            <div style={{ height:180, background:'rgba(255,255,255,.05)', display:'flex', alignItems:'center', justifyContent:'center', position:'relative' }}>
-              <span style={{ fontSize:11, color:'rgba(255,255,255,.28)', letterSpacing:'.1em' }}>FOTO ÎNAINTE / DUPĂ</span>
-              <div style={{ position:'absolute', left:'50%', top:0, bottom:0, width:2, background:'rgba(255,255,255,.18)' }}/>
-              <div style={{ position:'absolute', left:'50%', top:'50%', transform:'translate(-50%,-50%)', width:28, height:28, borderRadius:'50%', background:B.wh, display:'flex', alignItems:'center', justifyContent:'center' }}>
-                <span style={{ fontSize:10, color:B.p, fontWeight:800 }}>↔</span>
+          <div key={c.label} style={{ background:'rgba(255,255,255,.06)', border:'1px solid rgba(255,255,255,.1)', borderRadius:16, overflow:'hidden', minWidth:260, flexShrink:0, flex:1 }}>
+            <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', height:160, position:'relative' }}>
+              <img src={c.photoBefore} alt="Înainte" style={{ width:'100%', height:'100%', objectFit:'cover', filter:'grayscale(.3)' }}/>
+              <img src={c.photoAfter} alt="După" style={{ width:'100%', height:'100%', objectFit:'cover' }}/>
+              <div style={{ position:'absolute', left:'50%', top:0, bottom:0, width:2, background:'rgba(255,255,255,.3)' }}/>
+              <div style={{ position:'absolute', left:'50%', top:'50%', transform:'translate(-50%,-50%)', width:30, height:30, borderRadius:'50%', background:B.wh, display:'flex', alignItems:'center', justifyContent:'center', boxShadow:'0 2px 8px rgba(0,0,0,.3)' }}>
+                <span style={{ fontSize:11, color:B.p, fontWeight:800 }}>↔</span>
               </div>
+              <div style={{ position:'absolute', top:8, left:8, fontSize:9, fontWeight:700, color:B.wh, background:'rgba(0,0,0,.4)', padding:'2px 8px', borderRadius:4 }}>ÎNAINTE</div>
+              <div style={{ position:'absolute', top:8, right:8, fontSize:9, fontWeight:700, color:B.wh, background:'rgba(0,0,0,.4)', padding:'2px 8px', borderRadius:4 }}>DUPĂ</div>
             </div>
-            <div style={{ padding:'18px 20px' }}>
-              <div style={{ fontSize:10, fontWeight:700, color:B.a, letterSpacing:'.1em', textTransform:'uppercase', marginBottom:8 }}>{c.label}</div>
-              <div style={{ fontSize:12, color:'rgba(255,255,255,.5)', marginBottom:4 }}>Înainte: <span style={{ color:'rgba(255,255,255,.75)' }}>{c.before}</span></div>
-              <div style={{ fontSize:12, color:'rgba(255,255,255,.5)' }}>După: <span style={{ color:B.wh, fontWeight:600 }}>{c.after}</span></div>
+            <div style={{ padding:'16px 18px' }}>
+              <div style={{ display:'inline-flex', background:B.a, color:B.wh, fontSize:9, fontWeight:700, padding:'3px 10px', borderRadius:100, letterSpacing:'.08em', textTransform:'uppercase', marginBottom:8 }}>{c.label}</div>
+              <div style={{ fontSize:12, color:'rgba(255,255,255,.55)', marginBottom:3 }}>Înainte: <span style={{ color:'rgba(255,255,255,.8)' }}>{c.before}</span></div>
+              <div style={{ fontSize:12, color:'rgba(255,255,255,.55)' }}>După: <span style={{ color:B.wh, fontWeight:700 }}>{c.after}</span></div>
             </div>
           </div>
         ))}
