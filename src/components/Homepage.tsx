@@ -192,12 +192,8 @@ function Hero() {
 
         {/* COL 2 — Photo */}
         <div style={{ position:'relative', overflow:'hidden' }}>
-          <TeamPhoto/>
+          <TeamPhoto style={{ objectPosition:'center 20%' }}/>
           <div style={{ position:'absolute', inset:0, background:'linear-gradient(to top,rgba(10,30,24,.22) 0%,transparent 55%)', pointerEvents:'none' }}/>
-          <FloatCard cls="fl1" style={{ position:'absolute', top:24, right:-14 }}>
-            <div style={{ fontFamily:"'Syne',sans-serif", fontSize:26, fontWeight:800, color:B.p }}>{STATS.patients}</div>
-            <div style={{ fontSize:11, fontWeight:600, color:B.nv }}>Pacienți tratați</div>
-          </FloatCard>
           <FloatCard cls="fl2" style={{ position:'absolute', bottom:24, left:-14 }}>
             <div style={{ color:'#fbb040', fontSize:14, marginBottom:2 }}>★★★★★</div>
             <div style={{ fontFamily:"'Syne',sans-serif", fontSize:16, fontWeight:800, color:B.nv }}>4.9 / 5.0</div>
@@ -208,21 +204,28 @@ function Hero() {
         <div style={{ background:B.bdr }}/>
 
         {/* COL 3 — Services list */}
-        <div style={{ padding:'32px 32px', display:'flex', flexDirection:'column', justifyContent:'center' }}>
-          <div style={{ fontSize:10, fontWeight:700, color:B.p, letterSpacing:'.22em', textTransform:'uppercase', marginBottom:16 }}>Servicii</div>
+        <div style={{ padding:'24px 28px', display:'flex', flexDirection:'column', justifyContent:'center' }}>
+          <div style={{ fontSize:10, fontWeight:700, color:B.p, letterSpacing:'.22em', textTransform:'uppercase', marginBottom:12 }}>Servicii</div>
           {SVC_LIST.map((s, i) => (
             <div key={s} style={{ display:'flex', alignItems:'center', justifyContent:'space-between',
-              padding:'14px 0', borderBottom:`1px solid ${B.bdr}`, cursor:'pointer', transition:'color .15s', color:B.nv }}
+              padding:'12px 0', borderBottom:`1px solid ${B.bdr}`, cursor:'pointer', transition:'color .15s', color:B.nv }}
               onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = B.p }}
               onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = B.nv }}
             >
-              <div style={{ display:'flex', alignItems:'center', gap:12 }}>
-                <span style={{ fontSize:12, color:'rgba(10,107,92,.3)', fontWeight:700 }}>{String(i+1).padStart(2,'0')}</span>
-                <span style={{ fontSize:14, fontWeight:600 }}>{s}</span>
+              <div style={{ display:'flex', alignItems:'center', gap:10 }}>
+                <span style={{ fontSize:11, color:'rgba(10,107,92,.3)', fontWeight:700 }}>{String(i+1).padStart(2,'0')}</span>
+                <span style={{ fontSize:13, fontWeight:600 }}>{s}</span>
               </div>
-              <span style={{ fontSize:17, color:B.gr }}>→</span>
+              <span style={{ fontSize:16, color:B.gr }}>→</span>
             </div>
           ))}
+          <div style={{ marginTop:16, background:B.pl, padding:'14px 16px', borderLeft:`3px solid ${B.p}`, borderRadius:'0 8px 8px 0' }}>
+            <div style={{ display:'flex', alignItems:'center', gap:8 }}>
+              <div style={{ color:'#fbb040', fontSize:12 }}>★★★★★</div>
+              <div style={{ fontFamily:"'Syne',sans-serif", fontSize:18, fontWeight:800, color:B.p }}>4.9</div>
+            </div>
+            <div style={{ fontSize:10, color:B.gr, marginTop:2 }}>1 200+ recenzii Google verificate</div>
+          </div>
         </div>
       </div>
     </section>
