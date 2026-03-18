@@ -197,12 +197,6 @@ function Hero() {
         <div style={{ position:'relative', overflow:'hidden' }}>
           <TeamPhoto/>
           <div style={{ position:'absolute', inset:0, background:'linear-gradient(to top,rgba(10,30,24,.22) 0%,transparent 55%)', pointerEvents:'none' }}/>
-          <div style={{ position:'absolute', top:24, left:24, background:B.a, borderRadius:8, padding:'10px 18px' }}>
-            <div style={{ fontFamily:"'Syne',sans-serif", fontSize:11, fontWeight:800, color:B.wh, letterSpacing:'.08em', textTransform:'uppercase' }}>
-              {CAMPAIGN_2026.slogan}
-            </div>
-            <div style={{ fontSize:10, color:'rgba(255,255,255,.8)', marginTop:2 }}>Campania anului {CAMPAIGN_2026.year}</div>
-          </div>
           <FloatCard cls="fl1" style={{ position:'absolute', top:24, right:-14 }}>
             <div style={{ fontFamily:"'Syne',sans-serif", fontSize:26, fontWeight:800, color:B.p }}>{STATS.patients}</div>
             <div style={{ fontSize:11, fontWeight:600, color:B.nv }}>Pacienți tratați</div>
