@@ -151,11 +151,11 @@ function Nav() {
     }}>
       <a href="/" style={{ textDecoration:'none' }}><Logo height={36}/></a>
       <div style={{ display:'flex', gap:28, alignItems:'center' }}>
-        {[['Servicii','/servicii'],['Digital Check-Up','/digital-checkup'],['Consultație Online','/consultatie-online'],['Echipa','/echipa'],['Ambasadori','/ambasadori']].map(([l,h]) => (
+        {[['Servicii','/servicii'],['Digital Check-Up','/digital-checkup'],['Consultație Online','/consultatie-online'],['Echipa','/echipa'],['Recenzii','/']].map(([l,h]) => (
           <a key={l} href={h} style={{
-            fontSize:14, fontWeight: l==='Ambasadori' ? 700 : 500,
-            color: l==='Ambasadori' ? B.a : '#3a5a50', textDecoration:'none',
-            borderBottom: l==='Ambasadori' ? `2px solid ${B.a}` : '2px solid transparent', paddingBottom:2,
+            fontSize:14, fontWeight:500,
+            color:'#3a5a50', textDecoration:'none',
+            borderBottom:'2px solid transparent', paddingBottom:2,
           }}>{l}</a>
         ))}
       </div>
