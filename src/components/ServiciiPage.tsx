@@ -294,29 +294,74 @@ function ServiceDetail({ svc }: { svc: typeof SERVICES[number] }) {
         </div>
       </div>
 
-      {/* Reviews */}
+      {/* Reviews — scrollable */}
       <div style={{ padding:'40px 0', borderBottom:`1px solid ${B.bdr}` }}>
-        <div style={{ fontSize:11, fontWeight:700, color:B.p, letterSpacing:'.12em', textTransform:'uppercase', marginBottom:16 }}>Recenzii pacienți</div>
-        <div style={{ display:'grid', gridTemplateColumns: detail.reviews.length > 1 ? '1fr 1fr' : '1fr', gap:16 }}>
+        <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:16 }}>
+          <div style={{ fontSize:11, fontWeight:700, color:B.p, letterSpacing:'.12em', textTransform:'uppercase' }}>Recenzii pacienți</div>
+          <a href="/#recenzii" style={{ fontSize:12, fontWeight:600, color:B.p, textDecoration:'none' }}>Toate recenziile →</a>
+        </div>
+        <div style={{ display:'flex', gap:16, overflowX:'auto', paddingBottom:8 }}>
           {detail.reviews.map((r, i) => (
-            <div key={i} style={{ background:B.ps, borderRadius:14, padding:'20px', borderLeft:`3px solid ${B.p}` }}>
+            <div key={i} style={{ background:B.ps, borderRadius:14, padding:'20px', borderLeft:`3px solid ${B.p}`, minWidth:320, flexShrink:0 }}>
               <div style={{ color:'#fbb040', fontSize:12, marginBottom:6 }}>{'★'.repeat(r.rating)}</div>
               <p style={{ fontSize:13, lineHeight:1.6, color:B.nv, margin:'0 0 8px', fontStyle:'italic' }}>&ldquo;{r.text}&rdquo;</p>
               <div style={{ fontSize:12, color:B.gr, fontWeight:600 }}>— {r.author}</div>
             </div>
           ))}
+          <div style={{ background:B.pl, borderRadius:14, padding:'20px', minWidth:200, flexShrink:0, display:'flex', alignItems:'center', justifyContent:'center', border:`1px dashed ${B.bdr}` }}>
+            <div style={{ textAlign:'center' }}>
+              <div style={{ fontFamily:"'Syne',sans-serif", fontSize:18, fontWeight:800, color:B.p }}>4.9</div>
+              <div style={{ color:'#fbb040', fontSize:10, marginTop:2 }}>★★★★★</div>
+              <div style={{ fontSize:10, color:B.gr, marginTop:4 }}>1 200+ recenzii Google</div>
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* Ambassador recommendation */}
+      {/* Video Reels — horizontal scroll */}
+      <div style={{ padding:'40px 0', borderBottom:`1px solid ${B.bdr}` }}>
+        <div style={{ fontSize:11, fontWeight:700, color:B.p, letterSpacing:'.12em', textTransform:'uppercase', marginBottom:16 }}>Video testimoniale</div>
+        <div style={{ display:'flex', gap:14, overflowX:'auto', paddingBottom:8 }}>
+          {[1,2,3,4].map(i => (
+            <div key={i} style={{
+              width:180, height:320, borderRadius:16, flexShrink:0, cursor:'pointer',
+              background:`linear-gradient(160deg, ${B.nv} 0%, #0f2e24 100%)`,
+              display:'flex', alignItems:'center', justifyContent:'center', position:'relative', overflow:'hidden',
+            }}>
+              <div style={{ width:48, height:48, borderRadius:'50%', background:B.a, display:'flex', alignItems:'center', justifyContent:'center', opacity:.9 }}>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill={B.wh} stroke="none"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              </div>
+              <div style={{ position:'absolute', bottom:14, left:14, right:14 }}>
+                <div style={{ fontSize:11, fontWeight:700, color:B.wh }}>Pacient #{i}</div>
+                <div style={{ fontSize:9, color:'rgba(255,255,255,.5)' }}>{svc.name} — feedback video</div>
+              </div>
+              <div style={{ position:'absolute', top:10, right:10 }}>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.4)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Ambassador recommendation — creative card */}
       {detail.ambassador && (
         <div style={{ padding:'40px 0', borderBottom:`1px solid ${B.bdr}` }}>
           <div style={{ fontSize:11, fontWeight:700, color:B.a, letterSpacing:'.12em', textTransform:'uppercase', marginBottom:16 }}>Ambasador recomandă</div>
-          <div style={{ display:'flex', gap:20, alignItems:'center', background:B.al, borderRadius:16, padding:'24px', border:`1px solid ${B.a}22` }}>
-            <img src={detail.ambassador.photo} alt={detail.ambassador.name} style={{ width:72, height:72, borderRadius:'50%', objectFit:'cover', border:`3px solid ${B.a}` }}/>
-            <div>
-              <p style={{ fontSize:14, lineHeight:1.6, color:B.nv, margin:'0 0 8px', fontStyle:'italic' }}>&ldquo;{detail.ambassador.quote}&rdquo;</p>
-              <div style={{ fontFamily:"'Syne',sans-serif", fontSize:14, fontWeight:700, color:B.a }}>— {detail.ambassador.name}</div>
+          <div style={{ display:'grid', gridTemplateColumns:'auto 1fr', gap:0, borderRadius:18, overflow:'hidden', border:`1px solid ${B.a}22` }}>
+            <div style={{ width:200, position:'relative' }}>
+              <img src={detail.ambassador.photo.replace('300','600')} alt={detail.ambassador.name} style={{ width:'100%', height:'100%', objectFit:'cover', minHeight:200 }}/>
+              <div style={{ position:'absolute', bottom:0, left:0, right:0, padding:'12px', background:'linear-gradient(to top, rgba(10,30,24,.8), transparent)' }}>
+                <span style={{ fontSize:9, fontWeight:700, color:B.wh, background:B.a, padding:'2px 8px', borderRadius:100 }}>AMBASADOR</span>
+              </div>
+            </div>
+            <div style={{ background:B.al, padding:'28px 24px', display:'flex', flexDirection:'column', justifyContent:'center' }}>
+              <p style={{ fontSize:16, lineHeight:1.6, color:B.nv, margin:'0 0 12px', fontStyle:'italic', fontFamily:"'Syne',sans-serif", fontWeight:600 }}>
+                &ldquo;{detail.ambassador.quote}&rdquo;
+              </p>
+              <div style={{ fontFamily:"'Syne',sans-serif", fontSize:15, fontWeight:800, color:B.a }}>— {detail.ambassador.name}</div>
+              <a href="/ambasadori" style={{ fontSize:12, fontWeight:600, color:B.a, marginTop:10, textDecoration:'none' }}>
+                Vezi profilul complet →
+              </a>
             </div>
           </div>
         </div>

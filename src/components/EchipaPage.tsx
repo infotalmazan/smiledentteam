@@ -228,36 +228,43 @@ function DoctorsSection() {
 
 /* ─── Ambasadori ─────────────────────────── */
 function AmbasadoriSection() {
-  const colors = ['#0a6b5c','#0d8a72','#e8157a','#074d42','#D97706','#2563EB','#059669','#6366f1','#DC2626','#0D9488','#EC4899','#6C3FA0']
   return (
     <section style={{ background:B.ps, padding:'64px 48px' }}>
-      <div style={{ maxWidth:1200, margin:'0 auto' }}>
+      <div style={{ maxWidth:1100, margin:'0 auto' }}>
         <div style={{ textAlign:'center', marginBottom:40 }}>
-          <SectionBadge>Ambasadori SDT</SectionBadge>
+          <SectionBadge>Zâmbete care inspiră</SectionBadge>
           <h2 style={{ fontFamily:"'Syne',sans-serif", fontSize:32, fontWeight:800, color:B.nv, margin:'0 0 10px' }}>
-            Personalități care ne <span style={{ color:B.a }}>reprezintă</span>
+            Ambasadorii <span style={{ color:B.a }}>Smile Dent Team</span>
           </h2>
-          <p style={{ fontSize:14, color:B.gr, maxWidth:440, margin:'0 auto' }}>Fiecare zâmbet — o poveste de încredere în Smile Dent Team.</p>
+          <p style={{ fontSize:14, color:B.gr, maxWidth:440, margin:'0 auto' }}>Personalități din diverse industrii care ne-au ales și ne reprezintă.</p>
         </div>
-        <div style={{ display:'grid', gridTemplateColumns:'repeat(6,1fr)', gap:14 }}>
-          {AMBASSADORS.map((amb, i) => (
-            <div key={amb.slug} style={{
-              padding:'20px 14px', borderRadius:12, border:`1px solid ${B.bdr}`, textAlign:'center',
-              background:B.wh, transition:'all .2s', cursor:'pointer',
-            }}
-              onMouseEnter={e => { e.currentTarget.style.transform='translateY(-2px)'; e.currentTarget.style.boxShadow=`0 6px 20px ${B.bdr}` }}
-              onMouseLeave={e => { e.currentTarget.style.transform=''; e.currentTarget.style.boxShadow='' }}
-            >
+        <div style={{ display:'grid', gridTemplateColumns:'repeat(6,1fr)', gap:16 }}>
+          {AMBASSADORS.map(amb => (
+            <a key={amb.slug} href="/ambasadori" style={{ textDecoration:'none' }}>
               <div style={{
-                width:48, height:48, borderRadius:'50%', margin:'0 auto 10px',
-                background:`linear-gradient(135deg, ${colors[i%colors.length]}, ${colors[(i+4)%colors.length]})`,
-                display:'flex', alignItems:'center', justifyContent:'center',
-                fontSize:15, fontWeight:800, color:B.wh, fontFamily:"'Syne',sans-serif",
-              }}>{amb.name.split(' ').map(n => n[0]).join('')}</div>
-              <div style={{ fontSize:12, fontWeight:700, color:B.nv }}>{amb.name}</div>
-              <div style={{ fontSize:10, color:B.gr }}>{amb.role}</div>
-            </div>
+                borderRadius:14, overflow:'hidden', cursor:'pointer', position:'relative',
+                border:`1px solid ${B.bdr}`, transition:'all .3s', background:B.wh,
+              }}
+                onMouseEnter={e => { e.currentTarget.style.transform='translateY(-3px)'; e.currentTarget.style.boxShadow=`0 10px 28px ${B.bdr}` }}
+                onMouseLeave={e => { e.currentTarget.style.transform=''; e.currentTarget.style.boxShadow='' }}
+              >
+                <div style={{ position:'relative', paddingTop:'110%', overflow:'hidden' }}>
+                  <img src={amb.photo} alt={amb.name} style={{ position:'absolute', inset:0, width:'100%', height:'100%', objectFit:'cover', transition:'transform .4s' }}
+                    onMouseEnter={e => e.currentTarget.style.transform='scale(1.05)'}
+                    onMouseLeave={e => e.currentTarget.style.transform=''}
+                  />
+                  <div style={{ position:'absolute', bottom:0, left:0, right:0, height:'60%', background:'linear-gradient(to top, rgba(10,30,24,.9) 0%, transparent 100%)', pointerEvents:'none' }}/>
+                  <div style={{ position:'absolute', bottom:0, left:0, right:0, padding:'12px' }}>
+                    <div style={{ fontFamily:"'Syne',sans-serif", fontSize:12, fontWeight:700, color:B.wh, lineHeight:1.2 }}>{amb.name}</div>
+                    <div style={{ fontSize:10, color:'rgba(255,255,255,.6)', marginTop:2 }}>{amb.role}</div>
+                  </div>
+                </div>
+              </div>
+            </a>
           ))}
+        </div>
+        <div style={{ textAlign:'center', marginTop:24 }}>
+          <a href="/ambasadori" style={{ textDecoration:'none', fontSize:13, fontWeight:700, color:B.p }}>Vezi toți ambasadorii →</a>
         </div>
       </div>
     </section>
