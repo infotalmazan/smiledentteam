@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SDT Font Preview — Variant B: Cabinet Grotesk + General Sans</title>
+<link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@100,200,300,400,500,700,800,900&f[]=general-sans@200,300,400,500,600,700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --teal: #0a6b5c;
+    --pink: #e8157a;
+    --dark: #0a1e18;
+    --cream: #f7f5f2;
+    --font-heading: 'Cabinet Grotesk', sans-serif;
+    --font-body: 'General Sans', sans-serif;
+  }
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: var(--font-body); background: var(--cream); color: var(--dark); line-height: 1.5; }
+
+  .font-label {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: var(--dark); color: #fff; text-align: center;
+    padding: 10px 20px; font-family: var(--font-body); font-size: 14px; font-weight: 500;
+    letter-spacing: 0.5px;
+  }
+  .font-label strong { color: var(--pink); font-weight: 700; }
+
+  .pink-line { height: 3px; background: var(--pink); margin-top: 40px; }
+
+  .navbar {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 60px; background: #fff; border-bottom: 1px solid #e8e5e0;
+  }
+  .navbar-logo { font-family: var(--font-heading); font-weight: 700; font-size: 22px; color: var(--teal); }
+  .navbar-links { display: flex; align-items: center; gap: 28px; }
+  .navbar-links a {
+    font-size: 14px; font-weight: 500; color: var(--dark); text-decoration: none;
+    transition: color 0.2s;
+  }
+  .navbar-links a:hover { color: var(--teal); }
+  .navbar-actions { display: flex; gap: 12px; }
+  .btn-outline {
+    padding: 10px 20px; border: 1.5px solid var(--teal); border-radius: 8px;
+    background: transparent; color: var(--teal); font-family: var(--font-body);
+    font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s;
+  }
+  .btn-outline:hover { background: var(--teal); color: #fff; }
+  .btn-primary-nav {
+    padding: 10px 20px; border: none; border-radius: 8px;
+    background: var(--pink); color: #fff; font-family: var(--font-body);
+    font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s;
+  }
+  .btn-primary-nav:hover { background: #c9126a; }
+
+  .hero {
+    display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 40px;
+    padding: 60px 60px 40px; max-width: 1440px; margin: 0 auto; align-items: center;
+    min-height: 500px;
+  }
+  .hero-left { display: flex; flex-direction: column; gap: 28px; }
+  .hero-headline { font-family: var(--font-heading); font-size: 52px; font-weight: 700; line-height: 1.1; }
+  .hero-headline .pink { color: var(--pink); }
+  .hero-headline .dark { color: var(--dark); }
+  .hero-sub { font-size: 17px; color: #3a5a50; line-height: 1.6; max-width: 380px; }
+  .btn-cta {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 16px 32px; background: var(--pink); color: #fff; border: none;
+    border-radius: 10px; font-family: var(--font-body); font-size: 16px;
+    font-weight: 600; cursor: pointer; transition: all 0.2s; width: fit-content;
+  }
+  .btn-cta:hover { background: #c9126a; transform: translateY(-1px); }
+
+  .hero-center { display: flex; justify-content: center; align-items: center; }
+  .photo-placeholder {
+    width: 100%; max-width: 380px; aspect-ratio: 3/4; background: #d1cec9;
+    border-radius: 16px; display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-body); font-size: 16px; font-weight: 600; color: #7a756e;
+    letter-spacing: 1px;
+  }
+
+  .hero-right { display: flex; flex-direction: column; gap: 8px; }
+  .hero-right-title {
+    font-family: var(--font-heading); font-size: 20px; font-weight: 600;
+    color: var(--teal); margin-bottom: 12px;
+  }
+  .service-item {
+    display: flex; align-items: center; gap: 12px; padding: 12px 16px;
+    background: #fff; border-radius: 10px; border: 1px solid #e8e5e0;
+    transition: all 0.2s;
+  }
+  .service-item:hover { border-color: var(--teal); transform: translateX(4px); }
+  .service-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--teal); flex-shrink: 0; }
+  .service-item span { font-size: 15px; font-weight: 500; color: var(--dark); }
+
+  .stats-strip {
+    display: flex; justify-content: center; gap: 48px; padding: 32px 60px;
+    background: var(--teal); margin-top: 20px;
+  }
+  .stat { text-align: center; color: #fff; }
+  .stat-value { font-family: var(--font-heading); font-size: 28px; font-weight: 700; }
+  .stat-label { font-size: 13px; font-weight: 400; opacity: 0.85; margin-top: 4px; }
+
+  @media (max-width: 1024px) {
+    .hero { grid-template-columns: 1fr; padding: 40px 24px; gap: 32px; }
+    .navbar { padding: 14px 24px; }
+    .navbar-links { display: none; }
+    .hero-headline { font-size: 40px; }
+    .stats-strip { flex-wrap: wrap; gap: 24px; padding: 24px; }
+    .photo-placeholder { max-width: 300px; }
+  }
+</style>
+</head>
+<body>
+  <div class="font-label">Variant B: <strong>Cabinet Grotesk</strong> (heading) + <strong>General Sans</strong> (body) — Soft, friendly but premium like Wise/Revolut</div>
+  <div class="pink-line"></div>
+
+  <nav class="navbar">
+    <div class="navbar-logo">Smile Dent Team</div>
+    <div class="navbar-links">
+      <a href="#">Servicii</a>
+      <a href="#">Digital Check-Up</a>
+      <a href="#">Consultație Online</a>
+      <a href="#">Echipa</a>
+      <a href="#">Recenzii</a>
+    </div>
+    <div class="navbar-actions">
+      <button class="btn-outline">Cabinetul meu</button>
+      <button class="btn-primary-nav">Programează-te</button>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-left">
+      <h1 class="hero-headline">
+        <span class="pink">ALEGE-TE PE TINE.</span><br>
+        <span class="dark">Începe cu un Digital Check-Up.</span>
+      </h1>
+      <p class="hero-sub">Primul pas spre un zâmbet sănătos e mai simplu decât crezi. Completează formularul digital și primești o evaluare personalizată de la specialiștii noștri.</p>
+      <button class="btn-cta">Descoperă Digital Check-Up →</button>
+    </div>
+    <div class="hero-center">
+      <div class="photo-placeholder">FOTO ECHIPĂ</div>
+    </div>
+    <div class="hero-right">
+      <div class="hero-right-title">Serviciile noastre</div>
+      <div class="service-item"><div class="service-dot"></div><span>Implantologie</span></div>
+      <div class="service-item"><div class="service-dot"></div><span>Ortodonție</span></div>
+      <div class="service-item"><div class="service-dot"></div><span>Estetică dentară</span></div>
+      <div class="service-item"><div class="service-dot"></div><span>Chirurgie orală</span></div>
+      <div class="service-item"><div class="service-dot"></div><span>Parodontologie</span></div>
+      <div class="service-item"><div class="service-dot"></div><span>Pedodonție</span></div>
+    </div>
+  </section>
+
+  <div class="stats-strip">
+    <div class="stat"><div class="stat-value">15 ani</div><div class="stat-label">de experiență</div></div>
+    <div class="stat"><div class="stat-value">600+</div><div class="stat-label">specialiști</div></div>
+    <div class="stat"><div class="stat-value">40.000+</div><div class="stat-label">pacienți</div></div>
+    <div class="stat"><div class="stat-value">3 filiale</div><div class="stat-label">în țară</div></div>
+    <div class="stat"><div class="stat-value">0% Rate</div><div class="stat-label">dobândă zero</div></div>
+  </div>
+</body>
+</html>

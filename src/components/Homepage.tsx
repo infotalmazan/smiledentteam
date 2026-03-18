@@ -105,7 +105,7 @@ function SdtBadge({ children, light }: { children: React.ReactNode; light?: bool
       'inline-flex items-center gap-2 px-3.5 py-[5px] rounded-full border',
       light
         ? 'bg-white/[.13] border-white/[.22]'
-        : 'bg-sdt-100 border-sdt-600/10'
+        : 'bg-sdt-100 border-transparent'
     )}>
       <span className="w-[7px] h-[7px] rounded-full bg-pink-500" />
       <span className={cn(
@@ -145,8 +145,8 @@ function Navbar() {
   }, [])
   return (
     <nav className={cn(
-      'flex justify-between items-center px-[52px] h-[70px] bg-white/[.97] border-t-[3px] border-t-pink-500 sticky top-0 z-[200] backdrop-blur-sm transition-shadow',
-      sc ? 'shadow-[0_2px_20px_rgba(10,107,92,.1)]' : 'shadow-[0_1px_0_rgba(10,107,92,.1)]'
+      'glass flex justify-between items-center px-[52px] h-[70px] border-t-[3px] border-t-pink-500 sticky top-0 z-[200] transition-shadow',
+      sc ? 'shadow-sm' : 'shadow-none'
     )}>
       <a href="/" className="no-underline"><Logo height={38}/></a>
       <div className="flex gap-7">
@@ -158,17 +158,17 @@ function Navbar() {
           ['Recenzii','#recenzii'],
         ].map(([label, href]) => (
           <a key={label} href={href}
-            className="text-sm font-medium text-[#3a5a50] no-underline py-1 border-b-2 border-transparent hover:text-sdt-600 hover:border-sdt-600 transition-colors"
+            className="text-sm font-medium text-[#3a5a50] no-underline py-1 border-b-2 border-transparent hover:text-pink-500 hover:border-pink-500 transition-all duration-300"
           >{label}</a>
         ))}
       </div>
       <div className="flex gap-2.5 items-center">
         <a href="/login" className="no-underline">
-          <Button variant="outline" size="sm" className="text-sdt-600 border-sdt-600 hover:bg-sdt-50">
+          <Button variant="outline" size="sm" className="text-sdt-600 border-sdt-600 hover:bg-sdt-50 rounded-full">
             Cabinetul meu
           </Button>
         </a>
-        <Button variant="accent" size="sm" className="text-[13px] px-[22px] py-[9px]">
+        <Button variant="accent" size="sm" className="btn-shine text-[13px] px-[22px] py-[9px] rounded-full">
           Programeaza-te
         </Button>
       </div>
@@ -181,22 +181,27 @@ const SVC_LIST = SERVICES.map(s => s.name)
 
 function Hero() {
   return (
-    <section className="bg-white h-[calc(100vh-64px)] flex flex-col">
-      <div className="grid flex-1 min-h-0" style={{ gridTemplateColumns: '1fr 1px 1.35fr 1px 0.85fr' }}>
+    <section className="relative bg-white min-h-screen flex flex-col overflow-hidden">
+      {/* Decorative circles */}
+      <div className="absolute top-20 -left-32 w-[400px] h-[400px] rounded-full bg-sdt-500 opacity-[0.04] pointer-events-none" />
+      <div className="absolute bottom-40 -right-24 w-[300px] h-[300px] rounded-full bg-pink-500 opacity-[0.05] pointer-events-none" />
+      <div className="absolute top-1/2 left-1/3 w-[200px] h-[200px] rounded-full bg-sdt-400 opacity-[0.03] pointer-events-none" />
+
+      <div className="grid flex-1 min-h-0 relative z-[1]" style={{ gridTemplateColumns: '1fr 1px 1.35fr 1px 0.85fr' }}>
 
         {/* COL 1 — Headline */}
         <div className="pt-9 pr-9 pb-6 pl-12 flex flex-col justify-start">
-          <h1 className="font-display text-[42px] font-extrabold leading-[1.02] tracking-[-0.04em] mb-5 text-pink-500">
+          <h1 className="animate-slide-up font-display text-6xl font-extrabold leading-[0.95] tracking-[-0.04em] mb-5 text-gradient">
             ALEGE-TE<br/>PE TINE.
           </h1>
-          <div className="w-10 h-[3px] bg-sdt-600 rounded-sm mb-[18px] origin-left" style={{ animation: 'barGrow .6s .2s ease both' }} />
-          <h2 className="font-display text-lg font-bold text-[#0a1e18] tracking-[-0.02em] mb-3.5 leading-[1.2]">
+          <div className="animate-slide-up stagger-1 w-10 h-[3px] bg-sdt-600 rounded-sm mb-[18px] origin-left" style={{ animation: 'barGrow .6s .2s ease both' }} />
+          <h2 className="animate-slide-up stagger-2 font-display text-lg font-bold text-[#0a1e18] tracking-[-0.02em] mb-3.5 leading-[1.2]">
             Incepe cu un Digital Check-Up.
           </h2>
-          <p className="text-[13px] leading-[1.65] text-[#4a6a58] max-w-[320px] mb-7">
+          <p className="animate-slide-up stagger-3 text-[13px] leading-[1.65] text-[#4a6a58] max-w-[320px] mb-7">
             600+ specialisti, tehnologii 3D si 15 ani de experienta — totul pentru un singur lucru: sa stii exact ce ai nevoie, inainte sa decizi orice.
           </p>
-          <Button variant="accent" className="w-full justify-center text-[13px] py-3 px-6">
+          <Button variant="accent" className="btn-shine w-full justify-center text-[13px] py-3 px-6 rounded-full">
             Descopera Digital Check-Up <ArrowRight className="w-4 h-4 ml-1" />
           </Button>
 
@@ -216,10 +221,10 @@ function Hero() {
           </div>
 
           {/* Mini appointment */}
-          <div className="mt-6 p-3.5 bg-sdt-50 rounded-lg border border-sdt-600/10">
+          <div className="mt-6 p-3.5 bg-sdt-50 rounded-xl border border-transparent shadow-sm">
             <div className="text-[11px] font-bold text-sdt-600 mb-2">Programare rapida</div>
-            <Input type="tel" placeholder="+373 __ ___ ___" className="text-[13px] h-9" />
-            <Button variant="outline" className="w-full mt-2 text-sdt-600 border-sdt-600 text-xs font-bold">
+            <Input type="tel" placeholder="+373 __ ___ ___" className="text-[13px] h-9 focus:ring-sdt-600/20" />
+            <Button variant="outline" className="btn-shine w-full mt-2 text-sdt-600 border-sdt-600 text-xs font-bold rounded-full">
               Programeaza-te <ArrowRight className="w-3.5 h-3.5 ml-1" />
             </Button>
           </div>
@@ -240,7 +245,7 @@ function Hero() {
           <div className="text-[10px] font-bold text-sdt-600 tracking-[.22em] uppercase mb-2.5">Servicii</div>
           {SVC_LIST.map((s, i) => (
             <div key={s}
-              className="flex items-center justify-between py-2.5 border-b border-sdt-600/10 cursor-pointer text-[#0a1e18] hover:text-sdt-600 transition-colors"
+              className="hover-glow flex items-center justify-between py-2.5 px-2 rounded-xl cursor-pointer text-[#0a1e18] hover:text-sdt-600 hover:bg-sdt-50/60 transition-all duration-300"
             >
               <div className="flex items-center gap-2">
                 <span className="text-[10px] text-sdt-600/30 font-bold">{String(i+1).padStart(2,'0')}</span>
@@ -286,7 +291,7 @@ function Hero() {
       <div className="flex justify-center gap-11 items-center shrink-0 py-[22px] px-[52px]" style={{ background: `linear-gradient(135deg, ${B.p}, ${B.pm})` }}>
         {[[STATS.years,'ani de excelenta'],[STATS.team,'specialisti'],[STATS.patients,'pacienti tratati'],['3','filiale']].map(([n,l]) => (
           <div key={String(l)} className="flex items-baseline gap-2">
-            <div className="font-display text-[28px] font-extrabold text-white leading-none">{n}</div>
+            <div className="font-display text-4xl font-extrabold text-white leading-none">{n}</div>
             <div className="text-xs text-white/[.65] font-medium">{l}</div>
           </div>
         ))}
@@ -349,7 +354,7 @@ function CheckUpStrip() {
           <a href="/digital-checkup" className="no-underline">
             <Button
               variant="outline"
-              className="bg-white text-sdt-600 border-2 border-pink-500 text-sm font-extrabold whitespace-nowrap hover:bg-pink-500 hover:text-white transition-all hover:-translate-y-0.5"
+              className="btn-shine bg-white text-sdt-600 border-2 border-pink-500 text-sm font-extrabold whitespace-nowrap hover:bg-pink-500 hover:text-white transition-all hover:-translate-y-0.5 rounded-full"
             >
               Programeaza Digital Check-Up <ArrowRight className="w-4 h-4 ml-1" />
             </Button>
@@ -394,7 +399,11 @@ function Services() {
       <div className="grid grid-cols-3 gap-3">
         {SERVICES.map((s, i) => (
           <a key={s.slug} href="/servicii" className="no-underline">
-            <Card className="cursor-pointer overflow-hidden border-sdt-600/10 hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(10,107,92,.08)] hover:border-sdt-600 transition-all">
+            <Card className={cn(
+              'img-zoom hover-glow cursor-pointer overflow-hidden border-transparent rounded-2xl shadow-sm hover:shadow-card-hover hover:border-sdt-600 transition-all',
+              'animate-slide-up',
+              i < 3 ? `stagger-${i+1}` : i < 6 ? `stagger-${i-2}` : `stagger-${i-5}`
+            )}>
               <div className="relative h-[115px] overflow-hidden">
                 <img src={SVC_DATA[i]?.photo || SVC_DATA[0].photo} alt={s.name} className="w-full h-full object-cover" />
                 <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(10,30,24,.25) 0%, transparent 50%)' }} />
@@ -429,7 +438,7 @@ function Technologies() {
           <SHead eyebrow="Tehnologii 2026" title={<>Viitorul<br/>e digital</>}
             sub="Investim in tehnologii de ultima generatie pentru rezultate perfecte."
           />
-          <Button className="font-bold">
+          <Button className="btn-shine font-bold rounded-full">
             Analog &rarr; digital <ArrowRight className="w-4 h-4 ml-1" />
           </Button>
           <div className="mt-8 p-[22px] rounded-[14px] text-white" style={{ background: `linear-gradient(135deg, ${B.pm}, ${B.p})` }}>
@@ -440,7 +449,7 @@ function Technologies() {
         </div>
         <div className="flex-1 grid grid-cols-2 gap-3.5">
           {TECHS.map(t => (
-            <Card key={t.n} className="bg-sdt-50 border-sdt-600/10 p-[22px] hover:-translate-y-[3px] hover:shadow-[0_8px_28px_rgba(10,107,92,.1)] transition-all">
+            <Card key={t.n} className="glass hover-glow border-transparent p-[22px] transition-all">
               <div className="flex justify-between items-start mb-3">
                 <span className="font-display text-[26px] font-extrabold text-sdt-600/[.18] leading-none">{t.n}</span>
                 <Badge variant="accent" className="text-[9px] font-bold px-2 py-0.5">{t.tag}</Badge>
@@ -468,9 +477,9 @@ function BeforeAfter() {
       <SHead center light eyebrow="Rezultate reale" title="Transformari care schimba vieti"
         sub="Fiecare caz este unic. Iata cateva dintre transformarile de care se bucura pacientii nostri."
       />
-      <div className="flex gap-4 overflow-x-auto pb-2">
+      <div className="flex gap-4 overflow-x-auto pb-2 scroll-premium">
         {cases.map(c => (
-          <div key={c.label} className="bg-white/[.06] border border-white/10 rounded-2xl overflow-hidden min-w-[260px] shrink-0 flex-1">
+          <div key={c.label} className="glass-dark img-zoom rounded-2xl overflow-hidden min-w-[260px] shrink-0 flex-1">
             <div className="grid grid-cols-2 h-40 relative">
               <img src={c.photoBefore} alt="Inainte" className="w-full h-full object-cover grayscale-[30%]" />
               <img src={c.photoAfter} alt="Dupa" className="w-full h-full object-cover" />
@@ -508,7 +517,7 @@ function Reviews() {
     <section id="recenzii" className="bg-white py-24 px-[52px]">
       <div className="flex justify-between items-end mb-[52px]">
         <SHead eyebrow="Recenzii pacienti" title={<>Ce spun<br/>pacientii nostri</>} sub="Peste 1 200 de recenzii verificate. Nota medie 4.9/5.0 pe Google." />
-        <div className="bg-sdt-100 rounded-2xl p-6 px-8 text-center border border-sdt-600/10 shrink-0 mb-4">
+        <div className="bg-sdt-100 rounded-2xl p-6 px-8 text-center border border-transparent shadow-sm shrink-0 mb-4">
           <div className="text-[#fbb040] text-xl mb-1 flex gap-0.5 justify-center">
             {[1,2,3,4,5].map(i => <Star key={i} className="w-5 h-5 fill-current" />)}
           </div>
@@ -519,7 +528,7 @@ function Reviews() {
       </div>
       <div className="grid grid-cols-3 gap-[18px]">
         {REVIEWS.map(r => (
-          <Card key={r.name} className="p-[26px] border-sdt-600/10 hover:-translate-y-[3px] transition-transform">
+          <Card key={r.name} className="hover-glow p-[26px] border-transparent rounded-2xl shadow-sm">
             <div className="flex justify-between items-start mb-3.5">
               <div>
                 <div className="font-bold text-sm text-[#0a1e18]">{r.name}</div>
@@ -567,7 +576,7 @@ function VideoReels() {
           </h2>
         </div>
         <div className="flex gap-2">
-          <button className="w-9 h-9 rounded-full border-[1.5px] border-sdt-600/10 bg-white cursor-pointer flex items-center justify-center hover:bg-sdt-50 transition-colors">
+          <button className="w-9 h-9 rounded-full border-[1.5px] border-transparent bg-white cursor-pointer flex items-center justify-center hover:bg-sdt-50 transition-colors shadow-sm">
             <ChevronLeft className="w-3.5 h-3.5 text-[#0a1e18]" strokeWidth={2} />
           </button>
           <button className="w-9 h-9 rounded-full border-[1.5px] border-sdt-600 bg-sdt-600 cursor-pointer flex items-center justify-center hover:bg-sdt-500 transition-colors">
@@ -575,10 +584,10 @@ function VideoReels() {
           </button>
         </div>
       </div>
-      <div className="flex gap-3.5 overflow-x-auto pb-2 snap-x snap-mandatory">
+      <div className="flex gap-3.5 overflow-x-auto pb-2 snap-x snap-mandatory scroll-premium">
         {videos.map((v, i) => (
           <div key={i}
-            className="w-[180px] h-[320px] rounded-[18px] shrink-0 cursor-pointer relative overflow-hidden snap-start hover:-translate-y-1 transition-transform"
+            className="hover-glow-pink w-[180px] h-[320px] rounded-[18px] shrink-0 cursor-pointer relative overflow-hidden snap-start transition-all"
           >
             <img src={v.thumb} alt={v.name} className="w-full h-full object-cover" />
             <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(10,30,24,.7) 0%, transparent 40%)' }} />
@@ -604,7 +613,7 @@ function VideoReels() {
 /* ─── Ambasadori ─────────────────────────── */
 function Ambasadori() {
   return (
-    <section id="ambasadori" className="bg-white py-[72px] px-[52px] border-t border-sdt-600/10">
+    <section id="ambasadori" className="bg-white py-[72px] px-[52px] border-t border-transparent">
       <div className="text-center mb-11">
         <SdtBadge>Zambete care inspira</SdtBadge>
         <h2 className="font-display text-[40px] font-extrabold tracking-[-0.03em] leading-[1.06] text-[#0a1e18] mt-4 mb-3.5">
@@ -617,11 +626,11 @@ function Ambasadori() {
       <div className="grid grid-cols-6 gap-[18px] max-w-[1100px] mx-auto">
         {AMBASSADORS.map(amb => (
           <div key={amb.slug}
-            className="rounded-2xl overflow-hidden cursor-pointer relative border border-sdt-600/10 bg-white hover:-translate-y-1 hover:shadow-[0_12px_32px_rgba(10,107,92,.1)] transition-all group"
+            className="img-zoom hover-glow rounded-2xl overflow-hidden cursor-pointer relative border border-transparent bg-white shadow-sm transition-all group"
           >
             <div className="relative pt-[110%] overflow-hidden">
               <img src={amb.photo} alt={amb.name}
-                className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-400"
+                className="absolute inset-0 w-full h-full object-cover"
               />
               <div className="absolute bottom-0 left-0 right-0 h-[60%] pointer-events-none" style={{ background: 'linear-gradient(to top, rgba(10,30,24,.9) 0%, transparent 100%)' }} />
               <div className="absolute bottom-0 left-0 right-0 p-3.5">
@@ -634,7 +643,7 @@ function Ambasadori() {
       </div>
       <div className="text-center mt-7">
         <a href="/ambasadori" className="no-underline">
-          <Button variant="outline" className="rounded-full text-sdt-600 border-sdt-600 hover:bg-sdt-600 hover:text-white transition-all text-[13px] font-bold px-7">
+          <Button variant="outline" className="btn-shine rounded-full text-sdt-600 border-sdt-600 hover:bg-sdt-600 hover:text-white transition-all text-[13px] font-bold px-7">
             Vezi toti ambasadorii <ArrowRight className="w-4 h-4 ml-1" />
           </Button>
         </a>
@@ -652,7 +661,7 @@ function FAQ() {
           <SHead eyebrow="Intrebari frecvente" title={<>Ai intrebari?<br/>Avem raspunsuri.</>}
             sub="Nu gasesti raspunsul? Contacteaza-ne direct sau programeaza o consultatie gratuita."
           />
-          <Button className="font-bold">
+          <Button className="btn-shine font-bold rounded-full">
             Contacteaza-ne <ArrowRight className="w-4 h-4 ml-1" />
           </Button>
         </div>
@@ -664,13 +673,13 @@ function FAQ() {
               >
                 <span>{f.q}</span>
                 <span className={cn(
-                  'text-xl text-sdt-600 shrink-0 ml-4 transition-transform duration-[250ms]',
+                  'text-xl text-sdt-600 shrink-0 ml-4 transition-all duration-300',
                   open === i && 'rotate-45'
                 )}>+</span>
               </button>
               <div className={cn(
-                'overflow-hidden transition-[max-height] duration-[350ms] ease-in-out',
-                open === i ? 'max-h-[200px]' : 'max-h-0'
+                'overflow-hidden transition-all duration-300 ease-in-out',
+                open === i ? 'max-h-[200px] opacity-100' : 'max-h-0 opacity-0'
               )}>
                 <p className="text-[15px] leading-[1.78] text-[#4a6a58] pb-5 pr-10">{f.a}</p>
               </div>
@@ -707,21 +716,21 @@ function Appointment() {
             </div>
           ))}
         </div>
-        <div className="w-[420px] shrink-0 bg-white rounded-[20px] p-10 shadow-[0_24px_80px_rgba(10,30,24,.28)]">
+        <div className="w-[420px] shrink-0 bg-white rounded-[20px] p-10 shadow-premium">
           <h3 className="text-[22px] font-extrabold text-[#0a1e18] mb-2 tracking-[-0.02em]">Programeaza-te acum</h3>
           <p className="text-sm text-[#5a7a6e] mb-7">Completeaza formularul — te contactam in max. 2h.</p>
           <div className="flex flex-col gap-3.5">
             <div className="grid grid-cols-2 gap-3">
-              <Input placeholder="Prenume" />
-              <Input placeholder="Nume" />
+              <Input placeholder="Prenume" className="focus:ring-sdt-600/20" />
+              <Input placeholder="Nume" className="focus:ring-sdt-600/20" />
             </div>
-            <Input placeholder="Telefon *" />
-            <select defaultValue="" className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
+            <Input placeholder="Telefon *" className="focus:ring-sdt-600/20" />
+            <select defaultValue="" className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sdt-600/20 focus-visible:ring-offset-2">
               <option value="" disabled>Selecteaza serviciul</option>
               <option>Digital Check-Up</option>
               {SVC_LIST.map(s => <option key={s}>{s}</option>)}
             </select>
-            <Button className="w-full justify-center py-[15px] text-[15px] font-bold">
+            <Button className="btn-shine w-full justify-center py-[15px] text-[15px] font-bold rounded-full">
               Trimite cererea <ArrowRight className="w-4 h-4 ml-1" />
             </Button>
             <p className="text-[11px] text-[#5a7a6e] text-center">
@@ -737,68 +746,71 @@ function Appointment() {
 /* ─── Footer ──────────────────────────────── */
 function Footer() {
   return (
-    <footer className="pt-16 pb-8 px-[52px]" style={{ background: B.nv }}>
-      <div className="grid gap-12 mb-12" style={{ gridTemplateColumns: '1.5fr 1fr 1fr 1fr' }}>
-        <div>
-          <div className="mb-5"><Logo height={34} light/></div>
-          <p className="text-sm leading-[1.75] text-white/60 max-w-[260px]">
-            Clinica stomatologica digitala. 15 ani de excelenta, {STATS.team} specialisti, {STATS.patients} pacienti, {STATS.locations} filiale.
-          </p>
-          <div className="mt-5 p-3 px-4 bg-pink-500/[.12] border border-pink-500/20 rounded-lg">
-            <div className="font-display text-base font-extrabold text-pink-500">{CAMPAIGN_2026.slogan}</div>
-          </div>
-          <div className="flex gap-2.5 mt-4">
-            {['FB','IG','YT','TK'].map(s => (
-              <div key={s}
-                className="w-[34px] h-[34px] rounded-lg bg-white/[.07] flex items-center justify-center cursor-pointer text-[11px] font-bold text-white/50 hover:bg-sdt-600/45 transition-colors"
-              >{s}</div>
-            ))}
-          </div>
-        </div>
-        <div>
-          <div className="text-[11px] font-bold text-white tracking-[.15em] uppercase mb-5">Servicii</div>
-          <div className="text-[13px] mb-2.5 text-pink-500 cursor-pointer font-semibold">Digital Check-Up</div>
-          {SVC_LIST.map(s => (
-            <div key={s} className="text-[13px] mb-2.5 text-white/[.58] cursor-pointer hover:text-white transition-colors">{s}</div>
-          ))}
-        </div>
-        <div>
-          <div className="text-[11px] font-bold text-white tracking-[.15em] uppercase mb-5">Clinica</div>
-          {[['Despre noi','/'],['Echipa','/echipa'],['Ambasadori','/ambasadori'],['Tehnologii','/'],['Blog','/'],['Cariere','/'],['Contacte','/']].map(([s,h]) => (
-            <a key={s} href={h} className="block text-[13px] mb-2.5 text-white/[.58] no-underline hover:text-white transition-colors">{s}</a>
-          ))}
-        </div>
-        <div>
-          <div className="text-[11px] font-bold text-white tracking-[.15em] uppercase mb-5">Contact</div>
-          {LOCATIONS.slice(0,3).map(l => (
-            <div key={l.city} className="mb-4 leading-[1.65]">
-              <div className="text-[13px] font-semibold text-white">{l.city}</div>
-              <div className="text-xs text-white/[.52]">{l.address}</div>
-              <div className="text-xs text-white/[.52]">{l.phone}</div>
+    <>
+      <div className="section-line" />
+      <footer className="pt-16 pb-8 px-[52px]" style={{ background: B.nv }}>
+        <div className="grid gap-12 mb-12" style={{ gridTemplateColumns: '1.5fr 1fr 1fr 1fr' }}>
+          <div>
+            <div className="mb-5"><Logo height={34} light/></div>
+            <p className="text-sm leading-[1.75] text-white/60 max-w-[260px]">
+              Clinica stomatologica digitala. 15 ani de excelenta, {STATS.team} specialisti, {STATS.patients} pacienti, {STATS.locations} filiale.
+            </p>
+            <div className="mt-5 p-3 px-4 bg-pink-500/[.12] border border-pink-500/20 rounded-lg">
+              <div className="font-display text-base font-extrabold text-pink-500">{CAMPAIGN_2026.slogan}</div>
             </div>
-          ))}
-          <a href="mailto:info@smiledent.md" className="text-[13px] text-sdt-500 font-semibold no-underline">info@smiledent.md</a>
-        </div>
-      </div>
-      <div className="border-t border-white/[.07] pt-6 flex justify-between items-center">
-        <div className="flex items-center gap-4">
-          <Logo height={26} light/>
-          <span className="text-xs text-white/[.28]">&copy; {CAMPAIGN_2026.year} Smile Dent Team. Toate drepturile rezervate.</span>
-        </div>
-        <div className="flex items-center gap-5">
-          <div className="flex gap-1.5">
-            {['RO','RU','EN'].map(l => (
-              <span key={l} className="bg-white/[.08] text-white/50 px-2.5 py-1 rounded-full text-[11px] font-bold tracking-[.08em] cursor-pointer hover:bg-white/15 hover:text-white transition-all">{l}</span>
+            <div className="flex gap-2.5 mt-4">
+              {['FB','IG','YT','TK'].map(s => (
+                <div key={s}
+                  className="w-[34px] h-[34px] rounded-lg bg-white/[.07] flex items-center justify-center cursor-pointer text-[11px] font-bold text-white/50 hover:bg-sdt-600/45 transition-colors"
+                >{s}</div>
+              ))}
+            </div>
+          </div>
+          <div>
+            <div className="text-[11px] font-bold text-white tracking-[.15em] uppercase mb-5">Servicii</div>
+            <div className="text-[13px] mb-2.5 text-pink-500 cursor-pointer font-semibold">Digital Check-Up</div>
+            {SVC_LIST.map(s => (
+              <div key={s} className="text-[13px] mb-2.5 text-white/[.58] cursor-pointer hover:text-white transition-colors">{s}</div>
             ))}
           </div>
-          <div className="flex gap-6 text-xs text-white/30">
-            {['Politica de confidentialitate','Termeni si conditii','Cookies'].map(s => (
-              <span key={s} className="cursor-pointer hover:text-white/70 transition-colors">{s}</span>
+          <div>
+            <div className="text-[11px] font-bold text-white tracking-[.15em] uppercase mb-5">Clinica</div>
+            {[['Despre noi','/'],['Echipa','/echipa'],['Ambasadori','/ambasadori'],['Tehnologii','/'],['Blog','/'],['Cariere','/'],['Contacte','/']].map(([s,h]) => (
+              <a key={s} href={h} className="block text-[13px] mb-2.5 text-white/[.58] no-underline hover:text-white transition-colors">{s}</a>
             ))}
           </div>
+          <div>
+            <div className="text-[11px] font-bold text-white tracking-[.15em] uppercase mb-5">Contact</div>
+            {LOCATIONS.slice(0,3).map(l => (
+              <div key={l.city} className="mb-4 leading-[1.65]">
+                <div className="text-[13px] font-semibold text-white">{l.city}</div>
+                <div className="text-xs text-white/[.52]">{l.address}</div>
+                <div className="text-xs text-white/[.52]">{l.phone}</div>
+              </div>
+            ))}
+            <a href="mailto:info@smiledent.md" className="text-[13px] text-sdt-500 font-semibold no-underline">info@smiledent.md</a>
+          </div>
         </div>
-      </div>
-    </footer>
+        <div className="border-t border-white/[.07] pt-6 flex justify-between items-center">
+          <div className="flex items-center gap-4">
+            <Logo height={26} light/>
+            <span className="text-xs text-white/[.28]">&copy; {CAMPAIGN_2026.year} Smile Dent Team. Toate drepturile rezervate.</span>
+          </div>
+          <div className="flex items-center gap-5">
+            <div className="flex gap-1.5">
+              {['RO','RU','EN'].map(l => (
+                <span key={l} className="bg-white/[.08] text-white/50 px-2.5 py-1 rounded-full text-[11px] font-bold tracking-[.08em] cursor-pointer hover:bg-white/15 hover:text-white transition-all">{l}</span>
+              ))}
+            </div>
+            <div className="flex gap-6 text-xs text-white/30">
+              {['Politica de confidentialitate','Termeni si conditii','Cookies'].map(s => (
+                <span key={s} className="cursor-pointer hover:text-white/70 transition-colors">{s}</span>
+              ))}
+            </div>
+          </div>
+        </div>
+      </footer>
+    </>
   )
 }
 
