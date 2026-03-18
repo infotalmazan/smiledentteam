@@ -5,18 +5,31 @@ import { Logo } from './Logo'
 import { BRAND as B, STATS, SERVICES, LOCATIONS, CAMPAIGN_2026, AMBASSADORS } from '@/lib/brand'
 
 /* ─── helpers ─────────────────────────────── */
-function TeamPhoto({ style }: { style?: React.CSSProperties }) {
-  const [err, setErr] = useState(false)
-  if (err) return (
-    <div style={{ width:'100%', height:'100%', background:B.pl,
-      display:'flex', alignItems:'center', justifyContent:'center', ...style }}>
-      <span style={{ fontSize:11, color:B.gr, letterSpacing:'.1em' }}>SDT TEAM</span>
-    </div>
-  )
+const HERO_SLIDES = [
+  '/images/team/team-photo.jpg',
+  'https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=800&h=1000&fit=crop',
+  'https://images.unsplash.com/photo-1606811841689-23dfddce3e95?w=800&h=1000&fit=crop',
+]
+
+function HeroSlideshow({ style }: { style?: React.CSSProperties }) {
+  const [idx, setIdx] = useState(0)
+  useEffect(() => {
+    const timer = setInterval(() => setIdx(p => (p + 1) % HERO_SLIDES.length), 3000)
+    return () => clearInterval(timer)
+  }, [])
   return (
-    <img src="/images/team/team-photo.jpg" alt="SDT Team"
-      style={{ width:'100%', height:'100%', objectFit:'cover', ...style }}
-      onError={() => setErr(true)} />
+    <div style={{ width:'100%', height:'100%', position:'relative', overflow:'hidden', ...style }}>
+      {HERO_SLIDES.map((src, i) => (
+        <img key={src} src={src} alt={`SDT Team ${i+1}`}
+          style={{
+            position:'absolute', inset:0, width:'100%', height:'100%', objectFit:'cover',
+            objectPosition:'center 35%',
+            opacity: i === idx ? 1 : 0,
+            transition:'opacity 1s ease-in-out',
+          }}
+        />
+      ))}
+    </div>
   )
 }
 
@@ -216,7 +229,7 @@ function Hero() {
 
         {/* COL 2 — Photo */}
         <div style={{ position:'relative', overflow:'hidden' }}>
-          <TeamPhoto style={{ objectPosition:'center 35%' }}/>
+          <HeroSlideshow/>
           <div style={{ position:'absolute', inset:0, background:'linear-gradient(to top,rgba(10,30,24,.18) 0%,transparent 50%)', pointerEvents:'none' }}/>
         </div>
 
