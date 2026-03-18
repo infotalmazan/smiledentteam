@@ -164,22 +164,19 @@ function Hero() {
 
         {/* COL 1 — Headline */}
         <div style={{ padding:'68px 48px 68px 52px', display:'flex', flexDirection:'column', justifyContent:'center' }}>
-          <div style={{ marginBottom:24 }}>
-            <div style={{ fontFamily:"'Syne',sans-serif", fontSize:30, fontWeight:800, color:B.a, letterSpacing:'-.02em', lineHeight:1.1 }}>
-              {CAMPAIGN_2026.slogan}
-            </div>
-          </div>
-          <div style={{ width:44, height:3, background:B.p, borderRadius:2, marginBottom:22, transformOrigin:'left', animation:'barGrow .6s .2s ease both' }}/>
-          <h1 style={{ fontSize:50, fontWeight:800, lineHeight:1.02, letterSpacing:'-.04em', margin:'0 0 20px', color:B.nv }}>
-            CLINICA<br/><span style={{ color:B.p }}>DIGITALĂ</span><br/>NR.1 ÎN<br/>MOLDOVA
+          <h1 style={{ fontFamily:"'Syne',sans-serif", fontSize:50, fontWeight:800, lineHeight:1.02, letterSpacing:'-.04em', margin:'0 0 12px', color:B.a }}>
+            ALEGE-TE<br/>PE TINE.
           </h1>
-          <p style={{ fontSize:15, lineHeight:1.8, color:'#4a6a58', maxWidth:340, margin:'0 0 32px' }}>
-            {STATS.team} specialiști, tehnologii 3D de ultimă generație și 15 ani de excelență.
-            Fiecare tratament — planificat digital, realizat perfect.
+          <div style={{ width:44, height:3, background:B.p, borderRadius:2, marginBottom:18, transformOrigin:'left', animation:'barGrow .6s .2s ease both' }}/>
+          <h2 style={{ fontFamily:"'Syne',sans-serif", fontSize:22, fontWeight:700, color:B.nv, letterSpacing:'-.02em', margin:'0 0 20px', lineHeight:1.2 }}>
+            Începe cu un Digital Check-Up.
+          </h2>
+          <p style={{ fontSize:15, lineHeight:1.8, color:'#4a6a58', maxWidth:360, margin:'0 0 32px' }}>
+            600+ specialiști, tehnologii 3D și 15 ani de experiență — totul pentru un singur lucru: să știi exact ce ai nevoie, înainte să decizi orice.
           </p>
           <div style={{ display:'flex', flexDirection:'column', gap:12 }}>
             <Btn style={{ justifyContent:'center' }}>Consultație GRATUITĂ →</Btn>
-            <Btn outline style={{ justifyContent:'center' }}>Serviciile noastre</Btn>
+            <Btn outline style={{ justifyContent:'center' }}>Descoperă Digital Check-Up</Btn>
           </div>
           <div style={{ display:'flex', gap:24, marginTop:44, paddingTop:32, borderTop:`1px solid ${B.bdr}` }}>
             {[[STATS.years,'ani'],[STATS.team,'specialiști'],[STATS.patients,'pacienți'],[STATS.locations,'filiale']].map(([n,l]) => (
