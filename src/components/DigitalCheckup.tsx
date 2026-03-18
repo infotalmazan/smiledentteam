@@ -2,8 +2,29 @@
 import { useState } from 'react'
 import { BRAND as B, STATS, LOCATIONS, CAMPAIGN_2026 } from '@/lib/brand'
 import { Logo } from './Logo'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
+import { Input } from '@/components/ui/input'
+import { cn } from '@/lib/utils'
+import {
+  CheckCircle,
+  Shield,
+  Monitor,
+  User,
+  Eye,
+  Heart,
+  FileText,
+  Clock,
+  Play,
+  Check,
+  Plus,
+  Star,
+  CircleDot,
+  Banknote,
+} from 'lucide-react'
 
-/* ─── Shared UI ──────────────────────────── */
+/* ─── Keyframe animations (kept as global style) ─── */
 const ANIM = `
   @keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
   @keyframes fadeIn{from{opacity:0}to{opacity:1}}
@@ -12,126 +33,161 @@ const ANIM = `
   @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
 `
 
-function Btn({ children, pink, outline, style, ...p }: any) {
-  const bg = pink ? B.a : outline ? 'transparent' : B.p
-  const clr = outline ? B.p : B.wh
-  const brd = outline ? `1.5px solid ${B.p}` : pink ? `1.5px solid ${B.a}` : 'none'
-  return (
-    <button style={{
-      background:bg, color:clr, border:brd, padding:'14px 32px', borderRadius:8,
-      fontSize:15, fontWeight:700, cursor:'pointer', fontFamily:"'DM Sans',sans-serif",
-      transition:'all .2s', display:'inline-flex', alignItems:'center', gap:8, ...style
-    }} {...p}>{children}</button>
-  )
+/* ─── Icon map for data-driven sections ─── */
+const ICON_MAP: Record<string, React.ElementType> = {
+  checkCircle: CheckCircle,
+  shield: Shield,
+  monitor: Monitor,
+  user: User,
+  eye: Eye,
+  heart: Heart,
+  fileText: FileText,
+  clock: Clock,
+  banknote: Banknote,
 }
 
+/* ─── Section Badge ─── */
 function SectionBadge({ children, light }: { children: string; light?: boolean }) {
   return (
-    <div style={{
-      display:'inline-flex', alignItems:'center', gap:6,
-      background: light ? 'rgba(255,255,255,.12)' : B.pl,
-      border: light ? '1px solid rgba(255,255,255,.2)' : `1px solid ${B.bdr}`,
-      padding:'5px 14px', borderRadius:100, marginBottom:16,
-    }}>
-      <span style={{ width:6, height:6, borderRadius:'50%', background: light ? B.wh : B.p }}/>
-      <span style={{ fontSize:11, fontWeight:700, letterSpacing:'.12em', textTransform:'uppercase', color: light ? B.wh : B.p }}>{children}</span>
+    <div className={cn(
+      'inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full mb-4 border',
+      light
+        ? 'bg-white/[.12] border-white/20'
+        : 'bg-sdt-100 border-sdt-600/10'
+    )}>
+      <span className={cn(
+        'w-1.5 h-1.5 rounded-full',
+        light ? 'bg-white' : 'bg-sdt-600'
+      )} />
+      <span className={cn(
+        'text-[11px] font-bold tracking-[.12em] uppercase',
+        light ? 'text-white' : 'text-sdt-600'
+      )}>{children}</span>
     </div>
   )
 }
 
-/* ─── Navbar (reused from homepage style) ─── */
+/* ─── Navbar ─── */
 function Nav() {
+  const navLinks = [
+    ['Servicii', '/servicii'],
+    ['Digital Check-Up', '/digital-checkup'],
+    ['Consultație Online', '/consultatie-online'],
+    ['Echipa', '/echipa'],
+    ['Recenzii', '/'],
+  ]
+
   return (
-    <>
-      
-      <nav style={{
-        position:'sticky', top:0, zIndex:100, background:'rgba(255,255,255,.97)',
-        backdropFilter:'blur(12px)', borderTop:`3px solid ${B.a}`, borderBottom:`1px solid ${B.bdr}`,
-        padding:'14px 48px', display:'flex', justifyContent:'space-between', alignItems:'center',
-      }}>
-        <a href="/" style={{ textDecoration:'none' }}><Logo height={36}/></a>
-        <div style={{ display:'flex', gap:28, alignItems:'center' }}>
-          {[['Servicii','/servicii'],['Digital Check-Up','/digital-checkup'],['Consultație Online','/consultatie-online'],['Echipa','/echipa'],['Recenzii','/']].map(([l,h]) => (
-            <a key={l} href={h} style={{
-              fontSize:14, fontWeight: l==='Digital Check-Up' ? 700 : 500,
-              color: l==='Digital Check-Up' ? B.p : '#3a5a50', textDecoration:'none',
-            }}>{l}</a>
-          ))}
-        </div>
-        <div style={{ display:'flex', gap:10, alignItems:'center' }}>
-          <a href="/login" style={{ textDecoration:'none' }}><button style={{ background:'transparent', color:B.p, border:`1.5px solid ${B.p}`, padding:'8px 18px', borderRadius:8, fontSize:13, fontWeight:600, cursor:'pointer', fontFamily:"'DM Sans',sans-serif" }}>Cabinetul meu</button></a>
-          <Btn pink style={{ fontSize:13, padding:'10px 22px' }}>Programează-te</Btn>
-        </div>
-      </nav>
-    </>
+    <nav
+      className="sticky top-0 z-[100] bg-white/[.97] backdrop-blur-[12px] px-12 py-3.5 flex justify-between items-center"
+      style={{ borderTop: `3px solid ${B.a}`, borderBottom: `1px solid ${B.bdr}` }}
+    >
+      <a href="/" className="no-underline">
+        <Logo height={36} />
+      </a>
+      <div className="flex gap-7 items-center">
+        {navLinks.map(([label, href]) => (
+          <a
+            key={label}
+            href={href}
+            className={cn(
+              'text-sm no-underline',
+              label === 'Digital Check-Up'
+                ? 'font-bold text-sdt-600'
+                : 'font-medium text-[#3a5a50]'
+            )}
+          >
+            {label}
+          </a>
+        ))}
+      </div>
+      <div className="flex gap-2.5 items-center">
+        <a href="/login" className="no-underline">
+          <Button variant="outline" className="text-sdt-600 border-sdt-600 text-[13px] font-semibold h-auto px-[18px] py-2">
+            Cabinetul meu
+          </Button>
+        </a>
+        <Button
+          variant="accent"
+          className="text-[13px] font-bold h-auto px-[22px] py-2.5"
+        >
+          Programează-te
+        </Button>
+      </div>
+    </nav>
   )
 }
 
-/* ─── Hero ──────────────────────────────── */
+/* ─── Hero ─── */
 function Hero() {
   return (
-    <section style={{ background:`linear-gradient(160deg, ${B.nv} 0%, #0f2e24 50%, ${B.pd} 100%)`, position:'relative', overflow:'hidden' }}>
+    <section
+      className="relative overflow-hidden"
+      style={{ background: `linear-gradient(160deg, ${B.nv} 0%, #0f2e24 50%, ${B.pd} 100%)` }}
+    >
       {/* Decorative circles */}
-      <div style={{ position:'absolute', top:-120, right:-80, width:400, height:400, borderRadius:'50%', border:'1px solid rgba(255,255,255,.04)' }}/>
-      <div style={{ position:'absolute', bottom:-60, left:-40, width:250, height:250, borderRadius:'50%', border:'1px solid rgba(255,255,255,.03)' }}/>
+      <div className="absolute -top-[120px] -right-[80px] w-[400px] h-[400px] rounded-full border border-white/[.04]" />
+      <div className="absolute -bottom-[60px] -left-[40px] w-[250px] h-[250px] rounded-full border border-white/[.03]" />
 
-      <div style={{ maxWidth:1200, margin:'0 auto', padding:'80px 48px 72px', display:'grid', gridTemplateColumns:'1fr 1fr', gap:60, alignItems:'center' }}>
+      <div className="max-w-[1200px] mx-auto px-12 pt-20 pb-[72px] grid grid-cols-2 gap-[60px] items-center">
         {/* Left */}
         <div>
           <SectionBadge light>Produs Flagship 2026</SectionBadge>
-          <h1 style={{ fontFamily:"'Syne',sans-serif", fontSize:52, fontWeight:800, color:B.wh, lineHeight:1.05, letterSpacing:'-.03em', margin:'0 0 20px' }}>
-            Digital<br/><span style={{ color:B.a }}>Check-Up</span>
+          <h1 className="font-display text-[52px] font-extrabold text-white leading-[1.05] tracking-[-0.03em] mb-5">
+            Digital<br /><span className="text-pink-500">Check-Up</span>
           </h1>
-          <p style={{ fontSize:18, lineHeight:1.7, color:'rgba(255,255,255,.7)', maxWidth:480, margin:'0 0 36px' }}>
+          <p className="text-lg leading-[1.7] text-white/70 max-w-[480px] mb-9">
             Primul pas către un zâmbet sănătos. O evaluare completă, digitală și fără disconfort — detectăm problemele înainte să devină costisitoare.
           </p>
-          <div style={{ display:'flex', gap:14 }}>
-            <Btn pink style={{ fontSize:15 }}>Programează Digital Check-Up →</Btn>
-            <Btn outline style={{ borderColor:'rgba(255,255,255,.3)', color:B.wh }}>Află mai multe ↓</Btn>
+          <div className="flex gap-3.5">
+            <Button variant="accent" className="text-[15px] font-bold h-auto px-8 py-3.5 gap-2">
+              Programează Digital Check-Up →
+            </Button>
+            <Button
+              variant="outline"
+              className="text-white border-white/30 hover:bg-white/10 text-[15px] font-bold h-auto px-8 py-3.5"
+            >
+              Află mai multe ↓
+            </Button>
           </div>
-          <div style={{ display:'flex', gap:32, marginTop:44 }}>
-            {[['30 min','Durată'],['100%','Digital'],['0','Disconfort']].map(([n,l]) => (
+          <div className="flex gap-8 mt-11">
+            {[['30 min', 'Durată'], ['100%', 'Digital'], ['0', 'Disconfort']].map(([n, l]) => (
               <div key={l}>
-                <div style={{ fontFamily:"'Syne',sans-serif", fontSize:28, fontWeight:800, color:B.a }}>{n}</div>
-                <div style={{ fontSize:12, color:'rgba(255,255,255,.45)', marginTop:2 }}>{l}</div>
+                <div className="font-display text-[28px] font-extrabold text-pink-500">{n}</div>
+                <div className="text-xs text-white/[.45] mt-0.5">{l}</div>
               </div>
             ))}
           </div>
         </div>
 
         {/* Right — Visual card */}
-        <div style={{ position:'relative', display:'flex', justifyContent:'center' }}>
-          <div style={{
-            width:380, height:420, borderRadius:20, overflow:'hidden',
-            background:`linear-gradient(135deg, ${B.pm}22, ${B.a}11)`,
-            border:'1px solid rgba(255,255,255,.08)',
-            display:'flex', alignItems:'center', justifyContent:'center', flexDirection:'column', gap:20,
-          }}>
-            <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke={B.a} strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M9 12l2 2 4-4"/>
-              <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/>
-            </svg>
-            <div style={{ fontFamily:"'Syne',sans-serif", fontSize:22, fontWeight:800, color:B.wh, textAlign:'center' }}>
-              Scanare 3D<br/>Completă
+        <div className="relative flex justify-center">
+          <div
+            className="w-[380px] h-[420px] rounded-[20px] overflow-hidden border border-white/[.08] flex items-center justify-center flex-col gap-5"
+            style={{ background: `linear-gradient(135deg, ${B.pm}22, ${B.a}11)` }}
+          >
+            <CheckCircle className="w-20 h-20 text-pink-500" strokeWidth={1.2} />
+            <div className="font-display text-[22px] font-extrabold text-white text-center">
+              Scanare 3D<br />Completă
             </div>
-            <div style={{ fontSize:13, color:'rgba(255,255,255,.5)', textAlign:'center', maxWidth:240 }}>
+            <div className="text-[13px] text-white/50 text-center max-w-[240px]">
               Tehnologie de ultimă generație pentru un diagnostic precis
             </div>
           </div>
           {/* Float cards */}
-          <div style={{
-            position:'absolute', top:30, right:-10, background:B.wh, borderRadius:12,
-            padding:'12px 18px', boxShadow:'0 8px 32px rgba(0,0,0,.15)', animation:'float 4s ease-in-out infinite',
-          }}>
-            <div style={{ fontSize:11, color:B.gr, marginBottom:2 }}>Precizie</div>
-            <div style={{ fontFamily:"'Syne',sans-serif", fontSize:20, fontWeight:800, color:B.p }}>99.8%</div>
+          <div
+            className="absolute top-[30px] -right-[10px] bg-white rounded-xl px-[18px] py-3 shadow-[0_8px_32px_rgba(0,0,0,.15)]"
+            style={{ animation: 'float 4s ease-in-out infinite' }}
+          >
+            <div className="text-[11px] text-[#5a7a6e] mb-0.5">Precizie</div>
+            <div className="font-display text-xl font-extrabold text-sdt-600">99.8%</div>
           </div>
-          <div style={{
-            position:'absolute', bottom:40, left:-20, background:B.wh, borderRadius:12,
-            padding:'12px 18px', boxShadow:'0 8px 32px rgba(0,0,0,.15)', animation:'float 4.5s 1s ease-in-out infinite',
-          }}>
-            <div style={{ color:'#fbb040', fontSize:13, marginBottom:2 }}>★★★★★</div>
-            <div style={{ fontSize:12, fontWeight:700, color:B.nv }}>4.9 / 5.0</div>
+          <div
+            className="absolute bottom-[40px] -left-[20px] bg-white rounded-xl px-[18px] py-3 shadow-[0_8px_32px_rgba(0,0,0,.15)]"
+            style={{ animation: 'float 4.5s 1s ease-in-out infinite' }}
+          >
+            <div className="text-[#fbb040] text-[13px] mb-0.5">★★★★★</div>
+            <div className="text-xs font-bold text-sdt-900">4.9 / 5.0</div>
           </div>
         </div>
       </div>
@@ -139,104 +195,94 @@ function Hero() {
   )
 }
 
-/* ─── Benefits ─────────────────────────── */
+/* ─── Benefits ─── */
 const BENEFITS = [
-  { icon:'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z', title:'Detecție timpurie', desc:'Identifică cariile, inflamațiile gingivale și alte afecțiuni înainte de a deveni grave.' },
-  { icon:'M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z', title:'Prevenție inteligentă', desc:'Evită tratamente complicate prin checkup-uri regulate cu tehnologie avansată.' },
-  { icon:'M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z', title:'Precizie digitală', desc:'Analiză cu tehnologie de ultimă generație, fără disconfort, rezultate imediate.' },
-  { icon:'M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z', title:'Consultație personalizată', desc:'Plan de tratament adaptat nevoilor tale, explicat clar și transparent.' },
-  { icon:'M15 12a3 3 0 11-6 0 3 3 0 016 0z M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z', title:'Claritate totală', desc:'Înțelegi exact starea ta dentară și pașii necesari pentru un zâmbet perfect.' },
-  { icon:'M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z', title:'Încredere crescută', desc:'Un zâmbet sănătos îți oferă siguranță în fiecare zi.' },
+  { icon: CheckCircle, title: 'Detecție timpurie', desc: 'Identifică cariile, inflamațiile gingivale și alte afecțiuni înainte de a deveni grave.' },
+  { icon: Shield, title: 'Prevenție inteligentă', desc: 'Evită tratamente complicate prin checkup-uri regulate cu tehnologie avansată.' },
+  { icon: Monitor, title: 'Precizie digitală', desc: 'Analiză cu tehnologie de ultimă generație, fără disconfort, rezultate imediate.' },
+  { icon: User, title: 'Consultație personalizată', desc: 'Plan de tratament adaptat nevoilor tale, explicat clar și transparent.' },
+  { icon: Eye, title: 'Claritate totală', desc: 'Înțelegi exact starea ta dentară și pașii necesari pentru un zâmbet perfect.' },
+  { icon: Heart, title: 'Încredere crescută', desc: 'Un zâmbet sănătos îți oferă siguranță în fiecare zi.' },
 ]
 
 function Benefits() {
   return (
-    <section style={{ background:B.wh, padding:'80px 48px' }}>
-      <div style={{ maxWidth:1200, margin:'0 auto' }}>
-        <div style={{ textAlign:'center', marginBottom:56 }}>
+    <section className="bg-white py-20 px-12">
+      <div className="max-w-[1200px] mx-auto">
+        <div className="text-center mb-14">
           <SectionBadge>De ce Digital Check-Up</SectionBadge>
-          <h2 style={{ fontFamily:"'Syne',sans-serif", fontSize:38, fontWeight:800, color:B.nv, letterSpacing:'-.03em', margin:'0 0 14px' }}>
-            Beneficiile unui<br/><span style={{ color:B.p }}>Digital Check-Up</span>
+          <h2 className="font-display text-[38px] font-extrabold text-sdt-900 tracking-[-0.03em] mb-3.5">
+            Beneficiile unui<br /><span className="text-sdt-600">Digital Check-Up</span>
           </h2>
-          <p style={{ fontSize:15, color:B.gr, maxWidth:520, margin:'0 auto' }}>
+          <p className="text-[15px] text-[#5a7a6e] max-w-[520px] mx-auto">
             O procedură modernă, rapidă și precisă care îți analizează sănătatea dentară în detaliu.
           </p>
         </div>
-        <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:24 }}>
-          {BENEFITS.map((b, i) => (
-            <div key={b.title} style={{
-              padding:'32px 28px', borderRadius:12, border:`1px solid ${B.bdr}`,
-              transition:'all .25s', cursor:'pointer', background:B.wh,
-            }}
-              onMouseEnter={e => { const t = e.currentTarget; t.style.transform='translateY(-4px)'; t.style.borderColor=B.p; t.style.boxShadow=`0 12px 32px ${B.bdr}` }}
-              onMouseLeave={e => { const t = e.currentTarget; t.style.transform=''; t.style.borderColor=B.bdr; t.style.boxShadow='' }}
-            >
-              <div style={{
-                width:48, height:48, borderRadius:12, background:B.pl,
-                display:'flex', alignItems:'center', justifyContent:'center', marginBottom:18,
-              }}>
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={B.p} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d={b.icon}/></svg>
-              </div>
-              <h3 style={{ fontFamily:"'Syne',sans-serif", fontSize:17, fontWeight:700, color:B.nv, margin:'0 0 8px' }}>{b.title}</h3>
-              <p style={{ fontSize:13, lineHeight:1.65, color:B.gr, margin:0 }}>{b.desc}</p>
-            </div>
-          ))}
+        <div className="grid grid-cols-3 gap-6">
+          {BENEFITS.map((b) => {
+            const Icon = b.icon
+            return (
+              <Card
+                key={b.title}
+                className="p-7 cursor-pointer transition-all duration-[250ms] hover:-translate-y-1 hover:border-sdt-600 hover:shadow-lg border bg-white"
+              >
+                <div className="w-12 h-12 rounded-xl bg-sdt-100 flex items-center justify-center mb-[18px]">
+                  <Icon className="w-[22px] h-[22px] text-sdt-600" strokeWidth={1.8} />
+                </div>
+                <h3 className="font-display text-[17px] font-bold text-sdt-900 mb-2">{b.title}</h3>
+                <p className="text-[13px] leading-[1.65] text-[#5a7a6e] m-0">{b.desc}</p>
+              </Card>
+            )
+          })}
         </div>
       </div>
     </section>
   )
 }
 
-/* ─── Process Steps ────────────────────── */
+/* ─── Process Steps ─── */
 const STEPS = [
-  { num:'01', title:'Înregistrare', desc:'Completezi datele și primești o consultație inițială.', photo:'https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=400&h=250&fit=crop' },
-  { num:'02', title:'Protocol foto', desc:'Realizăm fotografii profesionale pentru documentare completă.', photo:'https://images.unsplash.com/photo-1606811841689-23dfddce3e95?w=400&h=250&fit=crop' },
-  { num:'03', title:'Scanare digitală 3D', desc:'Scanner intraoral de ultimă generație — fără paste, fără disconfort.', photo:'https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=400&h=250&fit=crop' },
-  { num:'04', title:'Radiografie CBCT', desc:'Imagini 3D de înaltă rezoluție pentru un diagnostic complet.', photo:'https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?w=400&h=250&fit=crop' },
-  { num:'05', title:'Evaluare detaliată', desc:'Medicul analizează toate datele și identifică problemele.', photo:'https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=400&h=250&fit=crop' },
-  { num:'06', title:'Plan de tratament', desc:'Primești un plan personalizat, cu opțiuni și costuri clare.', photo:'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=400&h=250&fit=crop' },
+  { num: '01', title: 'Înregistrare', desc: 'Completezi datele și primești o consultație inițială.', photo: 'https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=400&h=250&fit=crop' },
+  { num: '02', title: 'Protocol foto', desc: 'Realizăm fotografii profesionale pentru documentare completă.', photo: 'https://images.unsplash.com/photo-1606811841689-23dfddce3e95?w=400&h=250&fit=crop' },
+  { num: '03', title: 'Scanare digitală 3D', desc: 'Scanner intraoral de ultimă generație — fără paste, fără disconfort.', photo: 'https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=400&h=250&fit=crop' },
+  { num: '04', title: 'Radiografie CBCT', desc: 'Imagini 3D de înaltă rezoluție pentru un diagnostic complet.', photo: 'https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?w=400&h=250&fit=crop' },
+  { num: '05', title: 'Evaluare detaliată', desc: 'Medicul analizează toate datele și identifică problemele.', photo: 'https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=400&h=250&fit=crop' },
+  { num: '06', title: 'Plan de tratament', desc: 'Primești un plan personalizat, cu opțiuni și costuri clare.', photo: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=400&h=250&fit=crop' },
 ]
 
 function Process() {
   return (
-    <section style={{ background:B.ps, padding:'72px 48px' }}>
-      <div style={{ maxWidth:1200, margin:'0 auto' }}>
-        <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-end', marginBottom:36 }}>
+    <section className="bg-sdt-50 py-[72px] px-12">
+      <div className="max-w-[1200px] mx-auto">
+        <div className="flex justify-between items-end mb-9">
           <div>
             <SectionBadge>Cum funcționează</SectionBadge>
-            <h2 style={{ fontFamily:"'Syne',sans-serif", fontSize:34, fontWeight:800, color:B.nv, letterSpacing:'-.03em', margin:0 }}>
-              Etapele unui <span style={{ color:B.p }}>Digital Check-Up</span>
+            <h2 className="font-display text-[34px] font-extrabold text-sdt-900 tracking-[-0.03em] m-0">
+              Etapele unui <span className="text-sdt-600">Digital Check-Up</span>
             </h2>
           </div>
-          <div style={{ display:'flex', alignItems:'center', gap:8 }}>
-            <div style={{ fontFamily:"'Syne',sans-serif", fontSize:22, fontWeight:800, color:B.p }}>~30 min</div>
-            <div style={{ fontSize:11, color:B.gr }}>durată totală</div>
+          <div className="flex items-center gap-2">
+            <div className="font-display text-[22px] font-extrabold text-sdt-600">~30 min</div>
+            <div className="text-[11px] text-[#5a7a6e]">durată totală</div>
           </div>
         </div>
-        <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:14 }}>
-          {STEPS.map(s => (
-            <div key={s.num} style={{
-              background:B.wh, borderRadius:14, overflow:'hidden', border:`1px solid ${B.bdr}`,
-              transition:'all .2s',
-            }}
-              onMouseEnter={e => { e.currentTarget.style.borderColor=B.a; e.currentTarget.style.boxShadow=`0 6px 20px ${B.bdr}` }}
-              onMouseLeave={e => { e.currentTarget.style.borderColor=B.bdr; e.currentTarget.style.boxShadow='' }}
+        <div className="grid grid-cols-3 gap-3.5">
+          {STEPS.map((s) => (
+            <Card
+              key={s.num}
+              className="overflow-hidden transition-all duration-200 hover:border-pink-500 hover:shadow-md"
             >
-              <div style={{ position:'relative', height:120, overflow:'hidden' }}>
-                <img src={s.photo} alt={s.title} style={{ width:'100%', height:'100%', objectFit:'cover' }}/>
-                <div style={{
-                  position:'absolute', top:8, left:8, width:32, height:32, borderRadius:'50%',
-                  background:B.a, display:'flex', alignItems:'center', justifyContent:'center',
-                  border:`2px solid ${B.wh}`, boxShadow:'0 2px 8px rgba(0,0,0,.2)',
-                }}>
-                  <span style={{ fontSize:11, fontWeight:800, color:B.wh }}>{s.num}</span>
+              <div className="relative h-[120px] overflow-hidden">
+                <img src={s.photo} alt={s.title} className="w-full h-full object-cover" />
+                <div className="absolute top-2 left-2 w-8 h-8 rounded-full bg-pink-500 flex items-center justify-center border-2 border-white shadow-[0_2px_8px_rgba(0,0,0,.2)]">
+                  <span className="text-[11px] font-extrabold text-white">{s.num}</span>
                 </div>
               </div>
-              <div style={{ padding:'16px 18px' }}>
-                <h3 style={{ fontFamily:"'Syne',sans-serif", fontSize:15, fontWeight:700, color:B.nv, margin:'0 0 4px' }}>{s.title}</h3>
-                <p style={{ fontSize:12, lineHeight:1.5, color:B.gr, margin:0 }}>{s.desc}</p>
-              </div>
-            </div>
+              <CardContent className="px-[18px] py-4">
+                <h3 className="font-display text-[15px] font-bold text-sdt-900 mb-1">{s.title}</h3>
+                <p className="text-xs leading-[1.5] text-[#5a7a6e] m-0">{s.desc}</p>
+              </CardContent>
+            </Card>
           ))}
         </div>
       </div>
@@ -244,15 +290,20 @@ function Process() {
   )
 }
 
-/* ─── DCU Stats ──────────────────────────── */
+/* ─── DCU Stats ─── */
 function DcuStats() {
   return (
-    <section style={{ background:`linear-gradient(135deg,${B.p},${B.pm})`, padding:'48px' }}>
-      <div style={{ maxWidth:1200, margin:'0 auto', display:'flex', justifyContent:'center', gap:56, alignItems:'center' }}>
-        {[['2.200+','Digital Check-Up-uri realizate'],['30','minute — durată medie'],['99.8%','precizie diagnostic'],['4.9','rating Google pacienți']].map(([n,l]) => (
-          <div key={l} style={{ textAlign:'center' }}>
-            <div style={{ fontFamily:"'Syne',sans-serif", fontSize:30, fontWeight:800, color:B.wh }}>{n}</div>
-            <div style={{ fontSize:11, color:'rgba(255,255,255,.6)', marginTop:4 }}>{l}</div>
+    <section className="py-12 px-12" style={{ background: `linear-gradient(135deg, ${B.p}, ${B.pm})` }}>
+      <div className="max-w-[1200px] mx-auto flex justify-center gap-14 items-center">
+        {[
+          ['2.200+', 'Digital Check-Up-uri realizate'],
+          ['30', 'minute — durată medie'],
+          ['99.8%', 'precizie diagnostic'],
+          ['4.9', 'rating Google pacienți'],
+        ].map(([n, l]) => (
+          <div key={l} className="text-center">
+            <div className="font-display text-[30px] font-extrabold text-white">{n}</div>
+            <div className="text-[11px] text-white/60 mt-1">{l}</div>
           </div>
         ))}
       </div>
@@ -260,30 +311,30 @@ function DcuStats() {
   )
 }
 
-/* ─── DCU Testimonials + Video ───────────── */
+/* ─── DCU Testimonials + Video ─── */
 function DcuTestimonials() {
   const reviews = [
-    { text:'Am aflat exact ce am nevoie. Totul transparent, fără presiune. Cel mai bun prim pas.', author:'Ana R.', rating:5 },
-    { text:'În 30 de minute am avut o imagine clară a sănătății mele dentare. Impresionant!', author:'Mihai P.', rating:5 },
-    { text:'Scanarea 3D a fost rapidă și complet fără durere. Recomand oricui.', author:'Elena S.', rating:5 },
-    { text:'Am primit planul cu costuri clare. Nicio surpriză. Exact ce aveam nevoie.', author:'Victor D.', rating:5 },
+    { text: 'Am aflat exact ce am nevoie. Totul transparent, fără presiune. Cel mai bun prim pas.', author: 'Ana R.', rating: 5 },
+    { text: 'În 30 de minute am avut o imagine clară a sănătății mele dentare. Impresionant!', author: 'Mihai P.', rating: 5 },
+    { text: 'Scanarea 3D a fost rapidă și complet fără durere. Recomand oricui.', author: 'Elena S.', rating: 5 },
+    { text: 'Am primit planul cu costuri clare. Nicio surpriză. Exact ce aveam nevoie.', author: 'Victor D.', rating: 5 },
   ]
   return (
-    <section style={{ background:B.wh, padding:'72px 48px' }}>
-      <div style={{ maxWidth:1200, margin:'0 auto' }}>
-        <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:40 }}>
+    <section className="bg-white py-[72px] px-12">
+      <div className="max-w-[1200px] mx-auto">
+        <div className="grid grid-cols-2 gap-10">
           {/* Left — Reviews */}
           <div>
             <SectionBadge>Ce spun pacienții</SectionBadge>
-            <h2 style={{ fontFamily:"'Syne',sans-serif", fontSize:28, fontWeight:800, color:B.nv, margin:'0 0 20px' }}>
-              Experiența <span style={{ color:B.a }}>Digital Check-Up</span>
+            <h2 className="font-display text-[28px] font-extrabold text-sdt-900 mb-5">
+              Experiența <span className="text-pink-500">Digital Check-Up</span>
             </h2>
-            <div style={{ display:'flex', flexDirection:'column', gap:12 }}>
-              {reviews.map((r,i) => (
-                <div key={i} style={{ background:B.ps, borderRadius:12, padding:'16px', borderLeft:`3px solid ${B.p}` }}>
-                  <div style={{ color:'#fbb040', fontSize:11, marginBottom:4 }}>{'★'.repeat(r.rating)}</div>
-                  <p style={{ fontSize:13, lineHeight:1.6, color:B.nv, margin:'0 0 6px', fontStyle:'italic' }}>&ldquo;{r.text}&rdquo;</p>
-                  <div style={{ fontSize:12, color:B.gr, fontWeight:600 }}>— {r.author}</div>
+            <div className="flex flex-col gap-3">
+              {reviews.map((r, i) => (
+                <div key={i} className="bg-sdt-50 rounded-xl p-4 border-l-[3px] border-l-sdt-600">
+                  <div className="text-[#fbb040] text-[11px] mb-1">{'★'.repeat(r.rating)}</div>
+                  <p className="text-[13px] leading-[1.6] text-sdt-900 mb-1.5 italic m-0">&ldquo;{r.text}&rdquo;</p>
+                  <div className="text-xs text-[#5a7a6e] font-semibold">— {r.author}</div>
                 </div>
               ))}
             </div>
@@ -291,22 +342,22 @@ function DcuTestimonials() {
           {/* Right — Video reels */}
           <div>
             <SectionBadge>Video feedback</SectionBadge>
-            <h2 style={{ fontFamily:"'Syne',sans-serif", fontSize:28, fontWeight:800, color:B.nv, margin:'0 0 20px' }}>
-              Povești <span style={{ color:B.p }}>reale</span>
+            <h2 className="font-display text-[28px] font-extrabold text-sdt-900 mb-5">
+              Povești <span className="text-sdt-600">reale</span>
             </h2>
-            <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:10 }}>
-              {[1,2,3].map(i => (
-                <div key={i} style={{
-                  height:280, borderRadius:14, cursor:'pointer',
-                  background:`linear-gradient(160deg, ${B.nv}, #0f2e24)`,
-                  display:'flex', alignItems:'center', justifyContent:'center', position:'relative',
-                }}>
-                  <div style={{ width:44, height:44, borderRadius:'50%', background:B.a, display:'flex', alignItems:'center', justifyContent:'center' }}>
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill={B.wh} stroke="none"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            <div className="grid grid-cols-3 gap-2.5">
+              {[1, 2, 3].map((i) => (
+                <div
+                  key={i}
+                  className="h-[280px] rounded-[14px] cursor-pointer flex items-center justify-center relative"
+                  style={{ background: `linear-gradient(160deg, ${B.nv}, #0f2e24)` }}
+                >
+                  <div className="w-11 h-11 rounded-full bg-pink-500 flex items-center justify-center">
+                    <Play className="w-4 h-4 text-white fill-white" />
                   </div>
-                  <div style={{ position:'absolute', bottom:12, left:12, right:12 }}>
-                    <div style={{ fontSize:11, fontWeight:700, color:B.wh }}>Pacient #{i}</div>
-                    <div style={{ fontSize:9, color:'rgba(255,255,255,.5)' }}>Digital Check-Up</div>
+                  <div className="absolute bottom-3 left-3 right-3">
+                    <div className="text-[11px] font-bold text-white">Pacient #{i}</div>
+                    <div className="text-[9px] text-white/50">Digital Check-Up</div>
                   </div>
                 </div>
               ))}
@@ -318,44 +369,50 @@ function DcuTestimonials() {
   )
 }
 
-/* ─── What you get ───────────────────────── */
+/* ─── What you get ─── */
 function WhatYouGet() {
   const items = [
-    { title:'Scanare 3D completă', desc:'Model digital al danturii tale — fără amprentă clasică', icon:'M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z' },
-    { title:'Tomografie 3D CBCT', desc:'Imagini de înaltă rezoluție ale structurii osoase', icon:'M15 12a3 3 0 11-6 0 3 3 0 016 0z M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z' },
-    { title:'Protocol fotografic', desc:'Documentare completă înainte/după', icon:'M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z' },
-    { title:'Plan de tratament PDF', desc:'Document detaliat cu diagnostic, opțiuni și costuri', icon:'M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z M14 2v6h6' },
-    { title:'Consultație 1:1', desc:'Discuție cu specialistul — explicații clare, fără grabă', icon:'M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z' },
-    { title:'Prețuri transparente', desc:'Știi exact cât costă — fără costuri ascunse', icon:'M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z' },
+    { title: 'Scanare 3D completă', desc: 'Model digital al danturii tale — fără amprentă clasică', icon: Monitor },
+    { title: 'Tomografie 3D CBCT', desc: 'Imagini de înaltă rezoluție ale structurii osoase', icon: Eye },
+    { title: 'Protocol fotografic', desc: 'Documentare completă înainte/după', icon: Heart },
+    { title: 'Plan de tratament PDF', desc: 'Document detaliat cu diagnostic, opțiuni și costuri', icon: FileText },
+    { title: 'Consultație 1:1', desc: 'Discuție cu specialistul — explicații clare, fără grabă', icon: User },
+    { title: 'Prețuri transparente', desc: 'Știi exact cât costă — fără costuri ascunse', icon: Clock },
   ]
   return (
-    <section style={{ background:`linear-gradient(160deg, ${B.nv}, #0f2e24)`, padding:'72px 48px' }}>
-      <div style={{ maxWidth:1200, margin:'0 auto' }}>
-        <div style={{ textAlign:'center', marginBottom:36 }}>
+    <section
+      className="py-[72px] px-12"
+      style={{ background: `linear-gradient(160deg, ${B.nv}, #0f2e24)` }}
+    >
+      <div className="max-w-[1200px] mx-auto">
+        <div className="text-center mb-9">
           <SectionBadge light>Ce primești</SectionBadge>
-          <h2 style={{ fontFamily:"'Syne',sans-serif", fontSize:32, fontWeight:800, color:B.wh, margin:0 }}>
-            Totul într-un <span style={{ color:B.a }}>Digital Check-Up</span>
+          <h2 className="font-display text-[32px] font-extrabold text-white m-0">
+            Totul într-un <span className="text-pink-500">Digital Check-Up</span>
           </h2>
         </div>
-        <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:14 }}>
-          {items.map(item => (
-            <div key={item.title} style={{ background:'rgba(255,255,255,.05)', border:'1px solid rgba(255,255,255,.08)', borderRadius:14, padding:'22px', display:'flex', gap:14 }}>
-              <div style={{ width:40, height:40, borderRadius:10, background:'rgba(255,255,255,.08)', display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0 }}>
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={B.a} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d={item.icon}/></svg>
+        <div className="grid grid-cols-3 gap-3.5">
+          {items.map((item) => {
+            const Icon = item.icon
+            return (
+              <div key={item.title} className="bg-white/5 border border-white/[.08] rounded-[14px] p-[22px] flex gap-3.5">
+                <div className="w-10 h-10 rounded-[10px] bg-white/[.08] flex items-center justify-center shrink-0">
+                  <Icon className="w-[18px] h-[18px] text-pink-500" strokeWidth={1.8} />
+                </div>
+                <div>
+                  <h3 className="font-display text-sm font-bold text-white mb-1">{item.title}</h3>
+                  <p className="text-xs leading-[1.5] text-white/[.55] m-0">{item.desc}</p>
+                </div>
               </div>
-              <div>
-                <h3 style={{ fontFamily:"'Syne',sans-serif", fontSize:14, fontWeight:700, color:B.wh, margin:'0 0 4px' }}>{item.title}</h3>
-                <p style={{ fontSize:12, lineHeight:1.5, color:'rgba(255,255,255,.55)', margin:0 }}>{item.desc}</p>
-              </div>
-            </div>
-          ))}
+            )
+          })}
         </div>
       </div>
     </section>
   )
 }
 
-/* ─── When you need it ─────────────────── */
+/* ─── When you need it ─── */
 const INDICATORS = [
   'Sângerări ale gingiilor sau respirație neplăcută',
   'Probleme la mestecat sau disconfort la mâncare',
@@ -367,31 +424,30 @@ const INDICATORS = [
 
 function WhenNeeded() {
   return (
-    <section style={{ background:B.wh, padding:'80px 48px' }}>
-      <div style={{ maxWidth:1200, margin:'0 auto', display:'grid', gridTemplateColumns:'1fr 1fr', gap:60, alignItems:'center' }}>
+    <section className="bg-white py-20 px-12">
+      <div className="max-w-[1200px] mx-auto grid grid-cols-2 gap-[60px] items-center">
         <div>
           <SectionBadge>Ai nevoie de check-up?</SectionBadge>
-          <h2 style={{ fontFamily:"'Syne',sans-serif", fontSize:34, fontWeight:800, color:B.nv, letterSpacing:'-.03em', margin:'0 0 14px', lineHeight:1.1 }}>
-            Când ar trebui<br/>să faci un <span style={{ color:B.p }}>Digital Check-Up</span>?
+          <h2 className="font-display text-[34px] font-extrabold text-sdt-900 tracking-[-0.03em] mb-3.5 leading-[1.1]">
+            Când ar trebui<br />să faci un <span className="text-sdt-600">Digital Check-Up</span>?
           </h2>
-          <p style={{ fontSize:14, lineHeight:1.7, color:B.gr, margin:'0 0 28px', maxWidth:420 }}>
+          <p className="text-sm leading-[1.7] text-[#5a7a6e] mb-7 max-w-[420px]">
             Dacă te regăsești în oricare dintre situațiile de mai jos, Digital Check-Up este soluția ideală.
           </p>
-          <Btn pink>Programează-te acum →</Btn>
+          <Button variant="accent" className="text-[15px] font-bold h-auto px-8 py-3.5 gap-2">
+            Programează-te acum →
+          </Button>
         </div>
-        <div style={{ display:'grid', gap:12 }}>
+        <div className="grid gap-3">
           {INDICATORS.map((ind, i) => (
-            <div key={i} style={{
-              display:'flex', alignItems:'center', gap:14, padding:'14px 20px',
-              background:B.ps, borderRadius:10, border:`1px solid ${B.bdr}`,
-            }}>
-              <div style={{
-                width:28, height:28, borderRadius:'50%', background:B.pl, flexShrink:0,
-                display:'flex', alignItems:'center', justifyContent:'center',
-              }}>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={B.p} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            <div
+              key={i}
+              className="flex items-center gap-3.5 px-5 py-3.5 bg-sdt-50 rounded-[10px] border border-sdt-600/10"
+            >
+              <div className="w-7 h-7 rounded-full bg-sdt-100 shrink-0 flex items-center justify-center">
+                <Check className="w-3.5 h-3.5 text-sdt-600" strokeWidth={2.5} />
               </div>
-              <span style={{ fontSize:14, color:B.nv, fontWeight:500 }}>{ind}</span>
+              <span className="text-sm text-sdt-900 font-medium">{ind}</span>
             </div>
           ))}
         </div>
@@ -400,63 +456,76 @@ function WhenNeeded() {
   )
 }
 
-/* ─── CTA Strip ────────────────────────── */
+/* ─── CTA Strip ─── */
 function CtaStrip() {
   return (
-    <section style={{ background:`linear-gradient(135deg,${B.p},${B.pm})`, padding:'60px 48px' }}>
-      <div style={{ maxWidth:900, margin:'0 auto', textAlign:'center' }}>
-        <h2 style={{ fontFamily:"'Syne',sans-serif", fontSize:34, fontWeight:800, color:B.wh, margin:'0 0 14px', letterSpacing:'-.02em' }}>
+    <section className="py-[60px] px-12" style={{ background: `linear-gradient(135deg, ${B.p}, ${B.pm})` }}>
+      <div className="max-w-[900px] mx-auto text-center">
+        <h2 className="font-display text-[34px] font-extrabold text-white mb-3.5 tracking-[-0.02em]">
           Alege-te pe tine. Programează un Digital Check-Up.
         </h2>
-        <p style={{ fontSize:16, color:'rgba(255,255,255,.7)', margin:'0 0 32px', maxWidth:540, marginLeft:'auto', marginRight:'auto' }}>
+        <p className="text-base text-white/70 mb-8 max-w-[540px] mx-auto">
           30 de minute care îți pot schimba zâmbetul. Fără durere, fără surprize — doar claritate.
         </p>
-        <div style={{ display:'flex', gap:14, justifyContent:'center' }}>
-          <Btn pink style={{ fontSize:16, padding:'16px 36px' }}>Programează-te →</Btn>
-          <Btn outline style={{ borderColor:'rgba(255,255,255,.3)', color:B.wh, fontSize:16, padding:'16px 36px' }}>Sună: +373 22 881 414</Btn>
+        <div className="flex gap-3.5 justify-center">
+          <Button variant="accent" className="text-base font-bold h-auto px-9 py-4 gap-2">
+            Programează-te →
+          </Button>
+          <Button
+            variant="outline"
+            className="text-white border-white/30 hover:bg-white/10 text-base font-bold h-auto px-9 py-4"
+          >
+            Sună: +373 22 881 414
+          </Button>
         </div>
       </div>
     </section>
   )
 }
 
-/* ─── FAQ ──────────────────────────────── */
+/* ─── FAQ ─── */
 const FAQS = [
-  { q:'Cât durează un Digital Check-Up?', a:'Un Digital Check-Up complet durează aproximativ 30 de minute. Include scanarea 3D, radiografia și consultația personalizată.' },
-  { q:'Este dureros?', a:'Nu. Digital Check-Up este complet non-invaziv. Scanarea 3D se face cu un scanner intraoral mic, fără paste sau disconfort.' },
-  { q:'Ce include prețul?', a:'Prețul include scanarea digitală 3D, radiografia CBCT, evaluarea completă de către specialist și planul de tratament personalizat.' },
-  { q:'Cum mă pot programa?', a:'Poți suna la +373 22 881 414, completa formularul de pe site, sau vizita direct clinica din str. Ismail 88, Chișinău.' },
-  { q:'Pot vedea rezultatul Smile Design înainte de tratament?', a:'Da! Prin tehnologia Digital Smile Design, poți vizualiza rezultatul final al zâmbetului tău înainte de a începe orice procedură.' },
+  { q: 'Cât durează un Digital Check-Up?', a: 'Un Digital Check-Up complet durează aproximativ 30 de minute. Include scanarea 3D, radiografia și consultația personalizată.' },
+  { q: 'Este dureros?', a: 'Nu. Digital Check-Up este complet non-invaziv. Scanarea 3D se face cu un scanner intraoral mic, fără paste sau disconfort.' },
+  { q: 'Ce include prețul?', a: 'Prețul include scanarea digitală 3D, radiografia CBCT, evaluarea completă de către specialist și planul de tratament personalizat.' },
+  { q: 'Cum mă pot programa?', a: 'Poți suna la +373 22 881 414, completa formularul de pe site, sau vizita direct clinica din str. Ismail 88, Chișinău.' },
+  { q: 'Pot vedea rezultatul Smile Design înainte de tratament?', a: 'Da! Prin tehnologia Digital Smile Design, poți vizualiza rezultatul final al zâmbetului tău înainte de a începe orice procedură.' },
 ]
 
 function Faq() {
-  const [open, setOpen] = useState<number|null>(null)
+  const [open, setOpen] = useState<number | null>(null)
   return (
-    <section style={{ background:B.wh, padding:'80px 48px' }}>
-      <div style={{ maxWidth:800, margin:'0 auto' }}>
-        <div style={{ textAlign:'center', marginBottom:48 }}>
+    <section className="bg-white py-20 px-12">
+      <div className="max-w-[800px] mx-auto">
+        <div className="text-center mb-12">
           <SectionBadge>Întrebări frecvente</SectionBadge>
-          <h2 style={{ fontFamily:"'Syne',sans-serif", fontSize:34, fontWeight:800, color:B.nv, letterSpacing:'-.03em', margin:0 }}>
+          <h2 className="font-display text-[34px] font-extrabold text-sdt-900 tracking-[-0.03em] m-0">
             Tot ce trebuie să știi
           </h2>
         </div>
         {FAQS.map((f, i) => (
-          <div key={i} style={{ borderBottom:`1px solid ${B.bdr}` }}>
-            <button onClick={() => setOpen(open === i ? null : i)} style={{
-              width:'100%', background:'none', border:'none', cursor:'pointer',
-              padding:'20px 0', display:'flex', justifyContent:'space-between', alignItems:'center',
-              fontFamily:"'DM Sans',sans-serif",
-            }}>
-              <span style={{ fontSize:15, fontWeight:600, color:B.nv, textAlign:'left' }}>{f.q}</span>
-              <span style={{
-                fontSize:20, color:B.p, transition:'transform .2s', fontWeight:300,
-                transform: open === i ? 'rotate(45deg)' : 'rotate(0)',
-              }}>+</span>
+          <div key={i} className="border-b border-sdt-600/10">
+            <button
+              onClick={() => setOpen(open === i ? null : i)}
+              className="w-full bg-transparent border-none cursor-pointer py-5 flex justify-between items-center font-sans"
+            >
+              <span className="text-[15px] font-semibold text-sdt-900 text-left">{f.q}</span>
+              <span
+                className={cn(
+                  'text-xl text-sdt-600 font-light transition-transform duration-200',
+                  open === i && 'rotate-45'
+                )}
+              >
+                +
+              </span>
             </button>
-            <div style={{
-              maxHeight: open === i ? 200 : 0, overflow:'hidden', transition:'max-height .3s ease',
-            }}>
-              <p style={{ fontSize:14, lineHeight:1.7, color:B.gr, margin:'0 0 20px', paddingRight:40 }}>{f.a}</p>
+            <div
+              className={cn(
+                'overflow-hidden transition-[max-height] duration-300 ease-in-out',
+                open === i ? 'max-h-[200px]' : 'max-h-0'
+              )}
+            >
+              <p className="text-sm leading-[1.7] text-[#5a7a6e] mb-5 pr-10">{f.a}</p>
             </div>
           </div>
         ))}
@@ -465,112 +534,110 @@ function Faq() {
   )
 }
 
-/* ─── Appointment Form ─────────────────── */
+/* ─── Appointment Form ─── */
 function AppointmentForm() {
   return (
-    <section style={{ background:B.ps, padding:'80px 48px' }}>
-      <div style={{ maxWidth:1200, margin:'0 auto', display:'grid', gridTemplateColumns:'1fr 1fr', gap:60, alignItems:'center' }}>
+    <section className="bg-sdt-50 py-20 px-12">
+      <div className="max-w-[1200px] mx-auto grid grid-cols-2 gap-[60px] items-center">
         <div>
           <SectionBadge>Programare</SectionBadge>
-          <h2 style={{ fontFamily:"'Syne',sans-serif", fontSize:34, fontWeight:800, color:B.nv, margin:'0 0 14px', letterSpacing:'-.02em', lineHeight:1.1 }}>
-            Programează-ți<br/><span style={{ color:B.a }}>Digital Check-Up</span>
+          <h2 className="font-display text-[34px] font-extrabold text-sdt-900 mb-3.5 tracking-[-0.02em] leading-[1.1]">
+            Programează-ți<br /><span className="text-pink-500">Digital Check-Up</span>
           </h2>
-          <p style={{ fontSize:14, lineHeight:1.7, color:B.gr, margin:'0 0 28px', maxWidth:400 }}>
+          <p className="text-sm leading-[1.7] text-[#5a7a6e] mb-7 max-w-[400px]">
             Completează formularul și te contactăm în 24h pentru confirmare. Fără obligații, fără surprize.
           </p>
-          <div style={{ display:'flex', flexDirection:'column', gap:14 }}>
+          <div className="flex flex-col gap-3.5">
             {[
-              ['M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z','Confirmare în max. 24h'],
-              ['M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z','Durată: ~30 minute'],
-              ['M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z','Fără durere, 100% digital'],
-              ['M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z','Prețuri transparente'],
-            ].map(([icon, text]) => (
-              <div key={text} style={{ display:'flex', alignItems:'center', gap:12 }}>
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={B.p} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d={icon}/></svg>
-                <span style={{ fontSize:14, color:B.nv, fontWeight:500 }}>{text}</span>
+              { icon: CheckCircle, text: 'Confirmare în max. 24h' },
+              { icon: Clock, text: 'Durată: ~30 minute' },
+              { icon: Heart, text: 'Fără durere, 100% digital' },
+              { icon: Banknote, text: 'Prețuri transparente' },
+            ].map(({ icon: Icon, text }) => (
+              <div key={text} className="flex items-center gap-3">
+                <Icon className="w-[18px] h-[18px] text-sdt-600" strokeWidth={1.8} />
+                <span className="text-sm text-sdt-900 font-medium">{text}</span>
               </div>
             ))}
           </div>
         </div>
 
         {/* Form */}
-        <div style={{ background:B.wh, borderRadius:16, padding:'36px 32px', border:`1px solid ${B.bdr}`, boxShadow:`0 8px 32px ${B.bdr}` }}>
-          <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:14, marginBottom:14 }}>
-            <input placeholder="Prenume" style={inputStyle}/>
-            <input placeholder="Nume" style={inputStyle}/>
-          </div>
-          <input placeholder="Telefon *" type="tel" style={{ ...inputStyle, marginBottom:14 }}/>
-          <select style={{ ...inputStyle, marginBottom:20, color:B.gr }}>
-            <option>Selectează locația</option>
-            {LOCATIONS.map(l => <option key={l.city}>{l.city} — {l.address}</option>)}
-          </select>
-          <Btn pink style={{ width:'100%', justifyContent:'center', fontSize:15, padding:'14px' }}>
-            Trimite cererea →
-          </Btn>
-          <p style={{ fontSize:11, color:B.gr, textAlign:'center', marginTop:12 }}>
-            Prin trimitere ești de acord cu <span style={{ color:B.p, cursor:'pointer' }}>Politica de confidențialitate</span>
-          </p>
-        </div>
+        <Card className="p-8 shadow-[0_8px_32px_rgba(10,107,92,0.1)]">
+          <CardContent className="p-0 space-y-3.5">
+            <div className="grid grid-cols-2 gap-3.5">
+              <Input placeholder="Prenume" />
+              <Input placeholder="Nume" />
+            </div>
+            <Input placeholder="Telefon *" type="tel" />
+            <select className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 text-muted-foreground">
+              <option>Selectează locația</option>
+              {LOCATIONS.map((l) => (
+                <option key={l.city}>{l.city} — {l.address}</option>
+              ))}
+            </select>
+            <Button variant="accent" className="w-full text-[15px] font-bold h-auto py-3.5">
+              Trimite cererea →
+            </Button>
+            <p className="text-[11px] text-[#5a7a6e] text-center mt-3">
+              Prin trimitere ești de acord cu <span className="text-sdt-600 cursor-pointer">Politica de confidențialitate</span>
+            </p>
+          </CardContent>
+        </Card>
       </div>
     </section>
   )
 }
 
-const inputStyle: React.CSSProperties = {
-  width:'100%', padding:'12px 16px', border:`1px solid ${B.bdr}`, borderRadius:8,
-  fontSize:14, fontFamily:"'DM Sans',sans-serif", background:B.wh, outline:'none',
-  boxSizing:'border-box', transition:'border-color .15s',
-}
-
-/* ─── Footer ──────────────────────────── */
+/* ─── Footer ─── */
 function Footer() {
   return (
-    <footer style={{ background:B.nv, padding:'56px 48px 32px' }}>
-      <div style={{ maxWidth:1200, margin:'0 auto', display:'grid', gridTemplateColumns:'1.5fr 1fr 1fr 1.2fr', gap:40, marginBottom:40 }}>
+    <footer className="bg-sdt-900 pt-14 pb-8 px-12">
+      <div className="max-w-[1200px] mx-auto grid grid-cols-[1.5fr_1fr_1fr_1.2fr] gap-10 mb-10">
         <div>
-          <Logo height={32} light/>
-          <p style={{ fontSize:13, color:'rgba(255,255,255,.45)', marginTop:16, lineHeight:1.7, maxWidth:260 }}>
+          <Logo height={32} light />
+          <p className="text-[13px] text-white/[.45] mt-4 leading-[1.7] max-w-[260px]">
             Clinică stomatologică digitală. {STATS.years} ani de excelență, {STATS.team} specialiști, {STATS.patients} pacienți.
           </p>
-          <div style={{ fontFamily:"'Syne',sans-serif", fontSize:16, fontWeight:800, color:B.a, marginTop:16 }}>{CAMPAIGN_2026.slogan}</div>
+          <div className="font-display text-base font-extrabold text-pink-500 mt-4">{CAMPAIGN_2026.slogan}</div>
         </div>
         <div>
-          <div style={{ fontSize:11, fontWeight:700, color:B.wh, letterSpacing:'.15em', textTransform:'uppercase', marginBottom:18 }}>Servicii</div>
-          {['Digital Check-Up','Estetică & Smile Design','Terapie & Profilaxie','Chirurgie Orală','Implantologie 3D','Protetică CAD/CAM','Ortodonție Digitală'].map(s => (
-            <div key={s} style={{ fontSize:13, marginBottom:9, color:'rgba(255,255,255,.5)', cursor:'pointer' }}>{s}</div>
+          <div className="text-[11px] font-bold text-white tracking-[.15em] uppercase mb-[18px]">Servicii</div>
+          {['Digital Check-Up', 'Estetică & Smile Design', 'Terapie & Profilaxie', 'Chirurgie Orală', 'Implantologie 3D', 'Protetică CAD/CAM', 'Ortodonție Digitală'].map((s) => (
+            <div key={s} className="text-[13px] mb-[9px] text-white/50 cursor-pointer">{s}</div>
           ))}
         </div>
         <div>
-          <div style={{ fontSize:11, fontWeight:700, color:B.wh, letterSpacing:'.15em', textTransform:'uppercase', marginBottom:18 }}>Clinică</div>
-          {[['Despre noi','/'],['Echipa','/echipa'],['Ambasadori','/ambasadori'],['Tehnologii','/'],['Blog','/'],['Contacte','/']].map(([s,h]) => (
-            <a key={s} href={h} style={{ display:'block', fontSize:13, marginBottom:9, color:'rgba(255,255,255,.5)', textDecoration:'none' }}>{s}</a>
+          <div className="text-[11px] font-bold text-white tracking-[.15em] uppercase mb-[18px]">Clinică</div>
+          {[['Despre noi', '/'], ['Echipa', '/echipa'], ['Ambasadori', '/ambasadori'], ['Tehnologii', '/'], ['Blog', '/'], ['Contacte', '/']].map(([s, h]) => (
+            <a key={s} href={h} className="block text-[13px] mb-[9px] text-white/50 no-underline">{s}</a>
           ))}
         </div>
         <div>
-          <div style={{ fontSize:11, fontWeight:700, color:B.wh, letterSpacing:'.15em', textTransform:'uppercase', marginBottom:18 }}>Contact</div>
-          {LOCATIONS.slice(0,2).map(l => (
-            <div key={l.city} style={{ marginBottom:14 }}>
-              <div style={{ fontSize:13, fontWeight:600, color:B.wh }}>{l.city}</div>
-              <div style={{ fontSize:12, color:'rgba(255,255,255,.45)' }}>{l.address}</div>
-              <div style={{ fontSize:12, color:'rgba(255,255,255,.45)' }}>{l.phone}</div>
+          <div className="text-[11px] font-bold text-white tracking-[.15em] uppercase mb-[18px]">Contact</div>
+          {LOCATIONS.slice(0, 2).map((l) => (
+            <div key={l.city} className="mb-3.5">
+              <div className="text-[13px] font-semibold text-white">{l.city}</div>
+              <div className="text-xs text-white/[.45]">{l.address}</div>
+              <div className="text-xs text-white/[.45]">{l.phone}</div>
             </div>
           ))}
         </div>
       </div>
-      <div style={{ borderTop:'1px solid rgba(255,255,255,.07)', paddingTop:20, display:'flex', justifyContent:'space-between', alignItems:'center' }}>
-        <div style={{ display:'flex', alignItems:'center', gap:14 }}>
-          <Logo height={22} light/>
-          <span style={{ fontSize:11, color:'rgba(255,255,255,.25)' }}>© {CAMPAIGN_2026.year} Smile Dent Team. Toate drepturile rezervate.</span>
+      <div className="border-t border-white/[.07] pt-5 flex justify-between items-center">
+        <div className="flex items-center gap-3.5">
+          <Logo height={22} light />
+          <span className="text-[11px] text-white/25">&copy; {CAMPAIGN_2026.year} Smile Dent Team. Toate drepturile rezervate.</span>
         </div>
-        <div style={{ display:'flex', alignItems:'center', gap:16 }}>
-          <div style={{ display:'flex', gap:6 }}>
-            {['RO','RU','EN'].map(l => (
-              <span key={l} style={{ background:'rgba(255,255,255,.08)', color:'rgba(255,255,255,.5)', padding:'3px 8px', borderRadius:40, fontSize:10, fontWeight:700, cursor:'pointer' }}>{l}</span>
+        <div className="flex items-center gap-4">
+          <div className="flex gap-1.5">
+            {['RO', 'RU', 'EN'].map((l) => (
+              <span key={l} className="bg-white/[.08] text-white/50 px-2 py-[3px] rounded-full text-[10px] font-bold cursor-pointer">{l}</span>
             ))}
           </div>
-          <div style={{ display:'flex', gap:16, fontSize:11, color:'rgba(255,255,255,.25)' }}>
-            {['Confidențialitate','Termeni','Cookies'].map(s => (
-              <span key={s} style={{ cursor:'pointer' }}>{s}</span>
+          <div className="flex gap-4 text-[11px] text-white/25">
+            {['Confidențialitate', 'Termeni', 'Cookies'].map((s) => (
+              <span key={s} className="cursor-pointer">{s}</span>
             ))}
           </div>
         </div>
@@ -579,23 +646,23 @@ function Footer() {
   )
 }
 
-/* ─── Main Export ──────────────────────── */
+/* ─── Main Export ─── */
 export function DigitalCheckupPage() {
   return (
     <>
       <style>{ANIM}</style>
-      <Nav/>
-      <Hero/>
-      <Benefits/>
-      <Process/>
-      <DcuStats/>
-      <WhenNeeded/>
-      <DcuTestimonials/>
-      <WhatYouGet/>
-      <CtaStrip/>
-      <Faq/>
-      <AppointmentForm/>
-      <Footer/>
+      <Nav />
+      <Hero />
+      <Benefits />
+      <Process />
+      <DcuStats />
+      <WhenNeeded />
+      <DcuTestimonials />
+      <WhatYouGet />
+      <CtaStrip />
+      <Faq />
+      <AppointmentForm />
+      <Footer />
     </>
   )
 }

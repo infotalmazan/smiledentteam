@@ -2,6 +2,12 @@
 import { useState } from 'react'
 import { BRAND as B, STATS, LOCATIONS, CAMPAIGN_2026, SERVICES, AMBASSADORS } from '@/lib/brand'
 import { Logo } from './Logo'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
+import { Input } from '@/components/ui/input'
+import { ChevronLeft, ChevronRight, Play, MapPin, Phone } from 'lucide-react'
+import { cn } from '@/lib/utils'
 
 /* ─── Extended ambassador data ────────────── */
 const AMB_DETAILS: Record<string, {
@@ -127,45 +133,34 @@ const AMB_DETAILS: Record<string, {
   },
 }
 
-/* ─── Shared ──────────────────────────────── */
-function Btn({ children, pink, outline, style, ...p }: any) {
-  const bg = pink ? B.a : outline ? 'transparent' : B.p
-  const clr = outline ? B.p : B.wh
-  const brd = outline ? `1.5px solid ${B.p}` : pink ? `1.5px solid ${B.a}` : 'none'
-  return (
-    <button style={{
-      background:bg, color:clr, border:brd, padding:'14px 32px', borderRadius:8,
-      fontSize:15, fontWeight:700, cursor:'pointer', fontFamily:"'DM Sans',sans-serif",
-      transition:'all .2s', display:'inline-flex', alignItems:'center', gap:8, ...style
-    }} {...p}>{children}</button>
-  )
-}
-
 /* ─── Nav ──────────────────────────────────── */
 function Nav() {
   return (
-    <>
-      
-      <nav style={{
-        position:'sticky', top:0, zIndex:100, background:'rgba(255,255,255,.97)',
-        backdropFilter:'blur(12px)', borderTop:`3px solid ${B.a}`, borderBottom:`1px solid ${B.bdr}`,
-        padding:'14px 48px', display:'flex', justifyContent:'space-between', alignItems:'center',
-      }}>
-        <a href="/" style={{ textDecoration:'none' }}><Logo height={36}/></a>
-        <div style={{ display:'flex', gap:28, alignItems:'center' }}>
-          {[['Servicii','/servicii'],['Digital Check-Up','/digital-checkup'],['Consultație Online','/consultatie-online'],['Echipa','/echipa'],['Recenzii','/']].map(([l,h]) => (
-            <a key={l} href={h} style={{
-              fontSize:14, fontWeight:500,
-              color:'#3a5a50', textDecoration:'none',
-            }}>{l}</a>
-          ))}
-        </div>
-        <div style={{ display:'flex', gap:10, alignItems:'center' }}>
-          <a href="/login" style={{ textDecoration:'none' }}><button style={{ background:'transparent', color:B.p, border:`1.5px solid ${B.p}`, padding:'8px 18px', borderRadius:8, fontSize:13, fontWeight:600, cursor:'pointer', fontFamily:"'DM Sans',sans-serif" }}>Cabinetul meu</button></a>
-          <Btn pink style={{ fontSize:13, padding:'10px 22px' }}>Programează-te</Btn>
-        </div>
-      </nav>
-    </>
+    <nav
+      className="sticky top-0 z-[100] flex items-center justify-between border-b border-sdt-600/10 bg-white/[.97] px-12 py-3.5 backdrop-blur-md"
+      style={{ borderTop: `3px solid ${B.a}` }}
+    >
+      <a href="/" className="no-underline"><Logo height={36}/></a>
+      <div className="flex items-center gap-7">
+        {[['Servicii','/servicii'],['Digital Check-Up','/digital-checkup'],['Consultație Online','/consultatie-online'],['Echipa','/echipa'],['Recenzii','/']].map(([l,h]) => (
+          <a
+            key={l}
+            href={h}
+            className="text-sm font-medium text-[#3a5a50] no-underline"
+          >{l}</a>
+        ))}
+      </div>
+      <div className="flex items-center gap-2.5">
+        <a href="/login" className="no-underline">
+          <Button variant="outline" size="sm" className="border-sdt-600 text-sdt-600 text-[13px] font-semibold">
+            Cabinetul meu
+          </Button>
+        </a>
+        <Button variant="accent" size="sm" className="text-[13px] font-bold">
+          Programează-te
+        </Button>
+      </div>
+    </nav>
   )
 }
 
@@ -179,50 +174,67 @@ function AmbassadorProfile({ amb, onNav }: { amb: typeof AMBASSADORS[number]; on
   const next = idx < AMBASSADORS.length-1 ? AMBASSADORS[idx+1] : null
 
   return (
-    <div style={{ animation:'fadeUp .3s ease' }}>
+    <div className="animate-[fadeUp_.3s_ease]">
       {/* Hero — full width photo + overlay */}
-      <div style={{ position:'relative', height:480, overflow:'hidden', borderRadius:'0 0 24px 24px' }}>
-        <img src={amb.photo.replace('300','1200')} alt={amb.name} style={{ width:'100%', height:'100%', objectFit:'cover', objectPosition:'center top' }}/>
-        <div style={{ position:'absolute', inset:0, background:'linear-gradient(to top, rgba(10,30,24,.9) 0%, rgba(10,30,24,.3) 40%, transparent 70%)' }}/>
-        <div style={{ position:'absolute', bottom:0, left:0, right:0, padding:'48px 52px' }}>
-          <span style={{ fontSize:10, fontWeight:700, color:B.a, background:'rgba(232,21,122,.15)', padding:'4px 12px', borderRadius:100, letterSpacing:'.1em' }}>AMBASADOR SDT</span>
-          <h1 style={{ fontFamily:"'Syne',sans-serif", fontSize:42, fontWeight:800, color:B.wh, margin:'10px 0 6px', lineHeight:1.05 }}>{amb.name}</h1>
-          <div style={{ fontSize:16, color:'rgba(255,255,255,.7)' }}>{amb.role}</div>
-          <div style={{ fontSize:13, color:'rgba(255,255,255,.5)', marginTop:4 }}>Serviciu recomandat: <span style={{ color:B.a, fontWeight:600 }}>{detail.service}</span></div>
+      <div className="relative h-[480px] overflow-hidden rounded-b-3xl">
+        <img
+          src={amb.photo.replace('300','1200')}
+          alt={amb.name}
+          className="h-full w-full object-cover object-top"
+        />
+        <div
+          className="absolute inset-0"
+          style={{ background: 'linear-gradient(to top, rgba(10,30,24,.9) 0%, rgba(10,30,24,.3) 40%, transparent 70%)' }}
+        />
+        <div className="absolute bottom-0 left-0 right-0 px-[52px] pb-12">
+          <Badge variant="accent" className="mb-2.5 bg-pink-500/15 text-[10px] font-bold tracking-[.1em] text-pink-500">
+            AMBASADOR SDT
+          </Badge>
+          <h1 className="font-display text-[42px] font-extrabold leading-[1.05] text-white">
+            {amb.name}
+          </h1>
+          <div className="mt-1.5 text-base text-white/70">{amb.role}</div>
+          <div className="mt-1 text-[13px] text-white/50">
+            Serviciu recomandat: <span className="font-semibold text-pink-500">{detail.service}</span>
+          </div>
         </div>
       </div>
 
       {/* Content */}
-      <div style={{ maxWidth:1100, margin:'0 auto', padding:'0 48px' }}>
+      <div className="mx-auto max-w-[1100px] px-12">
         {/* Bio + Story */}
-        <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:48, padding:'48px 0', borderBottom:`1px solid ${B.bdr}` }}>
+        <div className="grid grid-cols-2 gap-12 border-b border-sdt-600/10 py-12">
           <div>
-            <div style={{ fontSize:11, fontWeight:700, color:B.p, letterSpacing:'.12em', textTransform:'uppercase', marginBottom:12 }}>Despre</div>
-            <p style={{ fontSize:15, lineHeight:1.8, color:B.gr, margin:0 }}>{detail.bio}</p>
+            <div className="mb-3 text-[11px] font-bold uppercase tracking-[.12em] text-sdt-600">Despre</div>
+            <p className="m-0 text-[15px] leading-[1.8] text-[#5a7a6e]">{detail.bio}</p>
           </div>
           <div>
-            <div style={{ fontSize:11, fontWeight:700, color:B.a, letterSpacing:'.12em', textTransform:'uppercase', marginBottom:12 }}>Povestea cu SDT</div>
-            <p style={{ fontSize:15, lineHeight:1.8, color:B.nv, margin:0 }}>{detail.story}</p>
+            <div className="mb-3 text-[11px] font-bold uppercase tracking-[.12em] text-pink-500">Povestea cu SDT</div>
+            <p className="m-0 text-[15px] leading-[1.8] text-[#0a1e18]">{detail.story}</p>
           </div>
         </div>
 
         {/* Quote */}
-        <div style={{ padding:'40px 0', borderBottom:`1px solid ${B.bdr}`, textAlign:'center' }}>
-          <div style={{ fontFamily:"'Syne',sans-serif", fontSize:24, fontWeight:700, color:B.nv, lineHeight:1.4, maxWidth:700, margin:'0 auto', fontStyle:'italic' }}>
+        <div className="border-b border-sdt-600/10 py-10 text-center">
+          <div className="font-display mx-auto max-w-[700px] text-2xl font-bold italic leading-[1.4] text-[#0a1e18]">
             &ldquo;{detail.quote}&rdquo;
           </div>
-          <div style={{ fontSize:14, color:B.a, fontWeight:700, marginTop:12 }}>— {amb.name}</div>
+          <div className="mt-3 text-sm font-bold text-pink-500">— {amb.name}</div>
         </div>
 
         {/* Gallery */}
-        <div style={{ padding:'40px 0', borderBottom:`1px solid ${B.bdr}` }}>
-          <div style={{ fontSize:11, fontWeight:700, color:B.p, letterSpacing:'.12em', textTransform:'uppercase', marginBottom:16 }}>Galerie</div>
-          <div style={{ display:'grid', gridTemplateColumns: detail.gallery.length >= 3 ? '1fr 1fr 1fr' : detail.gallery.length === 2 ? '1fr 1fr' : '1fr', gap:14 }}>
+        <div className="border-b border-sdt-600/10 py-10">
+          <div className="mb-4 text-[11px] font-bold uppercase tracking-[.12em] text-sdt-600">Galerie</div>
+          <div className={cn(
+            'grid gap-3.5',
+            detail.gallery.length >= 3 ? 'grid-cols-3' : detail.gallery.length === 2 ? 'grid-cols-2' : 'grid-cols-1'
+          )}>
             {detail.gallery.map((img, i) => (
-              <div key={i} style={{ borderRadius:14, overflow:'hidden', height:220 }}>
-                <img src={img} alt={`${amb.name} gallery ${i+1}`} style={{ width:'100%', height:'100%', objectFit:'cover', transition:'transform .4s' }}
-                  onMouseEnter={e => e.currentTarget.style.transform='scale(1.04)'}
-                  onMouseLeave={e => e.currentTarget.style.transform=''}
+              <div key={i} className="h-[220px] overflow-hidden rounded-xl">
+                <img
+                  src={img}
+                  alt={`${amb.name} gallery ${i+1}`}
+                  className="h-full w-full object-cover transition-transform duration-[400ms] hover:scale-[1.04]"
                 />
               </div>
             ))}
@@ -230,49 +242,62 @@ function AmbassadorProfile({ amb, onNav }: { amb: typeof AMBASSADORS[number]; on
         </div>
 
         {/* Video placeholder */}
-        <div style={{ padding:'40px 0', borderBottom:`1px solid ${B.bdr}` }}>
-          <div style={{ fontSize:11, fontWeight:700, color:B.p, letterSpacing:'.12em', textTransform:'uppercase', marginBottom:16 }}>Video feedback</div>
-          <div style={{
-            height:320, borderRadius:16, background:`linear-gradient(135deg, ${B.nv}, #0f2e24)`,
-            display:'flex', alignItems:'center', justifyContent:'center', cursor:'pointer', position:'relative',
-          }}>
-            <div style={{ width:72, height:72, borderRadius:'50%', background:B.a, display:'flex', alignItems:'center', justifyContent:'center' }}>
-              <svg width="28" height="28" viewBox="0 0 24 24" fill={B.wh} stroke="none"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        <div className="border-b border-sdt-600/10 py-10">
+          <div className="mb-4 text-[11px] font-bold uppercase tracking-[.12em] text-sdt-600">Video feedback</div>
+          <div
+            className="relative flex h-[320px] cursor-pointer items-center justify-center rounded-2xl"
+            style={{ background: `linear-gradient(135deg, ${B.nv}, #0f2e24)` }}
+          >
+            <div className="flex h-[72px] w-[72px] items-center justify-center rounded-full bg-pink-500">
+              <Play className="h-7 w-7 fill-white text-white" />
             </div>
-            <div style={{ position:'absolute', bottom:20, left:24, color:'rgba(255,255,255,.5)', fontSize:12 }}>Video testimonial — {amb.name}</div>
+            <div className="absolute bottom-5 left-6 text-xs text-white/50">
+              Video testimonial — {amb.name}
+            </div>
           </div>
         </div>
 
         {/* CTA */}
-        <div style={{ padding:'40px 0', textAlign:'center', borderBottom:`1px solid ${B.bdr}` }}>
-          <h3 style={{ fontFamily:"'Syne',sans-serif", fontSize:22, fontWeight:800, color:B.nv, margin:'0 0 8px' }}>
+        <div className="border-b border-sdt-600/10 py-10 text-center">
+          <h3 className="font-display mb-2 text-[22px] font-extrabold text-[#0a1e18]">
             Inspirat de {amb.name.split(' ')[0]}?
           </h3>
-          <p style={{ fontSize:14, color:B.gr, margin:'0 0 20px' }}>Începe și tu cu un Digital Check-Up.</p>
-          <Btn pink style={{ fontSize:15, padding:'14px 36px' }}>Programează Digital Check-Up →</Btn>
+          <p className="mb-5 text-sm text-[#5a7a6e]">Începe și tu cu un Digital Check-Up.</p>
+          <Button variant="accent" className="px-9 py-3.5 text-[15px] font-bold">
+            Programează Digital Check-Up &rarr;
+          </Button>
         </div>
 
         {/* Navigation between ambassadors */}
-        <div style={{ padding:'32px 0', display:'flex', justifyContent:'space-between', alignItems:'center' }}>
+        <div className="flex items-center justify-between py-8">
           {prev ? (
-            <button onClick={() => onNav(prev.slug)} style={{ display:'flex', alignItems:'center', gap:10, background:'none', border:'none', cursor:'pointer', fontFamily:"'DM Sans',sans-serif" }}>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={B.p} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
-              <div style={{ textAlign:'left' }}>
-                <div style={{ fontSize:10, color:B.gr }}>Anterior</div>
-                <div style={{ fontSize:14, fontWeight:700, color:B.nv }}>{prev.name}</div>
+            <button
+              onClick={() => onNav(prev.slug)}
+              className="flex cursor-pointer items-center gap-2.5 border-none bg-transparent font-sans"
+            >
+              <ChevronLeft className="h-4 w-4 text-sdt-600" strokeWidth={2} />
+              <div className="text-left">
+                <div className="text-[10px] text-[#5a7a6e]">Anterior</div>
+                <div className="text-sm font-bold text-[#0a1e18]">{prev.name}</div>
               </div>
             </button>
           ) : <div/>}
-          <button onClick={() => onNav('')} style={{ background:B.pl, border:`1px solid ${B.bdr}`, borderRadius:100, padding:'8px 20px', cursor:'pointer', fontSize:12, fontWeight:600, color:B.p, fontFamily:"'DM Sans',sans-serif" }}>
+          <button
+            onClick={() => onNav('')}
+            className="cursor-pointer rounded-full border border-sdt-600/10 bg-sdt-50 px-5 py-2 font-sans text-xs font-semibold text-sdt-600"
+          >
             Toți ambasadorii
           </button>
           {next ? (
-            <button onClick={() => onNav(next.slug)} style={{ display:'flex', alignItems:'center', gap:10, background:'none', border:'none', cursor:'pointer', fontFamily:"'DM Sans',sans-serif" }}>
-              <div style={{ textAlign:'right' }}>
-                <div style={{ fontSize:10, color:B.gr }}>Următor</div>
-                <div style={{ fontSize:14, fontWeight:700, color:B.nv }}>{next.name}</div>
+            <button
+              onClick={() => onNav(next.slug)}
+              className="flex cursor-pointer items-center gap-2.5 border-none bg-transparent font-sans"
+            >
+              <div className="text-right">
+                <div className="text-[10px] text-[#5a7a6e]">Următor</div>
+                <div className="text-sm font-bold text-[#0a1e18]">{next.name}</div>
               </div>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={B.p} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+              <ChevronRight className="h-4 w-4 text-sdt-600" strokeWidth={2} />
             </button>
           ) : <div/>}
         </div>
@@ -286,48 +311,52 @@ function AllAmbassadors({ onSelect }: { onSelect: (slug:string) => void }) {
   return (
     <div>
       {/* Hero */}
-      <div style={{ background:B.ps, padding:'56px 48px 48px', borderBottom:`1px solid ${B.bdr}` }}>
-        <div style={{ maxWidth:1100, margin:'0 auto' }}>
-          <div style={{ display:'inline-flex', alignItems:'center', gap:6, background:B.al, border:`1px solid ${B.a}22`, padding:'5px 14px', borderRadius:100, marginBottom:16 }}>
-            <span style={{ width:6, height:6, borderRadius:'50%', background:B.a }}/>
-            <span style={{ fontSize:11, fontWeight:700, letterSpacing:'.12em', textTransform:'uppercase', color:B.a }}>Zâmbete care inspiră</span>
-          </div>
-          <h1 style={{ fontFamily:"'Syne',sans-serif", fontSize:42, fontWeight:800, color:B.nv, lineHeight:1.08, margin:'0 0 14px' }}>
-            Ambasadorii<br/><span style={{ color:B.a }}>Smile Dent Team</span>
+      <section className="border-b border-sdt-600/10 bg-sdt-50 px-12 pb-12 pt-14">
+        <div className="mx-auto max-w-[1100px]">
+          <Badge variant="outline" className="mb-4 gap-1.5 rounded-full border-sdt-600/10 bg-pink-50 px-3.5 py-1 text-[11px] font-bold uppercase tracking-[.12em] text-pink-500">
+            <span className="h-1.5 w-1.5 rounded-full bg-pink-500" />
+            Zâmbete care inspiră
+          </Badge>
+          <h1 className="font-display mb-3.5 text-[42px] font-extrabold leading-[1.08] text-[#0a1e18]">
+            Ambasadorii<br/><span className="text-pink-500">Smile Dent Team</span>
           </h1>
-          <p style={{ fontSize:16, lineHeight:1.7, color:B.gr, maxWidth:520, margin:0 }}>
+          <p className="m-0 max-w-[520px] text-base leading-[1.7] text-[#5a7a6e]">
             Personalități din diverse industrii care ne-au ales și ne reprezintă. Fiecare zâmbet — o poveste de încredere.
           </p>
         </div>
-      </div>
+      </section>
 
       {/* Grid */}
-      <div style={{ maxWidth:1100, margin:'0 auto', padding:'40px 48px' }}>
-        <div style={{ display:'grid', gridTemplateColumns:'repeat(4,1fr)', gap:18 }}>
+      <div className="mx-auto max-w-[1100px] px-12 py-10">
+        <div className="grid grid-cols-4 gap-[18px]">
           {AMBASSADORS.map(amb => {
             const detail = AMB_DETAILS[amb.slug]
             return (
-              <div key={amb.slug} onClick={() => onSelect(amb.slug)} style={{
-                borderRadius:16, overflow:'hidden', cursor:'pointer', position:'relative',
-                border:`1px solid ${B.bdr}`, transition:'all .3s', background:B.wh,
-              }}
-                onMouseEnter={e => { e.currentTarget.style.transform='translateY(-4px)'; e.currentTarget.style.boxShadow=`0 12px 32px ${B.bdr}` }}
-                onMouseLeave={e => { e.currentTarget.style.transform=''; e.currentTarget.style.boxShadow='' }}
+              <Card
+                key={amb.slug}
+                onClick={() => onSelect(amb.slug)}
+                className="group cursor-pointer overflow-hidden rounded-2xl border-sdt-600/10 bg-white p-0 shadow-none transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
               >
-                <div style={{ position:'relative', paddingTop:'120%', overflow:'hidden' }}>
-                  <img src={amb.photo} alt={amb.name} style={{ position:'absolute', inset:0, width:'100%', height:'100%', objectFit:'cover', transition:'transform .4s' }}
-                    onMouseEnter={e => e.currentTarget.style.transform='scale(1.05)'}
-                    onMouseLeave={e => e.currentTarget.style.transform=''}
+                <div className="relative overflow-hidden pt-[120%]">
+                  <img
+                    src={amb.photo}
+                    alt={amb.name}
+                    className="absolute inset-0 h-full w-full object-cover transition-transform duration-[400ms] group-hover:scale-105"
                   />
-                  <div style={{ position:'absolute', bottom:0, left:0, right:0, height:'65%', background:'linear-gradient(to top, rgba(10,30,24,.9) 0%, transparent 100%)', pointerEvents:'none' }}/>
-                  <div style={{ position:'absolute', bottom:0, left:0, right:0, padding:'16px' }}>
-                    <span style={{ fontSize:9, fontWeight:700, color:B.wh, background:B.a, padding:'2px 8px', borderRadius:100, letterSpacing:'.05em' }}>AMBASADOR</span>
-                    <div style={{ fontFamily:"'Syne',sans-serif", fontSize:16, fontWeight:700, color:B.wh, lineHeight:1.2, marginTop:6 }}>{amb.name}</div>
-                    <div style={{ fontSize:11, color:'rgba(255,255,255,.65)', marginTop:2 }}>{amb.role}</div>
-                    {detail && <div style={{ fontSize:10, color:'rgba(255,255,255,.45)', marginTop:4 }}>Serviciu: {detail.service}</div>}
+                  <div
+                    className="pointer-events-none absolute bottom-0 left-0 right-0 h-[65%]"
+                    style={{ background: 'linear-gradient(to top, rgba(10,30,24,.9) 0%, transparent 100%)' }}
+                  />
+                  <div className="absolute bottom-0 left-0 right-0 p-4">
+                    <Badge variant="accent" className="mb-1.5 px-2 py-0.5 text-[9px] font-bold tracking-[.05em]">
+                      AMBASADOR
+                    </Badge>
+                    <div className="font-display text-base font-bold leading-tight text-white">{amb.name}</div>
+                    <div className="mt-0.5 text-[11px] text-white/65">{amb.role}</div>
+                    {detail && <div className="mt-1 text-[10px] text-white/[.45]">Serviciu: {detail.service}</div>}
                   </div>
                 </div>
-              </div>
+              </Card>
             )
           })}
         </div>
@@ -339,41 +368,49 @@ function AllAmbassadors({ onSelect }: { onSelect: (slug:string) => void }) {
 /* ─── Footer ──────────────────────────────── */
 function Footer() {
   return (
-    <footer style={{ background:B.nv, padding:'56px 48px 32px' }}>
-      <div style={{ maxWidth:1200, margin:'0 auto', display:'grid', gridTemplateColumns:'1.5fr 1fr 1fr 1.2fr', gap:40, marginBottom:40 }}>
+    <footer className="bg-[#0a1e18] px-12 pb-8 pt-14">
+      <div className="mx-auto mb-10 grid max-w-[1200px] grid-cols-[1.5fr_1fr_1fr_1.2fr] gap-10">
         <div>
           <Logo height={32} light/>
-          <p style={{ fontSize:13, color:'rgba(255,255,255,.45)', marginTop:16, lineHeight:1.7, maxWidth:260 }}>
+          <p className="mt-4 max-w-[260px] text-[13px] leading-[1.7] text-white/[.45]">
             Clinică stomatologică digitală. {STATS.years} ani de excelență, {STATS.team} specialiști, {STATS.patients} pacienți.
           </p>
         </div>
         <div>
-          <div style={{ fontSize:11, fontWeight:700, color:B.wh, letterSpacing:'.15em', textTransform:'uppercase', marginBottom:18 }}>Servicii</div>
+          <div className="mb-[18px] text-[11px] font-bold uppercase tracking-[.15em] text-white">Servicii</div>
           {SERVICES.slice(0,7).map(s => (
-            <a key={s.slug} href="/servicii" style={{ display:'block', fontSize:13, marginBottom:9, color:'rgba(255,255,255,.5)', textDecoration:'none' }}>{s.name}</a>
+            <a key={s.slug} href="/servicii" className="mb-2.5 block text-[13px] text-white/50 no-underline">{s.name}</a>
           ))}
         </div>
         <div>
-          <div style={{ fontSize:11, fontWeight:700, color:B.wh, letterSpacing:'.15em', textTransform:'uppercase', marginBottom:18 }}>Clinică</div>
+          <div className="mb-[18px] text-[11px] font-bold uppercase tracking-[.15em] text-white">Clinică</div>
           {[['Despre noi','/'],['Echipa','/echipa'],['Ambasadori','/ambasadori'],['Blog','/'],['Cariere','/'],['Contacte','/']].map(([s,h]) => (
-            <a key={s} href={h} style={{ display:'block', fontSize:13, marginBottom:9, color:'rgba(255,255,255,.5)', textDecoration:'none' }}>{s}</a>
+            <a key={s} href={h} className="mb-2.5 block text-[13px] text-white/50 no-underline">{s}</a>
           ))}
         </div>
         <div>
-          <div style={{ fontSize:11, fontWeight:700, color:B.wh, letterSpacing:'.15em', textTransform:'uppercase', marginBottom:18 }}>Contact</div>
+          <div className="mb-[18px] text-[11px] font-bold uppercase tracking-[.15em] text-white">Contact</div>
           {LOCATIONS.slice(0,3).map(l => (
-            <div key={l.city} style={{ marginBottom:14 }}>
-              <div style={{ fontSize:13, fontWeight:600, color:B.wh }}>{l.city}</div>
-              <div style={{ fontSize:12, color:'rgba(255,255,255,.45)' }}>{l.address} · {l.phone}</div>
+            <div key={l.city} className="mb-3.5">
+              <div className="flex items-center gap-1.5 text-[13px] font-semibold text-white">
+                <MapPin className="h-3 w-3 text-sdt-400" />
+                {l.city}
+              </div>
+              <div className="mt-0.5 flex items-center gap-1.5 text-xs text-white/[.45]">
+                {l.address}
+                <span className="text-white/20">|</span>
+                <Phone className="h-2.5 w-2.5" />
+                {l.phone}
+              </div>
             </div>
           ))}
         </div>
       </div>
-      <div style={{ borderTop:'1px solid rgba(255,255,255,.07)', paddingTop:20, display:'flex', justifyContent:'space-between', alignItems:'center' }}>
-        <span style={{ fontSize:11, color:'rgba(255,255,255,.25)' }}>© {CAMPAIGN_2026.year} Smile Dent Team</span>
-        <div style={{ display:'flex', gap:6 }}>
+      <div className="flex items-center justify-between border-t border-white/[.07] pt-5">
+        <span className="text-[11px] text-white/25">&copy; {CAMPAIGN_2026.year} Smile Dent Team</span>
+        <div className="flex gap-1.5">
           {['RO','RU','EN'].map(l => (
-            <span key={l} style={{ background:'rgba(255,255,255,.08)', color:'rgba(255,255,255,.5)', padding:'3px 8px', borderRadius:40, fontSize:10, fontWeight:700 }}>{l}</span>
+            <span key={l} className="cursor-pointer rounded-full bg-white/[.08] px-2 py-[3px] text-[10px] font-bold text-white/50">{l}</span>
           ))}
         </div>
       </div>

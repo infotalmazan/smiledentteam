@@ -2,96 +2,99 @@
 import { useState } from 'react'
 import { BRAND as B, STATS, LOCATIONS, CAMPAIGN_2026, SERVICES, AMBASSADORS } from '@/lib/brand'
 import { Logo } from './Logo'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
+import { Input } from '@/components/ui/input'
+import { Check, Star, X, MapPin, Clock, Phone, ArrowRight } from 'lucide-react'
+import { cn } from '@/lib/utils'
 
 /* ─── Demo doctors data ──────────────────── */
 const DOCTORS = [
-  { id:1, name:'Dr. Stanislav Eni',    dept:'Chirurgie',     title:'Medic chirurg dento-alveolar', years:12, rating:4.9, photo:'https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=400&h=500&fit=crop&crop=face', bio:'Specialist în chirurgie ghidată 3D, extracții complexe și augmentări osoase. Peste 3.000 de intervenții chirurgicale realizate.', education:['Universitatea de Stat de Medicină, Chișinău','Masterclass Implantologie, Berlin','Certificare Straumann, Elveția'], review:{ text:'Profesionalism desăvârșit. M-am simțit în siguranță pe tot parcursul intervenției.', author:'Elena M.' } },
-  { id:2, name:'Dr. Victoria Potîngă', dept:'Chirurgie',     title:'Medic chirurg oral', years:8, rating:4.8, photo:'https://images.unsplash.com/photo-1643297654416-05795d62e39c?w=400&h=500&fit=crop&crop=face', bio:'Specializată în implantologie și chirurgie reconstructivă. Focus pe cazuri complexe All-On-4/6.', education:['USMF Nicolae Testemițanu','Cursuri Nobel Biocare, Zürich'], review:{ text:'Foarte atentă și delicată. Recomand cu încredere!', author:'Alexandru C.' } },
-  { id:3, name:'Dr. Rustam Anatolie',  dept:'Implantologie', title:'Medic implantolog', years:10, rating:4.9, photo:'https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=400&h=500&fit=crop&crop=face', bio:'Specialist în implantologie digitală, planificare 3D și încărcare imediată. Peste 5.000 de implanturi inserate.', education:['USMF Chișinău','Fellowship Implantologie, ITI Basel','Certificare 3Shape'], review:{ text:'Cel mai bun implantolog din Moldova. Rezultat impecabil.', author:'Denis P.' } },
-  { id:4, name:'Dr. Ana Cosovan',      dept:'Estetică',      title:'Medic stomatolog estetician', years:7, rating:4.9, photo:'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=400&h=500&fit=crop&crop=face', bio:'Expert în Digital Smile Design, fațete ceramice E-max și albire profesională. Transformă zâmbete cu precizie digitală.', education:['USMF Chișinău','Digital Smile Design Academy, Madrid','Masterclass Fațete, Milano'], review:{ text:'Zâmbetul pe care l-am visat! Ana a fost extraordinară.', author:'Maria T.' } },
-  { id:5, name:'Dr. Iulian Spataru',   dept:'Estetică',      title:'Medic stomatolog', years:6, rating:4.8, photo:'https://images.unsplash.com/photo-1537368910025-700350fe46c7?w=400&h=500&fit=crop&crop=face', bio:'Specializat în restaurări estetice minimale, bonding direct și smile makeover digital.', education:['USMF Chișinău','Cursuri Style Italiano'], review:{ text:'Rezultat natural, nimeni nu a observat că am fațete.', author:'Ksenia D.' } },
-  { id:6, name:'Dr. Mariana Cojocaru', dept:'Terapie',       title:'Medic terapeut', years:14, rating:4.7, photo:'https://images.unsplash.com/photo-1614608682850-e0d6ed316d47?w=400&h=500&fit=crop&crop=face', bio:'Expert în tratamente endodontice sub microscop, restaurări complexe și profilaxie digitală.', education:['USMF Chișinău','Certificare Microscop Zeiss'], review:{ text:'Foarte atentă, tratament fără durere. Recomand!', author:'Nadejda B.' } },
-  { id:7, name:'Dr. Cristina Radu',    dept:'Ortodonție',    title:'Medic ortodont', years:9, rating:4.9, photo:'https://images.unsplash.com/photo-1651008376811-b90baee60c1f?w=400&h=500&fit=crop&crop=face', bio:'Specializată în ortodonție digitală cu Invisalign și brackets autoligaturante. Tratamente pentru copii și adulți.', education:['USMF Chișinău','Invisalign Certified Provider','Cursuri Damon System'], review:{ text:'Copilul meu adoră vizitele! Cea mai bună ortodontistă.', author:'Svetlana L.' } },
-  { id:8, name:'Dr. Andrei Munteanu',  dept:'Protetică',     title:'Medic protetician', years:11, rating:4.8, photo:'https://images.unsplash.com/photo-1582750433449-648ed127bb54?w=400&h=500&fit=crop&crop=face', bio:'Expert în protetică digitală CAD/CAM, coroane zirconiu și reabilitări complete pe implanturi.', education:['USMF Chișinău','Certificare Cerec/inLab','Masterclass Zirconiu, Germania'], review:{ text:'Coroanele arată perfect, nu se deosebesc de dinții naturali.', author:'Ion V.' } },
-  { id:9, name:'Dumitru Talmazan',     dept:'Management',    title:'Fondator & CEO', years:16, rating:5.0, photo:'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&h=500&fit=crop&crop=face', bio:'Vizionar și fondator al Smile Dent Team. A transformat o clinică locală într-o rețea internațională cu 9 filiale în 4 țări.', education:['Business Management','Strategie & Leadership'], review:{ text:'Un lider care inspiră întreaga echipă și comunitate.', author:'Echipa SDT' } },
-  { id:10, name:'Maria Rotari',        dept:'Management',    title:'Director Marketing', years:5, rating:4.9, photo:'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&h=500&fit=crop&crop=face', bio:'Arhitectul strategiei de marketing SDT. A crescut brandul de la nivel local la recunoaștere națională cu ROMI 1106%.', education:['Marketing Digital','Brand Strategy'], review:{ text:'Creativitate și strategie la cel mai înalt nivel.', author:'Board SDT' } },
+  { id:1, name:'Dr. Stanislav Eni',    dept:'Chirurgie',     title:'Medic chirurg dento-alveolar', years:12, rating:4.9, photo:'https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=400&h=500&fit=crop&crop=face', bio:'Specialist in chirurgie ghidata 3D, extractii complexe si augmentari osoase. Peste 3.000 de interventii chirurgicale realizate.', education:['Universitatea de Stat de Medicina, Chisinau','Masterclass Implantologie, Berlin','Certificare Straumann, Elvetia'], review:{ text:'Profesionalism desavarsit. M-am simtit in siguranta pe tot parcursul interventiei.', author:'Elena M.' } },
+  { id:2, name:'Dr. Victoria Potinga', dept:'Chirurgie',     title:'Medic chirurg oral', years:8, rating:4.8, photo:'https://images.unsplash.com/photo-1643297654416-05795d62e39c?w=400&h=500&fit=crop&crop=face', bio:'Specializata in implantologie si chirurgie reconstructiva. Focus pe cazuri complexe All-On-4/6.', education:['USMF Nicolae Testemitanu','Cursuri Nobel Biocare, Zurich'], review:{ text:'Foarte atenta si delicata. Recomand cu incredere!', author:'Alexandru C.' } },
+  { id:3, name:'Dr. Rustam Anatolie',  dept:'Implantologie', title:'Medic implantolog', years:10, rating:4.9, photo:'https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=400&h=500&fit=crop&crop=face', bio:'Specialist in implantologie digitala, planificare 3D si incarcare imediata. Peste 5.000 de implanturi inserate.', education:['USMF Chisinau','Fellowship Implantologie, ITI Basel','Certificare 3Shape'], review:{ text:'Cel mai bun implantolog din Moldova. Rezultat impecabil.', author:'Denis P.' } },
+  { id:4, name:'Dr. Ana Cosovan',      dept:'Estetica',      title:'Medic stomatolog estetician', years:7, rating:4.9, photo:'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=400&h=500&fit=crop&crop=face', bio:'Expert in Digital Smile Design, fatete ceramice E-max si albire profesionala. Transforma zambete cu precizie digitala.', education:['USMF Chisinau','Digital Smile Design Academy, Madrid','Masterclass Fatete, Milano'], review:{ text:'Zambetul pe care l-am visat! Ana a fost extraordinara.', author:'Maria T.' } },
+  { id:5, name:'Dr. Iulian Spataru',   dept:'Estetica',      title:'Medic stomatolog', years:6, rating:4.8, photo:'https://images.unsplash.com/photo-1537368910025-700350fe46c7?w=400&h=500&fit=crop&crop=face', bio:'Specializat in restaurari estetice minimale, bonding direct si smile makeover digital.', education:['USMF Chisinau','Cursuri Style Italiano'], review:{ text:'Rezultat natural, nimeni nu a observat ca am fatete.', author:'Ksenia D.' } },
+  { id:6, name:'Dr. Mariana Cojocaru', dept:'Terapie',       title:'Medic terapeut', years:14, rating:4.7, photo:'https://images.unsplash.com/photo-1614608682850-e0d6ed316d47?w=400&h=500&fit=crop&crop=face', bio:'Expert in tratamente endodontice sub microscop, restaurari complexe si profilaxie digitala.', education:['USMF Chisinau','Certificare Microscop Zeiss'], review:{ text:'Foarte atenta, tratament fara durere. Recomand!', author:'Nadejda B.' } },
+  { id:7, name:'Dr. Cristina Radu',    dept:'Ortodontie',    title:'Medic ortodont', years:9, rating:4.9, photo:'https://images.unsplash.com/photo-1651008376811-b90baee60c1f?w=400&h=500&fit=crop&crop=face', bio:'Specializata in ortodontie digitala cu Invisalign si brackets autoligaturante. Tratamente pentru copii si adulti.', education:['USMF Chisinau','Invisalign Certified Provider','Cursuri Damon System'], review:{ text:'Copilul meu adora vizitele! Cea mai buna ortodontista.', author:'Svetlana L.' } },
+  { id:8, name:'Dr. Andrei Munteanu',  dept:'Protetica',     title:'Medic protetician', years:11, rating:4.8, photo:'https://images.unsplash.com/photo-1582750433449-648ed127bb54?w=400&h=500&fit=crop&crop=face', bio:'Expert in protetica digitala CAD/CAM, coroane zirconiu si reabilitari complete pe implanturi.', education:['USMF Chisinau','Certificare Cerec/inLab','Masterclass Zirconiu, Germania'], review:{ text:'Coroanele arata perfect, nu se deosebesc de dintii naturali.', author:'Ion V.' } },
+  { id:9, name:'Dumitru Talmazan',     dept:'Management',    title:'Fondator & CEO', years:16, rating:5.0, photo:'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&h=500&fit=crop&crop=face', bio:'Vizionar si fondator al Smile Dent Team. A transformat o clinica locala intr-o retea internationala cu 9 filiale in 4 tari.', education:['Business Management','Strategie & Leadership'], review:{ text:'Un lider care inspira intreaga echipa si comunitate.', author:'Echipa SDT' } },
+  { id:10, name:'Maria Rotari',        dept:'Management',    title:'Director Marketing', years:5, rating:4.9, photo:'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&h=500&fit=crop&crop=face', bio:'Arhitectul strategiei de marketing SDT. A crescut brandul de la nivel local la recunoastere nationala cu ROMI 1106%.', education:['Marketing Digital','Brand Strategy'], review:{ text:'Creativitate si strategie la cel mai inalt nivel.', author:'Board SDT' } },
 ]
 
-const DEPARTMENTS = ['Toți','Chirurgie','Implantologie','Estetică','Terapie','Ortodonție','Protetică','Management']
+const DEPARTMENTS = ['Toti','Chirurgie','Implantologie','Estetica','Terapie','Ortodontie','Protetica','Management']
 
-/* ─── Shared UI ──────────────────────────── */
-function Btn({ children, pink, outline, style, ...p }: any) {
-  const bg = pink ? B.a : outline ? 'transparent' : B.p
-  const clr = outline ? B.p : B.wh
-  const brd = outline ? `1.5px solid ${B.p}` : pink ? `1.5px solid ${B.a}` : 'none'
-  return (
-    <button style={{
-      background:bg, color:clr, border:brd, padding:'14px 32px', borderRadius:8,
-      fontSize:15, fontWeight:700, cursor:'pointer', fontFamily:"'DM Sans',sans-serif",
-      transition:'all .2s', display:'inline-flex', alignItems:'center', gap:8, ...style
-    }} {...p}>{children}</button>
-  )
+const deptColors: Record<string,string> = {
+  Chirurgie: B.p,
+  Implantologie: '#0d8a72',
+  Estetica: B.a,
+  Terapie: '#059669',
+  Ortodontie: '#6366f1',
+  Protetica: '#D97706',
+  Management: B.nv,
 }
 
+/* ─── Shared UI ──────────────────────────── */
 function SectionBadge({ children }: { children: string }) {
   return (
-    <div style={{
-      display:'inline-flex', alignItems:'center', gap:6,
-      background:B.pl, border:`1px solid ${B.bdr}`, padding:'5px 14px', borderRadius:100, marginBottom:16,
-    }}>
-      <span style={{ width:6, height:6, borderRadius:'50%', background:B.p }}/>
-      <span style={{ fontSize:11, fontWeight:700, letterSpacing:'.12em', textTransform:'uppercase', color:B.p }}>{children}</span>
-    </div>
+    <Badge variant="outline" className="mb-4 gap-1.5 border-sdt-600/10 bg-sdt-100 px-3.5 py-1 text-[11px] font-bold uppercase tracking-[.12em] text-sdt-600 rounded-full">
+      <span className="h-1.5 w-1.5 rounded-full bg-sdt-600" />
+      {children}
+    </Badge>
   )
 }
 
 /* ─── Nav ─────────────────────────────────── */
 function Nav() {
   return (
-    <>
-      
-      <nav style={{
-        position:'sticky', top:0, zIndex:100, background:'rgba(255,255,255,.97)',
-        backdropFilter:'blur(12px)', borderTop:`3px solid ${B.a}`, borderBottom:`1px solid ${B.bdr}`,
-        padding:'14px 48px', display:'flex', justifyContent:'space-between', alignItems:'center',
-      }}>
-        <a href="/" style={{ textDecoration:'none' }}><Logo height={36}/></a>
-        <div style={{ display:'flex', gap:28, alignItems:'center' }}>
-          {[['Servicii','/servicii'],['Digital Check-Up','/digital-checkup'],['Consultație Online','/consultatie-online'],['Echipa','/echipa'],['Recenzii','/']].map(([l,h]) => (
-            <a key={l} href={h} style={{
-              fontSize:14, fontWeight: l==='Echipa' ? 700 : 500,
-              color: l==='Echipa' ? B.p : '#3a5a50', textDecoration:'none',
-            }}>{l}</a>
-          ))}
-        </div>
-        <div style={{ display:'flex', gap:10, alignItems:'center' }}>
-          <a href="/login" style={{ textDecoration:'none' }}><button style={{ background:'transparent', color:B.p, border:`1.5px solid ${B.p}`, padding:'8px 18px', borderRadius:8, fontSize:13, fontWeight:600, cursor:'pointer', fontFamily:"'DM Sans',sans-serif" }}>Cabinetul meu</button></a>
-          <Btn pink style={{ fontSize:13, padding:'10px 22px' }}>Programează-te</Btn>
-        </div>
-      </nav>
-    </>
+    <nav className="sticky top-0 z-[100] flex items-center justify-between border-b border-sdt-600/10 bg-white/[.97] px-12 py-3.5 backdrop-blur-md" style={{ borderTop: `3px solid ${B.a}` }}>
+      <a href="/" className="no-underline"><Logo height={36}/></a>
+      <div className="flex items-center gap-7">
+        {[['Servicii','/servicii'],['Digital Check-Up','/digital-checkup'],['Consultatie Online','/consultatie-online'],['Echipa','/echipa'],['Recenzii','/']].map(([l,h]) => (
+          <a
+            key={l}
+            href={h}
+            className={cn(
+              'text-sm no-underline',
+              l === 'Echipa' ? 'font-bold text-sdt-600' : 'font-medium text-[#3a5a50]'
+            )}
+          >{l}</a>
+        ))}
+      </div>
+      <div className="flex items-center gap-2.5">
+        <a href="/login" className="no-underline">
+          <Button variant="outline" size="sm" className="border-sdt-600 text-sdt-600 text-[13px] font-semibold">
+            Cabinetul meu
+          </Button>
+        </a>
+        <Button variant="accent" size="sm" className="text-[13px] font-bold">
+          Programeaza-te
+        </Button>
+      </div>
+    </nav>
   )
 }
 
 /* ─── Hero ──────────────────────────────── */
 function Hero() {
   return (
-    <section style={{ background:B.ps, padding:'56px 48px 48px', borderBottom:`1px solid ${B.bdr}` }}>
-      <div style={{ maxWidth:1200, margin:'0 auto', display:'flex', justifyContent:'space-between', alignItems:'flex-end' }}>
+    <section className="border-b border-sdt-600/10 bg-sdt-50 px-12 pb-12 pt-14">
+      <div className="mx-auto flex max-w-[1200px] items-end justify-between">
         <div>
-          <SectionBadge>Echipa noastră</SectionBadge>
-          <h1 style={{ fontFamily:"'Syne',sans-serif", fontSize:42, fontWeight:800, color:B.nv, letterSpacing:'-.03em', lineHeight:1.08, margin:'0 0 14px' }}>
-            Echipa ta de<br/><span style={{ color:B.p }}>specialiști</span>
+          <SectionBadge>Echipa noastra</SectionBadge>
+          <h1 className="font-display mb-3.5 text-[42px] font-extrabold leading-[1.08] tracking-[-0.03em] text-[#0a1e18]">
+            Echipa ta de<br/><span className="text-sdt-600">specialisti</span>
           </h1>
-          <p style={{ fontSize:15, lineHeight:1.7, color:B.gr, maxWidth:460, margin:0 }}>
-            {STATS.team} specialiști, {STATS.years} ani de experiență și un singur obiectiv — zâmbetul tău.
+          <p className="max-w-[460px] text-[15px] leading-[1.7] text-[#5a7a6e]">
+            {STATS.team} specialisti, {STATS.years} ani de experienta si un singur obiectiv — zambetul tau.
           </p>
         </div>
-        <div style={{ display:'flex', gap:24 }}>
-          {[['600+','specialiști'],['15','ani experiență'],['3','filiale']].map(([n,l]) => (
-            <div key={l} style={{ textAlign:'center' }}>
-              <div style={{ fontFamily:"'Syne',sans-serif", fontSize:24, fontWeight:800, color:B.p }}>{n}</div>
-              <div style={{ fontSize:11, color:B.gr }}>{l}</div>
+        <div className="flex gap-6">
+          {[['600+','specialisti'],['15','ani experienta'],['3','filiale']].map(([n,l]) => (
+            <div key={l} className="text-center">
+              <div className="font-display text-2xl font-extrabold text-sdt-600">{n}</div>
+              <div className="text-[11px] text-[#5a7a6e]">{l}</div>
             </div>
           ))}
         </div>
@@ -102,64 +105,76 @@ function Hero() {
 
 /* ─── Doctors Section ────────────────────── */
 function DoctorsSection() {
-  const [dept, setDept] = useState('Toți')
+  const [dept, setDept] = useState('Toti')
   const [selected, setSelected] = useState<number|null>(null)
-  const filtered = dept === 'Toți' ? DOCTORS : DOCTORS.filter(d => d.dept === dept)
-  const deptColors: Record<string,string> = { Chirurgie:B.p, Implantologie:'#0d8a72', Estetică:B.a, Terapie:'#059669', Ortodonție:'#6366f1', Protetică:'#D97706', Management:B.nv }
+  const filtered = dept === 'Toti' ? DOCTORS : DOCTORS.filter(d => d.dept === dept)
   const selectedDoc = DOCTORS.find(d => d.id === selected)
 
   return (
-    <section style={{ background:B.wh, padding:'56px 48px' }}>
-      <div style={{ maxWidth:1200, margin:'0 auto' }}>
+    <section className="bg-white px-12 py-14">
+      <div className="mx-auto max-w-[1200px]">
         {/* Filter tabs */}
-        <div style={{ display:'flex', gap:8, marginBottom:32, flexWrap:'wrap' }}>
+        <div className="mb-8 flex flex-wrap gap-2">
           {DEPARTMENTS.map(d => (
-            <button key={d} onClick={() => { setDept(d); setSelected(null) }} style={{
-              padding:'8px 18px', borderRadius:100, fontSize:13, fontWeight:600, cursor:'pointer',
-              fontFamily:"'DM Sans',sans-serif", transition:'all .15s',
-              background: dept===d ? B.p : B.ps, color: dept===d ? B.wh : B.nv,
-              border: dept===d ? `1.5px solid ${B.p}` : `1.5px solid ${B.bdr}`,
-            }}>{d}</button>
+            <button
+              key={d}
+              onClick={() => { setDept(d); setSelected(null) }}
+              className={cn(
+                'cursor-pointer rounded-full px-[18px] py-2 text-[13px] font-semibold transition-all duration-150',
+                dept === d
+                  ? 'border-[1.5px] border-sdt-600 bg-sdt-600 text-white'
+                  : 'border-[1.5px] border-sdt-600/10 bg-sdt-50 text-[#0a1e18]'
+              )}
+            >{d}</button>
           ))}
         </div>
 
-        {/* Portrait Grid — large photo cards */}
-        <div style={{ display:'grid', gridTemplateColumns:'repeat(4,1fr)', gap:16 }}>
+        {/* Portrait Grid */}
+        <div className="grid grid-cols-4 gap-4">
           {filtered.map(doc => {
             const color = deptColors[doc.dept] || B.p
+            const isSelected = selected === doc.id
             return (
-              <div key={doc.id} onClick={() => setSelected(selected === doc.id ? null : doc.id)} style={{
-                borderRadius:16, overflow:'hidden', cursor:'pointer', position:'relative',
-                border: selected===doc.id ? `2px solid ${color}` : `1px solid ${B.bdr}`,
-                transition:'all .3s', background:B.wh,
-                boxShadow: selected===doc.id ? `0 12px 40px ${B.bdr}` : 'none',
-              }}
-                onMouseEnter={e => { if(selected!==doc.id) { e.currentTarget.style.transform='translateY(-4px)'; e.currentTarget.style.boxShadow=`0 12px 32px ${B.bdr}` } }}
-                onMouseLeave={e => { if(selected!==doc.id) { e.currentTarget.style.transform=''; e.currentTarget.style.boxShadow='' } }}
+              <Card
+                key={doc.id}
+                onClick={() => setSelected(isSelected ? null : doc.id)}
+                className={cn(
+                  'cursor-pointer overflow-hidden rounded-2xl border bg-white p-0 shadow-none transition-all duration-300',
+                  isSelected && 'shadow-lg'
+                )}
+                style={{
+                  borderColor: isSelected ? color : undefined,
+                  borderWidth: isSelected ? 2 : 1,
+                  boxShadow: isSelected ? `0 12px 40px ${B.bdr}` : undefined,
+                }}
               >
                 {/* Photo */}
-                <div style={{ position:'relative', paddingTop:'120%', overflow:'hidden' }}>
-                  <img src={doc.photo} alt={doc.name} style={{
-                    position:'absolute', inset:0, width:'100%', height:'100%', objectFit:'cover',
-                    transition:'transform .4s',
-                  }}
-                    onMouseEnter={e => e.currentTarget.style.transform='scale(1.04)'}
-                    onMouseLeave={e => e.currentTarget.style.transform=''}
+                <div className="group relative overflow-hidden" style={{ paddingTop: '120%' }}>
+                  <img
+                    src={doc.photo}
+                    alt={doc.name}
+                    className="absolute inset-0 h-full w-full object-cover transition-transform duration-400 group-hover:scale-[1.04]"
                   />
                   {/* Gradient overlay */}
-                  <div style={{ position:'absolute', bottom:0, left:0, right:0, height:'55%', background:'linear-gradient(to top, rgba(10,30,24,.85) 0%, rgba(10,30,24,.3) 60%, transparent 100%)', pointerEvents:'none' }}/>
+                  <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-[55%]" style={{ background: 'linear-gradient(to top, rgba(10,30,24,.85) 0%, rgba(10,30,24,.3) 60%, transparent 100%)' }} />
                   {/* Info overlay */}
-                  <div style={{ position:'absolute', bottom:0, left:0, right:0, padding:'16px' }}>
-                    <div style={{ display:'flex', alignItems:'center', gap:6, marginBottom:4 }}>
-                      <span style={{ fontSize:9, fontWeight:700, color:B.wh, background:color, padding:'2px 8px', borderRadius:100, letterSpacing:'.05em' }}>{doc.dept}</span>
-                      <span style={{ fontSize:10, color:'#fbb040' }}>★ {doc.rating}</span>
+                  <div className="absolute bottom-0 left-0 right-0 p-4">
+                    <div className="mb-1 flex items-center gap-1.5">
+                      <span
+                        className="rounded-full px-2 py-0.5 text-[9px] font-bold tracking-[.05em] text-white"
+                        style={{ background: color }}
+                      >{doc.dept}</span>
+                      <span className="flex items-center gap-0.5 text-[10px] text-[#fbb040]">
+                        <Star className="h-2.5 w-2.5 fill-[#fbb040] text-[#fbb040]" />
+                        {doc.rating}
+                      </span>
                     </div>
-                    <div style={{ fontFamily:"'Syne',sans-serif", fontSize:16, fontWeight:700, color:B.wh, lineHeight:1.2 }}>{doc.name}</div>
-                    <div style={{ fontSize:11, color:'rgba(255,255,255,.7)', marginTop:2 }}>{doc.title}</div>
-                    <div style={{ fontSize:10, color:'rgba(255,255,255,.5)', marginTop:3 }}>{doc.years} ani de experiență</div>
+                    <div className="font-display text-base font-bold leading-tight text-white">{doc.name}</div>
+                    <div className="mt-0.5 text-[11px] text-white/70">{doc.title}</div>
+                    <div className="mt-1 text-[10px] text-white/50">{doc.years} ani de experienta</div>
                   </div>
                 </div>
-              </div>
+              </Card>
             )
           })}
         </div>
@@ -168,53 +183,70 @@ function DoctorsSection() {
         {selectedDoc && (() => {
           const color = deptColors[selectedDoc.dept] || B.p
           return (
-            <div style={{
-              marginTop:24, borderRadius:20, border:`2px solid ${color}`, overflow:'hidden',
-              display:'grid', gridTemplateColumns:'320px 1fr', background:B.wh,
-              boxShadow:`0 16px 48px ${B.bdr}`, animation:'fadeUp .3s ease',
-            }}>
+            <Card
+              className="mt-6 grid grid-cols-[320px_1fr] overflow-hidden rounded-[20px] border-2 bg-white p-0 shadow-none animate-in fade-in slide-in-from-bottom-2 duration-300"
+              style={{ borderColor: color, boxShadow: `0 16px 48px ${B.bdr}` }}
+            >
               {/* Left — large photo */}
-              <div style={{ position:'relative' }}>
-                <img src={selectedDoc.photo} alt={selectedDoc.name} style={{ width:'100%', height:'100%', objectFit:'cover', minHeight:380 }}/>
-                <div style={{ position:'absolute', bottom:0, left:0, right:0, padding:'20px', background:'linear-gradient(to top, rgba(10,30,24,.8), transparent)' }}>
-                  <span style={{ fontSize:10, fontWeight:700, color:B.wh, background:color, padding:'3px 10px', borderRadius:100 }}>{selectedDoc.dept}</span>
+              <div className="relative">
+                <img src={selectedDoc.photo} alt={selectedDoc.name} className="h-full min-h-[380px] w-full object-cover" />
+                <div className="absolute bottom-0 left-0 right-0 p-5" style={{ background: 'linear-gradient(to top, rgba(10,30,24,.8), transparent)' }}>
+                  <span
+                    className="rounded-full px-2.5 py-1 text-[10px] font-bold text-white"
+                    style={{ background: color }}
+                  >{selectedDoc.dept}</span>
                 </div>
               </div>
               {/* Right — info */}
-              <div style={{ padding:'28px 32px' }}>
-                <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-start', marginBottom:4 }}>
+              <CardContent className="p-7">
+                <div className="mb-1 flex items-start justify-between">
                   <div>
-                    <h3 style={{ fontFamily:"'Syne',sans-serif", fontSize:24, fontWeight:800, color:B.nv, margin:0 }}>{selectedDoc.name}</h3>
-                    <div style={{ fontSize:14, color:B.gr, marginTop:2 }}>{selectedDoc.title}</div>
+                    <h3 className="font-display text-2xl font-extrabold text-[#0a1e18]">{selectedDoc.name}</h3>
+                    <div className="mt-0.5 text-sm text-[#5a7a6e]">{selectedDoc.title}</div>
                   </div>
-                  <button onClick={() => setSelected(null)} style={{ background:'none', border:'none', cursor:'pointer', fontSize:20, color:B.gr, padding:4 }}>✕</button>
+                  <button onClick={() => setSelected(null)} className="cursor-pointer border-none bg-transparent p-1 text-[#5a7a6e]">
+                    <X className="h-5 w-5" />
+                  </button>
                 </div>
-                <div style={{ display:'flex', gap:12, marginTop:10, marginBottom:16 }}>
-                  <span style={{ fontSize:11, fontWeight:600, color:B.p, background:B.pl, padding:'4px 10px', borderRadius:100 }}>{selectedDoc.years} ani experiență</span>
-                  <span style={{ fontSize:11, fontWeight:600, color:'#fbb040', background:'#fbb04015', padding:'4px 10px', borderRadius:100 }}>★ {selectedDoc.rating} Google</span>
+                <div className="mb-4 mt-2.5 flex gap-3">
+                  <Badge variant="outline" className="border-none bg-sdt-100 text-[11px] font-semibold text-sdt-600">
+                    <Clock className="mr-1 h-3 w-3" />
+                    {selectedDoc.years} ani experienta
+                  </Badge>
+                  <Badge variant="outline" className="border-none bg-[#fbb04015] text-[11px] font-semibold text-[#fbb040]">
+                    <Star className="mr-1 h-3 w-3 fill-[#fbb040]" />
+                    {selectedDoc.rating} Google
+                  </Badge>
                 </div>
-                <p style={{ fontSize:14, lineHeight:1.7, color:B.gr, margin:'0 0 18px' }}>{selectedDoc.bio}</p>
-                <div style={{ fontSize:10, fontWeight:700, color:B.p, letterSpacing:'.1em', textTransform:'uppercase', marginBottom:8 }}>Educație & Certificări</div>
-                <div style={{ display:'flex', flexDirection:'column', gap:5, marginBottom:18 }}>
+                <p className="mb-[18px] text-sm leading-[1.7] text-[#5a7a6e]">{selectedDoc.bio}</p>
+                <div className="mb-2 text-[10px] font-bold uppercase tracking-[.1em] text-sdt-600">Educatie & Certificari</div>
+                <div className="mb-[18px] flex flex-col gap-[5px]">
                   {selectedDoc.education.map(e => (
-                    <div key={e} style={{ display:'flex', alignItems:'center', gap:8 }}>
-                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke={B.p} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                      <span style={{ fontSize:13, color:B.nv, fontWeight:500 }}>{e}</span>
+                    <div key={e} className="flex items-center gap-2">
+                      <Check className="h-[13px] w-[13px] text-sdt-600" strokeWidth={2.5} />
+                      <span className="text-[13px] font-medium text-[#0a1e18]">{e}</span>
                     </div>
                   ))}
                 </div>
                 {selectedDoc.review && (
-                  <div style={{ background:B.ps, borderRadius:12, padding:'16px 18px', borderLeft:`3px solid ${color}`, marginBottom:18 }}>
-                    <div style={{ color:'#fbb040', fontSize:12, marginBottom:4 }}>★★★★★</div>
-                    <p style={{ fontSize:13, lineHeight:1.6, color:B.nv, margin:'0 0 6px', fontStyle:'italic' }}>&ldquo;{selectedDoc.review.text}&rdquo;</p>
-                    <div style={{ fontSize:12, color:B.gr, fontWeight:600 }}>— {selectedDoc.review.author}</div>
+                  <div
+                    className="mb-[18px] rounded-xl bg-sdt-50 p-4"
+                    style={{ borderLeft: `3px solid ${color}` }}
+                  >
+                    <div className="mb-1 flex gap-0.5 text-xs text-[#fbb040]">
+                      {Array.from({ length: 5 }).map((_, i) => (
+                        <Star key={i} className="h-3 w-3 fill-[#fbb040] text-[#fbb040]" />
+                      ))}
+                    </div>
+                    <p className="mb-1.5 text-[13px] italic leading-[1.6] text-[#0a1e18]">&ldquo;{selectedDoc.review.text}&rdquo;</p>
+                    <div className="text-xs font-semibold text-[#5a7a6e]">— {selectedDoc.review.author}</div>
                   </div>
                 )}
-                <Btn style={{ width:'100%', justifyContent:'center', fontSize:14, padding:'13px 24px' }}>
-                  Programează cu {selectedDoc.name} →
-                </Btn>
-              </div>
-            </div>
+                <Button className="w-full justify-center text-sm font-bold">
+                  Programeaza cu {selectedDoc.name} <ArrowRight className="ml-1.5 h-4 w-4" />
+                </Button>
+              </CardContent>
+            </Card>
           )
         })()}
       </div>
@@ -225,42 +257,39 @@ function DoctorsSection() {
 /* ─── Ambasadori ─────────────────────────── */
 function AmbasadoriSection() {
   return (
-    <section style={{ background:B.ps, padding:'64px 48px' }}>
-      <div style={{ maxWidth:1100, margin:'0 auto' }}>
-        <div style={{ textAlign:'center', marginBottom:40 }}>
-          <SectionBadge>Zâmbete care inspiră</SectionBadge>
-          <h2 style={{ fontFamily:"'Syne',sans-serif", fontSize:32, fontWeight:800, color:B.nv, margin:'0 0 10px' }}>
-            Ambasadorii <span style={{ color:B.a }}>Smile Dent Team</span>
+    <section className="bg-sdt-50 px-12 py-16">
+      <div className="mx-auto max-w-[1100px]">
+        <div className="mb-10 text-center">
+          <SectionBadge>Zambete care inspira</SectionBadge>
+          <h2 className="font-display mb-2.5 text-[32px] font-extrabold text-[#0a1e18]">
+            Ambasadorii <span className="text-pink-500">Smile Dent Team</span>
           </h2>
-          <p style={{ fontSize:14, color:B.gr, maxWidth:440, margin:'0 auto' }}>Personalități din diverse industrii care ne-au ales și ne reprezintă.</p>
+          <p className="mx-auto max-w-[440px] text-sm text-[#5a7a6e]">Personalitati din diverse industrii care ne-au ales si ne reprezinta.</p>
         </div>
-        <div style={{ display:'grid', gridTemplateColumns:'repeat(6,1fr)', gap:16 }}>
+        <div className="grid grid-cols-6 gap-4">
           {AMBASSADORS.map(amb => (
-            <a key={amb.slug} href="/ambasadori" style={{ textDecoration:'none' }}>
-              <div style={{
-                borderRadius:14, overflow:'hidden', cursor:'pointer', position:'relative',
-                border:`1px solid ${B.bdr}`, transition:'all .3s', background:B.wh,
-              }}
-                onMouseEnter={e => { e.currentTarget.style.transform='translateY(-3px)'; e.currentTarget.style.boxShadow=`0 10px 28px ${B.bdr}` }}
-                onMouseLeave={e => { e.currentTarget.style.transform=''; e.currentTarget.style.boxShadow='' }}
-              >
-                <div style={{ position:'relative', paddingTop:'110%', overflow:'hidden' }}>
-                  <img src={amb.photo} alt={amb.name} style={{ position:'absolute', inset:0, width:'100%', height:'100%', objectFit:'cover', transition:'transform .4s' }}
-                    onMouseEnter={e => e.currentTarget.style.transform='scale(1.05)'}
-                    onMouseLeave={e => e.currentTarget.style.transform=''}
+            <a key={amb.slug} href="/ambasadori" className="group no-underline">
+              <div className="overflow-hidden rounded-[14px] border border-sdt-600/10 bg-white transition-all duration-300 hover:-translate-y-[3px] hover:shadow-lg">
+                <div className="relative overflow-hidden" style={{ paddingTop: '110%' }}>
+                  <img
+                    src={amb.photo}
+                    alt={amb.name}
+                    className="absolute inset-0 h-full w-full object-cover transition-transform duration-400 group-hover:scale-105"
                   />
-                  <div style={{ position:'absolute', bottom:0, left:0, right:0, height:'60%', background:'linear-gradient(to top, rgba(10,30,24,.9) 0%, transparent 100%)', pointerEvents:'none' }}/>
-                  <div style={{ position:'absolute', bottom:0, left:0, right:0, padding:'12px' }}>
-                    <div style={{ fontFamily:"'Syne',sans-serif", fontSize:12, fontWeight:700, color:B.wh, lineHeight:1.2 }}>{amb.name}</div>
-                    <div style={{ fontSize:10, color:'rgba(255,255,255,.6)', marginTop:2 }}>{amb.role}</div>
+                  <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-[60%]" style={{ background: 'linear-gradient(to top, rgba(10,30,24,.9) 0%, transparent 100%)' }} />
+                  <div className="absolute bottom-0 left-0 right-0 p-3">
+                    <div className="font-display text-xs font-bold leading-tight text-white">{amb.name}</div>
+                    <div className="mt-0.5 text-[10px] text-white/60">{amb.role}</div>
                   </div>
                 </div>
               </div>
             </a>
           ))}
         </div>
-        <div style={{ textAlign:'center', marginTop:24 }}>
-          <a href="/ambasadori" style={{ textDecoration:'none', fontSize:13, fontWeight:700, color:B.p }}>Vezi toți ambasadorii →</a>
+        <div className="mt-6 text-center">
+          <a href="/ambasadori" className="text-[13px] font-bold text-sdt-600 no-underline hover:underline">
+            Vezi toti ambasadorii <ArrowRight className="ml-1 inline h-3.5 w-3.5" />
+          </a>
         </div>
       </div>
     </section>
@@ -270,15 +299,17 @@ function AmbasadoriSection() {
 /* ─── CTA Strip ──────────────────────────── */
 function CtaStrip() {
   return (
-    <section style={{ background:`linear-gradient(135deg,${B.p},${B.pm})`, padding:'52px 48px' }}>
-      <div style={{ maxWidth:900, margin:'0 auto', textAlign:'center' }}>
-        <h2 style={{ fontFamily:"'Syne',sans-serif", fontSize:30, fontWeight:800, color:B.wh, margin:'0 0 12px' }}>
-          Alege-ți specialistul. Programează-te acum.
+    <section className="px-12 py-[52px]" style={{ background: `linear-gradient(135deg,${B.p},${B.pm})` }}>
+      <div className="mx-auto max-w-[900px] text-center">
+        <h2 className="font-display mb-3 text-[30px] font-extrabold text-white">
+          Alege-ti specialistul. Programeaza-te acum.
         </h2>
-        <p style={{ fontSize:15, color:'rgba(255,255,255,.7)', margin:'0 0 24px' }}>
-          {STATS.team} specialiști pregătiți să aibă grijă de zâmbetul tău.
+        <p className="mb-6 text-[15px] text-white/70">
+          {STATS.team} specialisti pregatiti sa aiba grija de zambetul tau.
         </p>
-        <Btn pink style={{ fontSize:15, padding:'14px 32px' }}>Programează-te →</Btn>
+        <Button variant="accent" className="px-8 py-3.5 text-[15px] font-bold">
+          Programeaza-te <ArrowRight className="ml-1.5 h-4 w-4" />
+        </Button>
       </div>
     </section>
   )
@@ -286,32 +317,38 @@ function CtaStrip() {
 
 /* ─── Appointment Form ───────────────────── */
 function AppointmentForm() {
-  const inp: React.CSSProperties = {
-    width:'100%', padding:'12px 16px', border:`1px solid ${B.bdr}`, borderRadius:8,
-    fontSize:14, fontFamily:"'DM Sans',sans-serif", background:B.wh, outline:'none', boxSizing:'border-box',
-  }
   return (
-    <section style={{ background:B.wh, padding:'64px 48px' }}>
-      <div style={{ maxWidth:700, margin:'0 auto', background:B.ps, borderRadius:20, padding:'40px 36px', border:`1px solid ${B.bdr}` }}>
-        <div style={{ textAlign:'center', marginBottom:28 }}>
-          <h2 style={{ fontFamily:"'Syne',sans-serif", fontSize:26, fontWeight:800, color:B.nv, margin:'0 0 8px' }}>Programează-te acum</h2>
-          <p style={{ fontSize:13, color:B.gr }}>Completează formularul — te contactăm rapid.</p>
-        </div>
-        <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:12, marginBottom:12 }}>
-          <input placeholder="Prenume" style={inp}/>
-          <input placeholder="Nume" style={inp}/>
-        </div>
-        <input placeholder="Telefon *" type="tel" style={{ ...inp, marginBottom:12 }}/>
-        <select defaultValue="" style={{ ...inp, marginBottom:12, color:B.gr }}>
-          <option value="" disabled>Alege specialistul</option>
-          {DOCTORS.map(d => <option key={d.id}>{d.name} — {d.dept}</option>)}
-        </select>
-        <select defaultValue="" style={{ ...inp, marginBottom:12, color:B.gr }}>
-          <option value="" disabled>Selectează locația</option>
-          {LOCATIONS.map(l => <option key={l.city}>{l.city} — {l.address}</option>)}
-        </select>
-        <Btn pink style={{ width:'100%', justifyContent:'center', fontSize:15, padding:'14px' }}>Trimite cererea →</Btn>
-      </div>
+    <section className="bg-white px-12 py-16">
+      <Card className="mx-auto max-w-[700px] rounded-[20px] border-sdt-600/10 bg-sdt-50 p-0 shadow-none">
+        <CardContent className="px-9 py-10">
+          <div className="mb-7 text-center">
+            <h2 className="font-display mb-2 text-[26px] font-extrabold text-[#0a1e18]">Programeaza-te acum</h2>
+            <p className="text-[13px] text-[#5a7a6e]">Completeaza formularul — te contactam rapid.</p>
+          </div>
+          <div className="mb-3 grid grid-cols-2 gap-3">
+            <Input placeholder="Prenume" />
+            <Input placeholder="Nume" />
+          </div>
+          <Input placeholder="Telefon *" type="tel" className="mb-3" />
+          <select
+            defaultValue=""
+            className="mb-3 flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm text-muted-foreground ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+          >
+            <option value="" disabled>Alege specialistul</option>
+            {DOCTORS.map(d => <option key={d.id}>{d.name} — {d.dept}</option>)}
+          </select>
+          <select
+            defaultValue=""
+            className="mb-3 flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm text-muted-foreground ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+          >
+            <option value="" disabled>Selecteaza locatia</option>
+            {LOCATIONS.map(l => <option key={l.city}>{l.city} — {l.address}</option>)}
+          </select>
+          <Button variant="accent" className="w-full justify-center text-[15px] font-bold">
+            Trimite cererea <ArrowRight className="ml-1.5 h-4 w-4" />
+          </Button>
+        </CardContent>
+      </Card>
     </section>
   )
 }
@@ -319,42 +356,50 @@ function AppointmentForm() {
 /* ─── Footer ─────────────────────────────── */
 function Footer() {
   return (
-    <footer style={{ background:B.nv, padding:'56px 48px 32px' }}>
-      <div style={{ maxWidth:1200, margin:'0 auto', display:'grid', gridTemplateColumns:'1.5fr 1fr 1fr 1.2fr', gap:40, marginBottom:40 }}>
+    <footer className="bg-[#0a1e18] px-12 pb-8 pt-14">
+      <div className="mx-auto mb-10 grid max-w-[1200px] grid-cols-[1.5fr_1fr_1fr_1.2fr] gap-10">
         <div>
           <Logo height={32} light/>
-          <p style={{ fontSize:13, color:'rgba(255,255,255,.45)', marginTop:16, lineHeight:1.7, maxWidth:260 }}>
-            Clinică stomatologică digitală. {STATS.years} ani de excelență, {STATS.team} specialiști, {STATS.patients} pacienți.
+          <p className="mt-4 max-w-[260px] text-[13px] leading-[1.7] text-white/[.45]">
+            Clinica stomatologica digitala. {STATS.years} ani de excelenta, {STATS.team} specialisti, {STATS.patients} pacienti.
           </p>
-          <div style={{ fontFamily:"'Syne',sans-serif", fontSize:16, fontWeight:800, color:B.a, marginTop:16 }}>{CAMPAIGN_2026.slogan}</div>
+          <div className="font-display mt-4 text-base font-extrabold text-pink-500">{CAMPAIGN_2026.slogan}</div>
         </div>
         <div>
-          <div style={{ fontSize:11, fontWeight:700, color:B.wh, letterSpacing:'.15em', textTransform:'uppercase', marginBottom:18 }}>Servicii</div>
+          <div className="mb-[18px] text-[11px] font-bold uppercase tracking-[.15em] text-white">Servicii</div>
           {SERVICES.slice(0,7).map(s => (
-            <div key={s.slug} style={{ fontSize:13, marginBottom:9, color:'rgba(255,255,255,.5)', cursor:'pointer' }}>{s.name}</div>
+            <div key={s.slug} className="mb-2.5 cursor-pointer text-[13px] text-white/50">{s.name}</div>
           ))}
         </div>
         <div>
-          <div style={{ fontSize:11, fontWeight:700, color:B.wh, letterSpacing:'.15em', textTransform:'uppercase', marginBottom:18 }}>Clinică</div>
+          <div className="mb-[18px] text-[11px] font-bold uppercase tracking-[.15em] text-white">Clinica</div>
           {[['Despre noi','/'],['Echipa','/echipa'],['Ambasadori','/ambasadori'],['Tehnologii','/'],['Blog','/'],['Contacte','/']].map(([s,h]) => (
-            <a key={s} href={h} style={{ display:'block', fontSize:13, marginBottom:9, color:'rgba(255,255,255,.5)', textDecoration:'none' }}>{s}</a>
+            <a key={s} href={h} className="mb-2.5 block text-[13px] text-white/50 no-underline">{s}</a>
           ))}
         </div>
         <div>
-          <div style={{ fontSize:11, fontWeight:700, color:B.wh, letterSpacing:'.15em', textTransform:'uppercase', marginBottom:18 }}>Contact</div>
+          <div className="mb-[18px] text-[11px] font-bold uppercase tracking-[.15em] text-white">Contact</div>
           {LOCATIONS.slice(0,2).map(l => (
-            <div key={l.city} style={{ marginBottom:14 }}>
-              <div style={{ fontSize:13, fontWeight:600, color:B.wh }}>{l.city}</div>
-              <div style={{ fontSize:12, color:'rgba(255,255,255,.45)' }}>{l.address} · {l.phone}</div>
+            <div key={l.city} className="mb-3.5">
+              <div className="flex items-center gap-1.5 text-[13px] font-semibold text-white">
+                <MapPin className="h-3 w-3 text-sdt-400" />
+                {l.city}
+              </div>
+              <div className="mt-0.5 flex items-center gap-1.5 text-xs text-white/[.45]">
+                {l.address}
+                <span className="text-white/20">|</span>
+                <Phone className="h-2.5 w-2.5" />
+                {l.phone}
+              </div>
             </div>
           ))}
         </div>
       </div>
-      <div style={{ borderTop:'1px solid rgba(255,255,255,.07)', paddingTop:20, display:'flex', justifyContent:'space-between', alignItems:'center' }}>
-        <span style={{ fontSize:11, color:'rgba(255,255,255,.25)' }}>© {CAMPAIGN_2026.year} Smile Dent Team</span>
-        <div style={{ display:'flex', gap:6 }}>
+      <div className="flex items-center justify-between border-t border-white/[.07] pt-5">
+        <span className="text-[11px] text-white/25">&copy; {CAMPAIGN_2026.year} Smile Dent Team</span>
+        <div className="flex gap-1.5">
           {['RO','RU','EN'].map(l => (
-            <span key={l} style={{ background:'rgba(255,255,255,.08)', color:'rgba(255,255,255,.5)', padding:'3px 8px', borderRadius:40, fontSize:10, fontWeight:700, cursor:'pointer' }}>{l}</span>
+            <span key={l} className="cursor-pointer rounded-full bg-white/[.08] px-2 py-[3px] text-[10px] font-bold text-white/50">{l}</span>
           ))}
         </div>
       </div>

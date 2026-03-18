@@ -2,12 +2,14 @@
 import { useState } from 'react'
 import { BRAND as B, SERVICES, STATS, LOCATIONS, CAMPAIGN_2026, AMBASSADORS } from '@/lib/brand'
 import { Logo } from './Logo'
-
-/* ─── Animations ─────────────────────────── */
-const ANIM = `
-  @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-  @keyframes barGrow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
-`
+import { Button } from '@/components/ui/button'
+import { Card, CardContent } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
+import { cn } from '@/lib/utils'
+import {
+  FileText, Monitor, Bookmark, Moon, CheckCircle, Shield, User, Clock,
+  Heart, Video, Star, Play, ArrowRight, ChevronRight,
+} from 'lucide-react'
 
 /* ─── Rich service detail data ────────────── */
 const SVC_DETAILS: Record<string, {
@@ -18,151 +20,151 @@ const SVC_DETAILS: Record<string, {
   photo: string;
 }> = {
   implantologie: {
-    hero: 'Implant dentar — soluția permanentă pentru dinții lipsă. Planificare 3D, inserare ghidată, rezultat previzibil.',
-    desc: 'Implanturile dentare înlocuiesc rădăcina dintelui pierdut cu un stâlp de titan biocompatibil. Planificăm fiecare caz digital, inserăm ghidat 3D și oferim opțiuni de încărcare imediată pentru confort maxim.',
-    process: ['Consultație + Tomografie 3D CBCT','Planificare digitală a poziției implantului','Inserare ghidată — minim invaziv','Vindecare 2-4 luni + protezare finală'],
+    hero: 'Implant dentar — solutia permanenta pentru dintii lipsa. Planificare 3D, inserare ghidata, rezultat previzibil.',
+    desc: 'Implanturile dentare inlocuiesc radacina dintelui pierdut cu un stalp de titan biocompatibil. Planificam fiecare caz digital, inseram ghidat 3D si oferim optiuni de incarcare imediata pentru confort maxim.',
+    process: ['Consultatie + Tomografie 3D CBCT','Planificare digitala a pozitiei implantului','Inserare ghidata — minim invaziv','Vindecare 2-4 luni + protezare finala'],
     benefits: [
-      ['M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z','Planificare 3D completă — precizie maximă'],
-      ['M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z','Inserare ghidată — fără tăieturi, fără suturi'],
-      ['M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z','Garanție pe viață pe implant'],
-      ['M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z','Opțiune de încărcare imediată'],
+      ['check-circle','Planificare 3D completa — precizie maxima'],
+      ['shield','Inserare ghidata — fara taieturi, fara suturi'],
+      ['user','Garantie pe viata pe implant'],
+      ['clock','Optiune de incarcare imediata'],
     ],
     techs: ['Straumann','Nobel Biocare','CBCT 3D','Ghid chirurgical digital','3Shape Trios'],
     reviews: [
-      { text:'Am primit implantul fără durere. În 3 luni aveam dinte nou. Recomand!', author:'Denis P.', rating:5 },
-      { text:'Echipa a fost extraordinară. Totul planificat digital, fără surprize.', author:'Elena M.', rating:5 },
+      { text:'Am primit implantul fara durere. In 3 luni aveam dinte nou. Recomand!', author:'Denis P.', rating:5 },
+      { text:'Echipa a fost extraordinara. Totul planificat digital, fara surprize.', author:'Elena M.', rating:5 },
     ],
-    ambassador: { name:'Dumitru Talmazan', quote:'Implantul dentar mi-a redat încrederea în zâmbet. Tehnologia 3D face totul previzibil.', photo:AMBASSADORS[0].photo },
+    ambassador: { name:'Dumitru Talmazan', quote:'Implantul dentar mi-a redat increderea in zambet. Tehnologia 3D face totul previzibil.', photo:AMBASSADORS[0].photo },
     photo: 'https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=600&h=400&fit=crop',
   },
   protetica: {
-    hero: 'Coroane dentare CAD/CAM — restaurări precise, estetice și durabile. Scanare digitală, fabricare în aceeași zi.',
-    desc: 'Coroanele dentare protejează și restaurează dinții deteriorați. Folosim tehnologie CAD/CAM pentru scanare digitală, design și frezare — fără amprentă clasică, cu precizie de microni.',
-    process: ['Scanare digitală 3Shape','Design virtual al coroanei','Frezare CAD/CAM din zirconiu/E-max','Cimentare definitivă — estetică perfectă'],
+    hero: 'Coroane dentare CAD/CAM — restaurari precise, estetice si durabile. Scanare digitala, fabricare in aceeasi zi.',
+    desc: 'Coroanele dentare protejeaza si restaureaza dintii deteriorati. Folosim tehnologie CAD/CAM pentru scanare digitala, design si frezare — fara amprenta clasica, cu precizie de microni.',
+    process: ['Scanare digitala 3Shape','Design virtual al coroanei','Frezare CAD/CAM din zirconiu/E-max','Cimentare definitiva — estetica perfecta'],
     benefits: [
-      ['M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z','Fără amprentă clasică — doar scanner digital'],
-      ['M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z','Materiale premium: zirconiu, E-max'],
-      ['M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z','Garanție pe viață pe structură'],
-      ['M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z','Coroană temporară în aceeași ședință'],
+      ['check-circle','Fara amprenta clasica — doar scanner digital'],
+      ['shield','Materiale premium: zirconiu, E-max'],
+      ['user','Garantie pe viata pe structura'],
+      ['clock','Coroana temporara in aceeasi sedinta'],
     ],
     techs: ['Cerec/inLab','Zirconiu','E-max','3Shape','Scanner intraoral'],
     reviews: [
-      { text:'Coroanele arată perfect natural. Nimeni nu le deosebește de dinții mei.', author:'Ion V.', rating:5 },
+      { text:'Coroanele arata perfect natural. Nimeni nu le deosebeste de dintii mei.', author:'Ion V.', rating:5 },
     ],
     photo: 'https://images.unsplash.com/photo-1606811841689-23dfddce3e95?w=600&h=400&fit=crop',
   },
   allon: {
-    hero: 'Dinți ficși pe implanturi — alternativa modernă la protezele mobile. Reabilitare completă în aceeași zi.',
-    desc: 'All-On-4/6 este soluția pentru pacienții cu edentație totală sau parțială avansată. Inserăm 4-6 implanturi strategic poziționate și fixăm o arcadă completă de dinți — totul planificat 3D, realizat într-o singură zi.',
-    process: ['Digital Check-Up + Tomografie CBCT','Plan chirurgical 3D + ghid personalizat','Inserare implanturi + arcadă provizorie fixă','Protezare finală după 3-4 luni'],
+    hero: 'Dinti ficsi pe implanturi — alternativa moderna la protezele mobile. Reabilitare completa in aceeasi zi.',
+    desc: 'All-On-4/6 este solutia pentru pacientii cu edentatie totala sau partiala avansata. Inseram 4-6 implanturi strategic pozitionate si fixam o arcada completa de dinti — totul planificat 3D, realizat intr-o singura zi.',
+    process: ['Digital Check-Up + Tomografie CBCT','Plan chirurgical 3D + ghid personalizat','Inserare implanturi + arcada provizorie fixa','Protezare finala dupa 3-4 luni'],
     benefits: [
-      ['M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z','Dinți ficși în aceeași zi — pleci cu zâmbet nou'],
-      ['M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z','Alternative la proteza mobilă — nu se mișcă, nu cad'],
-      ['M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z','Sedare conștientă disponibilă'],
-      ['M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z','Rate 0% disponibile'],
+      ['check-circle','Dinti ficsi in aceeasi zi — pleci cu zambet nou'],
+      ['shield','Alternative la proteza mobila — nu se misca, nu cad'],
+      ['user','Sedare constienta disponibila'],
+      ['clock','Rate 0% disponibile'],
     ],
-    techs: ['All-On-4','All-On-6','Straumann','Nobel Biocare','CBCT 3D','Sedare conștientă'],
+    techs: ['All-On-4','All-On-6','Straumann','Nobel Biocare','CBCT 3D','Sedare constienta'],
     reviews: [
-      { text:'Am scăpat de proteza mobilă! Acum am dinți ficși și pot mânca orice.', author:'Maria S.', rating:5 },
-      { text:'Interventia a durat doar câteva ore. Am plecat acasă cu dinți noi.', author:'Victor D.', rating:5 },
+      { text:'Am scapat de proteza mobila! Acum am dinti ficsi si pot manca orice.', author:'Maria S.', rating:5 },
+      { text:'Interventia a durat doar cateva ore. Am plecat acasa cu dinti noi.', author:'Victor D.', rating:5 },
     ],
-    ambassador: { name:'Valeriu Rașcu', quote:'All-On-4 este o revoluție. Am văzut cum oameni își schimbă viața într-o zi.', photo:AMBASSADORS[3].photo },
+    ambassador: { name:'Valeriu Rascu', quote:'All-On-4 este o revolutie. Am vazut cum oameni isi schimba viata intr-o zi.', photo:AMBASSADORS[3].photo },
     photo: 'https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?w=600&h=400&fit=crop',
   },
   estetica: {
-    hero: 'Fațete dentare — zâmbetul de Hollywood, planificat digital. Vizualizezi rezultatul înainte de tratament.',
-    desc: 'Fațetele sunt plăcuțe subțiri de ceramică E-max care acoperă fața vizibilă a dintelui. Cu Digital Smile Design, simulăm rezultatul 3D înainte de orice procedură — aprobi designul, apoi realizăm.',
-    process: ['Digital Smile Design — simulare 3D','Mock-up în gură — testezi rezultatul','Preparare minimală','Bonding fațete ceramice E-max'],
+    hero: 'Fatete dentare — zambetul de Hollywood, planificat digital. Vizualizezi rezultatul inainte de tratament.',
+    desc: 'Fatetele sunt placute subtiri de ceramica E-max care acopera fata vizibila a dintelui. Cu Digital Smile Design, simulam rezultatul 3D inainte de orice procedura — aprobi designul, apoi realizam.',
+    process: ['Digital Smile Design — simulare 3D','Mock-up in gura — testezi rezultatul','Preparare minimala','Bonding fatete ceramice E-max'],
     benefits: [
-      ['M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z','Vizualizare 3D înainte de tratament'],
-      ['M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z','Rezultat natural, personalizat'],
-      ['M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z','Ceramică E-max — rezistentă 15+ ani'],
-      ['M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z','Preparare minimală — protejăm dintele'],
+      ['check-circle','Vizualizare 3D inainte de tratament'],
+      ['shield','Rezultat natural, personalizat'],
+      ['user','Ceramica E-max — rezistenta 15+ ani'],
+      ['clock','Preparare minimala — protejam dintele'],
     ],
-    techs: ['Digital Smile Design','Fațete E-max','Scanner 3Shape','Albire Philips Zoom'],
+    techs: ['Digital Smile Design','Fatete E-max','Scanner 3Shape','Albire Philips Zoom'],
     reviews: [
-      { text:'Zâmbetul pe care l-am visat! Totul a fost planificat perfect.', author:'Maria T.', rating:5 },
+      { text:'Zambetul pe care l-am visat! Totul a fost planificat perfect.', author:'Maria T.', rating:5 },
     ],
-    ambassador: { name:'Nicoleta Adam', quote:'Fațetele de la SDT mi-au schimbat complet încrederea. Arată absolut natural.', photo:AMBASSADORS[1].photo },
+    ambassador: { name:'Nicoleta Adam', quote:'Fatetele de la SDT mi-au schimbat complet increderea. Arata absolut natural.', photo:AMBASSADORS[1].photo },
     photo: 'https://images.unsplash.com/photo-1598256989800-fe5f95da9787?w=600&h=400&fit=crop',
   },
   ortodontie: {
-    hero: 'Ortodonție digitală — alignere invizibile sau bracketi, planificate 3D pentru rezultat predictibil.',
-    desc: 'Corectăm problemele de aliniere cu Invisalign sau bracketi autoligaturante. Planificăm fiecare mișcare digital — știi exact cum va arăta rezultatul final înainte de a începe.',
-    process: ['Scanare digitală iTero','Plan ClinCheck — simulare completă','Aliniere cu Invisalign sau bracketi','Contenție + monitorizare'],
+    hero: 'Ortodontie digitala — alignere invizibile sau bracketi, planificate 3D pentru rezultat predictibil.',
+    desc: 'Corectam problemele de aliniere cu Invisalign sau bracketi autoligaturante. Planificam fiecare miscare digital — stii exact cum va arata rezultatul final inainte de a incepe.',
+    process: ['Scanare digitala iTero','Plan ClinCheck — simulare completa','Aliniere cu Invisalign sau bracketi','Contentie + monitorizare'],
     benefits: [
-      ['M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z','Simulare 3D a rezultatului final'],
-      ['M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z','Aliniere invizibilă — fără bracketi vizibili'],
-      ['M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z','Monitorizare digitală la distanță'],
-      ['M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z','Rate 0% disponibile'],
+      ['check-circle','Simulare 3D a rezultatului final'],
+      ['shield','Aliniere invizibila — fara bracketi vizibili'],
+      ['user','Monitorizare digitala la distanta'],
+      ['clock','Rate 0% disponibile'],
     ],
     techs: ['Invisalign','iTero Scanner','ClinCheck','Damon System','Accelerated Ortho'],
     reviews: [
-      { text:'Copilul meu adoră vizitele! Tratamentul merge perfect.', author:'Svetlana L.', rating:5 },
+      { text:'Copilul meu adora vizitele! Tratamentul merge perfect.', author:'Svetlana L.', rating:5 },
     ],
     photo: 'https://images.unsplash.com/photo-1609840114035-3c981b782dfe?w=600&h=400&fit=crop',
   },
   'digital-checkup': {
-    hero: 'Digital Check-Up — evaluare completă, digitală și fără discomfort. Primul pas către sănătatea orală.',
-    desc: 'Scanare 3D, tomografie CBCT, analiză completă — în 30 minute ai o imagine clară a sănătății tale orale. Planul de tratament detaliat, cu costuri transparente, fără surprize.',
-    process: ['Scanare intraorală 3Shape Trios','Tomografie 3D CBCT','Analiză completă + diagnostic','Plan de tratament personalizat + costuri'],
+    hero: 'Digital Check-Up — evaluare completa, digitala si fara discomfort. Primul pas catre sanatatea orala.',
+    desc: 'Scanare 3D, tomografie CBCT, analiza completa — in 30 minute ai o imagine clara a sanatatii tale orale. Planul de tratament detaliat, cu costuri transparente, fara surprize.',
+    process: ['Scanare intraorala 3Shape Trios','Tomografie 3D CBCT','Analiza completa + diagnostic','Plan de tratament personalizat + costuri'],
     benefits: [
-      ['M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z','100% digital — fără amprentă clasică'],
-      ['M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z','Diagnostic precis cu tomografie 3D'],
-      ['M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z','Durată ~30 minute, fără durere'],
-      ['M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z','Plan transparent cu prețuri clare'],
+      ['check-circle','100% digital — fara amprenta clasica'],
+      ['shield','Diagnostic precis cu tomografie 3D'],
+      ['user','Durata ~30 minute, fara durere'],
+      ['clock','Plan transparent cu preturi clare'],
     ],
     techs: ['3Shape Trios','CBCT 3D','Digital Workflow','Software diagnostic'],
     reviews: [
-      { text:'Am înțeles exact ce am nevoie. Totul transparent, fără presiune.', author:'Ana R.', rating:5 },
+      { text:'Am inteles exact ce am nevoie. Totul transparent, fara presiune.', author:'Ana R.', rating:5 },
     ],
     photo: 'https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?w=600&h=400&fit=crop',
   },
   terapie: {
-    hero: 'Terapie & Profilaxie — prevenția este cel mai bun tratament. Igienizare profesională fără durere.',
-    desc: 'Oferim igienizare profesională cu ultrasunete, tratament parodontal, obturații estetice și profilaxie completă. Totul cu instrumente digitale pentru o experiență confortabilă.',
-    process: ['Evaluare digitală completă','Igienizare profesională cu ultrasunete','Tratament carii / restaurări estetice','Plan de prevenție personalizat'],
+    hero: 'Terapie & Profilaxie — preventia este cel mai bun tratament. Igienizare profesionala fara durere.',
+    desc: 'Oferim igienizare profesionala cu ultrasunete, tratament parodontal, obturatii estetice si profilaxie completa. Totul cu instrumente digitale pentru o experienta confortabila.',
+    process: ['Evaluare digitala completa','Igienizare profesionala cu ultrasunete','Tratament carii / restaurari estetice','Plan de preventie personalizat'],
     benefits: [
-      ['M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z','Detecție timpurie cu scanner digital'],
-      ['M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z','Tratament fără durere — anestezie digitală'],
-      ['M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z','Igienizare profesională cu ultrasunete'],
-      ['M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z','Plan personalizat de prevenție'],
+      ['check-circle','Detectie timpurie cu scanner digital'],
+      ['shield','Tratament fara durere — anestezie digitala'],
+      ['user','Igienizare profesionala cu ultrasunete'],
+      ['clock','Plan personalizat de preventie'],
     ],
-    techs: ['Scanner digital','Ultrasunete','Anestezie digitală','Materiale biocompatibile'],
+    techs: ['Scanner digital','Ultrasunete','Anestezie digitala','Materiale biocompatibile'],
     reviews: [
-      { text:'Foarte atentă, tratament fără durere. Recomand!', author:'Nadejda B.', rating:5 },
+      { text:'Foarte atenta, tratament fara durere. Recomand!', author:'Nadejda B.', rating:5 },
     ],
     photo: 'https://images.unsplash.com/photo-1606811841689-23dfddce3e95?w=600&h=400&fit=crop',
   },
   chirurgie: {
-    hero: 'Chirurgie orală — extracții complexe, augmentări osoase, rezecții. Totul ghidat 3D, minim invaziv.',
-    desc: 'Realizăm intervenții chirurgicale complexe cu ghidare 3D: extracții de măsele de minte, augmentări osoase, rezecții apicale, sinus lifting. Planificare digitală completă pentru siguranță maximă.',
-    process: ['Tomografie 3D + planificare digitală','Ghid chirurgical personalizat','Intervenție minim invazivă','Monitorizare post-operatorie'],
+    hero: 'Chirurgie orala — extractii complexe, augmentari osoase, rezectii. Totul ghidat 3D, minim invaziv.',
+    desc: 'Realizam interventii chirurgicale complexe cu ghidare 3D: extractii de masele de minte, augmentari osoase, rezectii apicale, sinus lifting. Planificare digitala completa pentru siguranta maxima.',
+    process: ['Tomografie 3D + planificare digitala','Ghid chirurgical personalizat','Interventie minim invaziva','Monitorizare post-operatorie'],
     benefits: [
-      ['M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z','Ghid chirurgical 3D — precizie maximă'],
-      ['M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z','Intervenție minim invazivă'],
-      ['M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z','Sedare conștientă disponibilă'],
-      ['M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z','Recuperare rapidă post-operatorie'],
+      ['check-circle','Ghid chirurgical 3D — precizie maxima'],
+      ['shield','Interventie minim invaziva'],
+      ['user','Sedare constienta disponibila'],
+      ['clock','Recuperare rapida post-operatorie'],
     ],
-    techs: ['CBCT 3D','Ghid chirurgical','Piezosurgery','PRF/PRP','Sedare conștientă'],
+    techs: ['CBCT 3D','Ghid chirurgical','Piezosurgery','PRF/PRP','Sedare constienta'],
     reviews: [
-      { text:'M-am simțit în siguranță pe tot parcursul intervenției.', author:'Elena M.', rating:5 },
+      { text:'M-am simtit in siguranta pe tot parcursul interventiei.', author:'Elena M.', rating:5 },
     ],
     photo: 'https://images.unsplash.com/photo-1629909615184-74f495363b67?w=600&h=400&fit=crop',
   },
   'consultatie-online': {
-    hero: 'Consultație Online — pentru diaspora și pacienți la distanță. Discutăm, analizăm, planificăm.',
-    desc: 'Ești în străinătate? Trimite tomografia, discutăm la distanță, primești un plan complet de tratament. Vii pregătit la clinică — economisești timp și bani.',
-    process: ['Trimite tomografia online','Consultație video 1:1','Plan de tratament personalizat','Programare prioritară la sosire'],
+    hero: 'Consultatie Online — pentru diaspora si pacienti la distanta. Discutam, analizam, planificam.',
+    desc: 'Esti in strainatate? Trimite tomografia, discutam la distanta, primesti un plan complet de tratament. Vii pregatit la clinica — economisesti timp si bani.',
+    process: ['Trimite tomografia online','Consultatie video 1:1','Plan de tratament personalizat','Programare prioritara la sosire'],
     benefits: [
-      ['M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z','Consultație video cu specialistul'],
-      ['M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z','Analiză completă la distanță'],
-      ['M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z','Plan detaliat înainte de sosire'],
-      ['M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z','Disponibil: UK, Germania, Franța, USA'],
+      ['check-circle','Consultatie video cu specialistul'],
+      ['shield','Analiza completa la distanta'],
+      ['user','Plan detaliat inainte de sosire'],
+      ['clock','Disponibil: UK, Germania, Franta, USA'],
     ],
-    techs: ['Consultație Video','Radiografie digitală','Plan 3D la distanță','Programare prioritară'],
+    techs: ['Consultatie Video','Radiografie digitala','Plan 3D la distanta','Programare prioritara'],
     reviews: [
-      { text:'Am planificat totul din Germania. Când am ajuns, am început imediat.', author:'Andrei K.', rating:5 },
+      { text:'Am planificat totul din Germania. Cand am ajuns, am inceput imediat.', author:'Andrei K.', rating:5 },
     ],
     photo: 'https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=600&h=400&fit=crop',
   },
@@ -181,45 +183,57 @@ const SVC_ICONS: Record<string, string> = {
   'consultatie-online':  'M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z',
 }
 
-/* ─── Shared components ──────────────────── */
-function Btn({ children, pink, outline, style, ...p }: any) {
-  const bg = pink ? B.a : outline ? 'transparent' : B.p
-  const clr = outline ? B.p : B.wh
-  const brd = outline ? `1.5px solid ${B.p}` : pink ? `1.5px solid ${B.a}` : 'none'
-  return (
-    <button style={{
-      background:bg, color:clr, border:brd, padding:'14px 32px', borderRadius:8,
-      fontSize:15, fontWeight:700, cursor:'pointer', fontFamily:"'DM Sans',sans-serif",
-      transition:'all .2s', display:'inline-flex', alignItems:'center', gap:8, ...style
-    }} {...p}>{children}</button>
-  )
+/* ─── Benefit icon map ──────────────────── */
+const BENEFIT_ICONS: Record<string, React.ComponentType<{ className?: string }>> = {
+  'check-circle': CheckCircle,
+  'shield': Shield,
+  'user': User,
+  'clock': Clock,
 }
 
 /* ─── Nav ──────────────────────────────────── */
+const NAV_LINKS: [string, string][] = [
+  ['Servicii','/servicii'],
+  ['Digital Check-Up','/digital-checkup'],
+  ['Consultatie Online','/consultatie-online'],
+  ['Echipa','/echipa'],
+  ['Recenzii','/'],
+]
+
 function Nav() {
   return (
-    <>
-      
-      <nav style={{
-        position:'sticky', top:0, zIndex:100, background:'rgba(255,255,255,.97)',
-        backdropFilter:'blur(12px)', borderTop:`3px solid ${B.a}`, borderBottom:`1px solid ${B.bdr}`,
-        padding:'14px 48px', display:'flex', justifyContent:'space-between', alignItems:'center',
-      }}>
-        <a href="/" style={{ textDecoration:'none' }}><Logo height={36}/></a>
-        <div style={{ display:'flex', gap:28, alignItems:'center' }}>
-          {[['Servicii','/servicii'],['Digital Check-Up','/digital-checkup'],['Consultație Online','/consultatie-online'],['Echipa','/echipa'],['Recenzii','/']].map(([l,h]) => (
-            <a key={l} href={h} style={{
-              fontSize:14, fontWeight: l==='Servicii' ? 700 : 500,
-              color: l==='Servicii' ? B.p : '#3a5a50', textDecoration:'none',
-            }}>{l}</a>
-          ))}
-        </div>
-        <div style={{ display:'flex', gap:10, alignItems:'center' }}>
-          <a href="/login" style={{ textDecoration:'none' }}><button style={{ background:'transparent', color:B.p, border:`1.5px solid ${B.p}`, padding:'8px 18px', borderRadius:8, fontSize:13, fontWeight:600, cursor:'pointer', fontFamily:"'DM Sans',sans-serif" }}>Cabinetul meu</button></a>
-          <Btn pink style={{ fontSize:13, padding:'10px 22px' }}>Programează-te</Btn>
-        </div>
-      </nav>
-    </>
+    <nav
+      className="sticky top-0 z-[100] bg-white/97 backdrop-blur-[12px] border-b border-[--bdr] px-12 py-3.5 flex justify-between items-center"
+      style={{ borderTop: `3px solid ${B.a}` }}
+    >
+      <a href="/" className="no-underline"><Logo height={36}/></a>
+      <div className="flex gap-7 items-center">
+        {NAV_LINKS.map(([l, h]) => (
+          <a
+            key={l}
+            href={h}
+            className={cn(
+              'text-sm no-underline',
+              l === 'Servicii'
+                ? 'font-bold text-sdt-600'
+                : 'font-medium text-[#3a5a50]'
+            )}
+          >
+            {l}
+          </a>
+        ))}
+      </div>
+      <div className="flex gap-2.5 items-center">
+        <a href="/login" className="no-underline">
+          <Button variant="outline" size="sm" className="border-sdt-600 text-sdt-600 font-semibold text-[13px]">
+            Cabinetul meu
+          </Button>
+        </a>
+        <Button variant="accent" size="sm" className="text-[13px]">
+          Programeaza-te
+        </Button>
+      </div>
+    </nav>
   )
 }
 
@@ -230,140 +244,166 @@ function ServiceDetail({ svc }: { svc: typeof SERVICES[number] }) {
   const iconPath = SVC_ICONS[svc.slug]
 
   return (
-    <div style={{ animation:'fadeUp .3s ease' }}>
+    <div className="animate-fadeUp">
       {/* Service Hero */}
-      <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:40, padding:'48px 0', borderBottom:`1px solid ${B.bdr}` }}>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-10 py-12 border-b border-[--bdr]">
         <div>
-          <div style={{ display:'flex', alignItems:'center', gap:10, marginBottom:12 }}>
-            <div style={{ width:44, height:44, borderRadius:12, background:`linear-gradient(135deg,${B.p},${B.pm})`, display:'flex', alignItems:'center', justifyContent:'center' }}>
+          <div className="flex items-center gap-2.5 mb-3">
+            <div
+              className="w-11 h-11 rounded-xl flex items-center justify-center"
+              style={{ background: `linear-gradient(135deg,${B.p},${B.pm})` }}
+            >
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={B.wh} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d={iconPath}/></svg>
             </div>
             <div>
-              <h2 style={{ fontFamily:"'Syne',sans-serif", fontSize:28, fontWeight:800, color:B.nv, margin:0, lineHeight:1.1 }}>{svc.name}</h2>
-              <div style={{ display:'flex', gap:8, marginTop:4 }}>
-                <span style={{ fontSize:11, fontWeight:600, color:B.p, background:B.pl, padding:'2px 10px', borderRadius:100 }}>{svc.tag}</span>
-                <span style={{ fontSize:11, fontWeight:700, color:B.pd, background:B.pl, padding:'2px 10px', borderRadius:100 }}>{svc.price}</span>
-                {svc.rate && <span style={{ fontSize:10, fontWeight:800, color:B.a, background:B.al, padding:'2px 8px', borderRadius:100 }}>RATE 0%</span>}
+              <h2 className="font-display text-[28px] font-extrabold text-[--nv] leading-none">{svc.name}</h2>
+              <div className="flex gap-2 mt-1">
+                <Badge className="text-[11px] font-semibold bg-sdt-100 text-sdt-600 border-none">{svc.tag}</Badge>
+                <Badge className="text-[11px] font-bold bg-sdt-100 text-sdt-800 border-none">{svc.price}</Badge>
+                {svc.rate && (
+                  <Badge variant="accent" className="text-[10px] font-extrabold">{`RATE 0%`}</Badge>
+                )}
               </div>
             </div>
           </div>
-          <p style={{ fontSize:14, lineHeight:1.7, color:B.gr, margin:'16px 0 24px', maxWidth:480 }}>{detail.desc}</p>
-          <div style={{ display:'flex', gap:10 }}>
-            <Btn style={{ fontSize:14, padding:'12px 28px' }}>Programează-te →</Btn>
-            {svc.slug === 'digital-checkup' && <a href="/digital-checkup" style={{ textDecoration:'none' }}><Btn outline style={{ fontSize:13, padding:'12px 24px' }}>Pagina completă →</Btn></a>}
-            {svc.slug === 'consultatie-online' && <a href="/consultatie-online" style={{ textDecoration:'none' }}><Btn outline style={{ fontSize:13, padding:'12px 24px' }}>Pagina completă →</Btn></a>}
+          <p className="text-sm leading-relaxed text-[--gr] my-4 max-w-[480px]">{detail.desc}</p>
+          <div className="flex gap-2.5">
+            <Button className="text-sm px-7 py-3">
+              Programeaza-te <ArrowRight className="w-4 h-4 ml-1"/>
+            </Button>
+            {svc.slug === 'digital-checkup' && (
+              <a href="/digital-checkup" className="no-underline">
+                <Button variant="outline" className="text-[13px] px-6 py-3 border-sdt-600 text-sdt-600">
+                  Pagina completa <ChevronRight className="w-4 h-4 ml-1"/>
+                </Button>
+              </a>
+            )}
+            {svc.slug === 'consultatie-online' && (
+              <a href="/consultatie-online" className="no-underline">
+                <Button variant="outline" className="text-[13px] px-6 py-3 border-sdt-600 text-sdt-600">
+                  Pagina completa <ChevronRight className="w-4 h-4 ml-1"/>
+                </Button>
+              </a>
+            )}
           </div>
         </div>
-        <div style={{ borderRadius:16, overflow:'hidden', height:280 }}>
-          <img src={detail.photo} alt={svc.name} style={{ width:'100%', height:'100%', objectFit:'cover' }}/>
+        <div className="rounded-2xl overflow-hidden h-[280px]">
+          <img src={detail.photo} alt={svc.name} className="w-full h-full object-cover"/>
         </div>
       </div>
 
       {/* Process + Benefits */}
-      <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:40, padding:'40px 0', borderBottom:`1px solid ${B.bdr}` }}>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-10 py-10 border-b border-[--bdr]">
         {/* Process */}
         <div>
-          <div style={{ fontSize:11, fontWeight:700, color:B.p, letterSpacing:'.12em', textTransform:'uppercase', marginBottom:16 }}>Procesul de tratament</div>
-          <div style={{ display:'flex', flexDirection:'column', gap:12 }}>
+          <div className="text-[11px] font-bold text-sdt-600 tracking-[.12em] uppercase mb-4">Procesul de tratament</div>
+          <div className="flex flex-col gap-3">
             {detail.process.map((step, i) => (
-              <div key={i} style={{ display:'flex', gap:12, alignItems:'flex-start' }}>
-                <div style={{ width:28, height:28, borderRadius:8, background:B.pl, display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0 }}>
-                  <span style={{ fontSize:12, fontWeight:800, color:B.p }}>{String(i+1).padStart(2,'0')}</span>
+              <div key={i} className="flex gap-3 items-start">
+                <div className="w-7 h-7 rounded-lg bg-sdt-100 flex items-center justify-center shrink-0">
+                  <span className="text-xs font-extrabold text-sdt-600">{String(i+1).padStart(2,'0')}</span>
                 </div>
-                <div style={{ fontSize:13, color:B.nv, fontWeight:500, paddingTop:4 }}>{step}</div>
+                <div className="text-[13px] text-[--nv] font-medium pt-1">{step}</div>
               </div>
             ))}
           </div>
         </div>
         {/* Benefits */}
         <div>
-          <div style={{ fontSize:11, fontWeight:700, color:B.p, letterSpacing:'.12em', textTransform:'uppercase', marginBottom:16 }}>Avantaje</div>
-          <div style={{ display:'flex', flexDirection:'column', gap:10 }}>
-            {detail.benefits.map(([icon, text]) => (
-              <div key={text} style={{ display:'flex', alignItems:'center', gap:10 }}>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={B.p} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d={icon}/></svg>
-                <span style={{ fontSize:13, color:B.nv, fontWeight:500 }}>{text}</span>
-              </div>
-            ))}
+          <div className="text-[11px] font-bold text-sdt-600 tracking-[.12em] uppercase mb-4">Avantaje</div>
+          <div className="flex flex-col gap-2.5">
+            {detail.benefits.map(([iconKey, text]) => {
+              const IconComp = BENEFIT_ICONS[iconKey] || CheckCircle
+              return (
+                <div key={text} className="flex items-center gap-2.5">
+                  <IconComp className="w-4 h-4 text-sdt-600 shrink-0"/>
+                  <span className="text-[13px] text-[--nv] font-medium">{text}</span>
+                </div>
+              )
+            })}
           </div>
-          <div style={{ marginTop:20 }}>
-            <div style={{ fontSize:11, fontWeight:700, color:B.p, letterSpacing:'.12em', textTransform:'uppercase', marginBottom:10 }}>Tehnologii</div>
-            <div style={{ display:'flex', flexWrap:'wrap', gap:6 }}>
+          <div className="mt-5">
+            <div className="text-[11px] font-bold text-sdt-600 tracking-[.12em] uppercase mb-2.5">Tehnologii</div>
+            <div className="flex flex-wrap gap-1.5">
               {detail.techs.map(t => (
-                <span key={t} style={{ fontSize:11, fontWeight:600, color:B.p, background:B.pl, padding:'4px 12px', borderRadius:100, border:`1px solid ${B.bdr}` }}>{t}</span>
+                <Badge key={t} className="text-[11px] font-semibold bg-sdt-100 text-sdt-600 border border-[--bdr]">{t}</Badge>
               ))}
             </div>
           </div>
         </div>
       </div>
 
-      {/* Reviews — scrollable */}
-      <div style={{ padding:'40px 0', borderBottom:`1px solid ${B.bdr}` }}>
-        <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:16 }}>
-          <div style={{ fontSize:11, fontWeight:700, color:B.p, letterSpacing:'.12em', textTransform:'uppercase' }}>Recenzii pacienți</div>
-          <a href="/#recenzii" style={{ fontSize:12, fontWeight:600, color:B.p, textDecoration:'none' }}>Toate recenziile →</a>
+      {/* Reviews -- scrollable */}
+      <div className="py-10 border-b border-[--bdr]">
+        <div className="flex justify-between items-center mb-4">
+          <div className="text-[11px] font-bold text-sdt-600 tracking-[.12em] uppercase">Recenzii pacienti</div>
+          <a href="/#recenzii" className="text-xs font-semibold text-sdt-600 no-underline">Toate recenziile <ArrowRight className="w-3 h-3 inline ml-0.5"/></a>
         </div>
-        <div style={{ display:'flex', gap:16, overflowX:'auto', paddingBottom:8 }}>
+        <div className="flex gap-4 overflow-x-auto pb-2">
           {detail.reviews.map((r, i) => (
-            <div key={i} style={{ background:B.ps, borderRadius:14, padding:'20px', borderLeft:`3px solid ${B.p}`, minWidth:320, flexShrink:0 }}>
-              <div style={{ color:'#fbb040', fontSize:12, marginBottom:6 }}>{'★'.repeat(r.rating)}</div>
-              <p style={{ fontSize:13, lineHeight:1.6, color:B.nv, margin:'0 0 8px', fontStyle:'italic' }}>&ldquo;{r.text}&rdquo;</p>
-              <div style={{ fontSize:12, color:B.gr, fontWeight:600 }}>— {r.author}</div>
-            </div>
+            <Card key={i} className="bg-sdt-50 rounded-[14px] border-l-[3px] border-l-sdt-600 border-t-0 border-r-0 border-b-0 min-w-[320px] shrink-0 shadow-none">
+              <CardContent className="p-5">
+                <div className="text-[#fbb040] text-xs mb-1.5">{'★'.repeat(r.rating)}</div>
+                <p className="text-[13px] leading-relaxed text-[--nv] mb-2 italic">&ldquo;{r.text}&rdquo;</p>
+                <div className="text-xs text-[--gr] font-semibold">&mdash; {r.author}</div>
+              </CardContent>
+            </Card>
           ))}
-          <div style={{ background:B.pl, borderRadius:14, padding:'20px', minWidth:200, flexShrink:0, display:'flex', alignItems:'center', justifyContent:'center', border:`1px dashed ${B.bdr}` }}>
-            <div style={{ textAlign:'center' }}>
-              <div style={{ fontFamily:"'Syne',sans-serif", fontSize:18, fontWeight:800, color:B.p }}>4.9</div>
-              <div style={{ color:'#fbb040', fontSize:10, marginTop:2 }}>★★★★★</div>
-              <div style={{ fontSize:10, color:B.gr, marginTop:4 }}>1 200+ recenzii Google</div>
-            </div>
-          </div>
+          <Card className="bg-sdt-100 rounded-[14px] min-w-[200px] shrink-0 border-dashed border-[--bdr] shadow-none">
+            <CardContent className="p-5 flex items-center justify-center h-full">
+              <div className="text-center">
+                <div className="font-display text-lg font-extrabold text-sdt-600">4.9</div>
+                <div className="text-[#fbb040] text-[10px] mt-0.5">★★★★★</div>
+                <div className="text-[10px] text-[--gr] mt-1">1 200+ recenzii Google</div>
+              </div>
+            </CardContent>
+          </Card>
         </div>
       </div>
 
-      {/* Video Reels — horizontal scroll */}
-      <div style={{ padding:'40px 0', borderBottom:`1px solid ${B.bdr}` }}>
-        <div style={{ fontSize:11, fontWeight:700, color:B.p, letterSpacing:'.12em', textTransform:'uppercase', marginBottom:16 }}>Video testimoniale</div>
-        <div style={{ display:'flex', gap:14, overflowX:'auto', paddingBottom:8 }}>
+      {/* Video Reels -- horizontal scroll */}
+      <div className="py-10 border-b border-[--bdr]">
+        <div className="text-[11px] font-bold text-sdt-600 tracking-[.12em] uppercase mb-4">Video testimoniale</div>
+        <div className="flex gap-3.5 overflow-x-auto pb-2">
           {[1,2,3,4].map(i => (
-            <div key={i} style={{
-              width:180, height:320, borderRadius:16, flexShrink:0, cursor:'pointer',
-              background:`linear-gradient(160deg, ${B.nv} 0%, #0f2e24 100%)`,
-              display:'flex', alignItems:'center', justifyContent:'center', position:'relative', overflow:'hidden',
-            }}>
-              <div style={{ width:48, height:48, borderRadius:'50%', background:B.a, display:'flex', alignItems:'center', justifyContent:'center', opacity:.9 }}>
-                <svg width="18" height="18" viewBox="0 0 24 24" fill={B.wh} stroke="none"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            <div
+              key={i}
+              className="w-[180px] h-[320px] rounded-2xl shrink-0 cursor-pointer flex items-center justify-center relative overflow-hidden"
+              style={{ background: `linear-gradient(160deg, ${B.nv} 0%, #0f2e24 100%)` }}
+            >
+              <div className="w-12 h-12 rounded-full bg-pink-500 flex items-center justify-center opacity-90">
+                <Play className="w-[18px] h-[18px] text-white fill-white"/>
               </div>
-              <div style={{ position:'absolute', bottom:14, left:14, right:14 }}>
-                <div style={{ fontSize:11, fontWeight:700, color:B.wh }}>Pacient #{i}</div>
-                <div style={{ fontSize:9, color:'rgba(255,255,255,.5)' }}>{svc.name} — feedback video</div>
+              <div className="absolute bottom-3.5 left-3.5 right-3.5">
+                <div className="text-[11px] font-bold text-white">Pacient #{i}</div>
+                <div className="text-[9px] text-white/50">{svc.name} &mdash; feedback video</div>
               </div>
-              <div style={{ position:'absolute', top:10, right:10 }}>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.4)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+              <div className="absolute top-2.5 right-2.5">
+                <Video className="w-3.5 h-3.5 text-white/40"/>
               </div>
             </div>
           ))}
         </div>
       </div>
 
-      {/* Ambassador recommendation — creative card */}
+      {/* Ambassador recommendation */}
       {detail.ambassador && (
-        <div style={{ padding:'40px 0', borderBottom:`1px solid ${B.bdr}` }}>
-          <div style={{ fontSize:11, fontWeight:700, color:B.a, letterSpacing:'.12em', textTransform:'uppercase', marginBottom:16 }}>Ambasador recomandă</div>
-          <div style={{ display:'grid', gridTemplateColumns:'auto 1fr', gap:0, borderRadius:18, overflow:'hidden', border:`1px solid ${B.a}22` }}>
-            <div style={{ width:200, position:'relative' }}>
-              <img src={detail.ambassador.photo.replace('300','600')} alt={detail.ambassador.name} style={{ width:'100%', height:'100%', objectFit:'cover', minHeight:200 }}/>
-              <div style={{ position:'absolute', bottom:0, left:0, right:0, padding:'12px', background:'linear-gradient(to top, rgba(10,30,24,.8), transparent)' }}>
-                <span style={{ fontSize:9, fontWeight:700, color:B.wh, background:B.a, padding:'2px 8px', borderRadius:100 }}>AMBASADOR</span>
+        <div className="py-10 border-b border-[--bdr]">
+          <div className="text-[11px] font-bold text-pink-500 tracking-[.12em] uppercase mb-4">Ambasador recomanda</div>
+          <div className="grid grid-cols-[auto_1fr] rounded-[18px] overflow-hidden border border-pink-500/[.13]">
+            <div className="w-[200px] relative">
+              <img src={detail.ambassador.photo.replace('300','600')} alt={detail.ambassador.name} className="w-full h-full object-cover min-h-[200px]"/>
+              <div className="absolute bottom-0 left-0 right-0 p-3" style={{ background: 'linear-gradient(to top, rgba(10,30,24,.8), transparent)' }}>
+                <Badge variant="accent" className="text-[9px] font-bold">AMBASADOR</Badge>
               </div>
             </div>
-            <div style={{ background:B.al, padding:'28px 24px', display:'flex', flexDirection:'column', justifyContent:'center' }}>
-              <p style={{ fontSize:16, lineHeight:1.6, color:B.nv, margin:'0 0 12px', fontStyle:'italic', fontFamily:"'Syne',sans-serif", fontWeight:600 }}>
+            <div className="bg-pink-50 px-6 py-7 flex flex-col justify-center">
+              <p className="text-base leading-relaxed text-[--nv] mb-3 italic font-display font-semibold">
                 &ldquo;{detail.ambassador.quote}&rdquo;
               </p>
-              <div style={{ fontFamily:"'Syne',sans-serif", fontSize:15, fontWeight:800, color:B.a }}>— {detail.ambassador.name}</div>
-              <a href="/ambasadori" style={{ fontSize:12, fontWeight:600, color:B.a, marginTop:10, textDecoration:'none' }}>
-                Vezi profilul complet →
+              <div className="font-display text-[15px] font-extrabold text-pink-500">&mdash; {detail.ambassador.name}</div>
+              <a href="/ambasadori" className="text-xs font-semibold text-pink-500 mt-2.5 no-underline">
+                Vezi profilul complet <ArrowRight className="w-3 h-3 inline ml-0.5"/>
               </a>
             </div>
           </div>
@@ -371,12 +411,14 @@ function ServiceDetail({ svc }: { svc: typeof SERVICES[number] }) {
       )}
 
       {/* CTA */}
-      <div style={{ padding:'40px 0', textAlign:'center' }}>
-        <h3 style={{ fontFamily:"'Syne',sans-serif", fontSize:22, fontWeight:800, color:B.nv, margin:'0 0 10px' }}>
-          Pregătit pentru {svc.name.toLowerCase()}?
+      <div className="py-10 text-center">
+        <h3 className="font-display text-[22px] font-extrabold text-[--nv] mb-2.5">
+          Pregatit pentru {svc.name.toLowerCase()}?
         </h3>
-        <p style={{ fontSize:14, color:B.gr, margin:'0 0 20px' }}>Programează-te acum și fă primul pas.</p>
-        <Btn pink style={{ fontSize:15, padding:'14px 36px' }}>Programează-te →</Btn>
+        <p className="text-sm text-[--gr] mb-5">Programeaza-te acum si fa primul pas.</p>
+        <Button variant="accent" className="text-[15px] px-9 py-3.5">
+          Programeaza-te <ArrowRight className="w-4 h-4 ml-1.5"/>
+        </Button>
       </div>
     </div>
   )
@@ -389,72 +431,86 @@ export function ServiciiPage() {
 
   return (
     <>
-      <style>{ANIM}</style>
       <Nav/>
 
-      <section style={{ maxWidth:1200, margin:'0 auto', padding:'40px 48px' }}>
+      <section className="max-w-[1200px] mx-auto px-12 py-10">
         {/* Header */}
-        <div style={{ marginBottom:32 }}>
-          <div style={{ display:'inline-flex', alignItems:'center', gap:6, background:B.pl, border:`1px solid ${B.bdr}`, padding:'5px 14px', borderRadius:100, marginBottom:16 }}>
-            <span style={{ width:6, height:6, borderRadius:'50%', background:B.a }}/>
-            <span style={{ fontSize:11, fontWeight:700, letterSpacing:'.12em', textTransform:'uppercase', color:B.a }}>Servicii complete</span>
+        <div className="mb-8">
+          <div className="inline-flex items-center gap-1.5 bg-sdt-100 border border-[--bdr] px-3.5 py-1.5 rounded-full mb-4">
+            <span className="w-1.5 h-1.5 rounded-full bg-pink-500"/>
+            <span className="text-[11px] font-bold tracking-[.12em] uppercase text-pink-500">Servicii complete</span>
           </div>
-          <h1 style={{ fontFamily:"'Syne',sans-serif", fontSize:38, fontWeight:800, color:B.nv, lineHeight:1.08, margin:'0 0 12px' }}>
-            Tot ce ai nevoie,<br/>într-un <span style={{ color:B.p }}>singur loc.</span>
+          <h1 className="font-display text-[38px] font-extrabold text-[--nv] leading-[1.08] mb-3">
+            Tot ce ai nevoie,<br/>intr-un <span className="text-sdt-600">singur loc.</span>
           </h1>
-          <p style={{ fontSize:15, color:B.gr, maxWidth:500, margin:0 }}>
-            {SERVICES.length} specialități, tehnologie digitală de ultimă generație — totul pentru zâmbetul tău.
+          <p className="text-[15px] text-[--gr] max-w-[500px]">
+            {SERVICES.length} specialitati, tehnologie digitala de ultima generatie &mdash; totul pentru zambetul tau.
           </p>
         </div>
 
         {/* Service Tabs */}
-        <div style={{ display:'flex', gap:6, flexWrap:'wrap', marginBottom:8, borderBottom:`2px solid ${B.bdr}`, paddingBottom:0 }}>
-          <button onClick={() => setActiveTab(null)} style={{
-            padding:'10px 18px', fontSize:13, fontWeight:700, cursor:'pointer', fontFamily:"'DM Sans',sans-serif",
-            background: !activeTab ? B.p : 'transparent', color: !activeTab ? B.wh : B.nv,
-            border:'none', borderBottom: !activeTab ? `2px solid ${B.p}` : '2px solid transparent',
-            borderRadius:'8px 8px 0 0', transition:'all .15s',
-          }}>Toate serviciile</button>
+        <div className="flex gap-1.5 flex-wrap mb-2 border-b-2 border-[--bdr] pb-0">
+          <button
+            onClick={() => setActiveTab(null)}
+            className={cn(
+              'px-[18px] py-2.5 text-[13px] font-bold cursor-pointer font-sans border-none rounded-t-lg transition-all',
+              !activeTab
+                ? 'bg-sdt-600 text-white border-b-2 border-b-sdt-600'
+                : 'bg-transparent text-[--nv] border-b-2 border-b-transparent'
+            )}
+          >
+            Toate serviciile
+          </button>
           {SERVICES.map(s => (
-            <button key={s.slug} onClick={() => setActiveTab(s.slug)} style={{
-              padding:'10px 14px', fontSize:12, fontWeight:600, cursor:'pointer', fontFamily:"'DM Sans',sans-serif",
-              background: activeTab===s.slug ? B.p : 'transparent', color: activeTab===s.slug ? B.wh : '#5a7a6e',
-              border:'none', borderBottom: activeTab===s.slug ? `2px solid ${B.p}` : '2px solid transparent',
-              borderRadius:'8px 8px 0 0', transition:'all .15s', whiteSpace:'nowrap',
-            }}>{s.name}</button>
+            <button
+              key={s.slug}
+              onClick={() => setActiveTab(s.slug)}
+              className={cn(
+                'px-3.5 py-2.5 text-xs font-semibold cursor-pointer font-sans border-none rounded-t-lg transition-all whitespace-nowrap',
+                activeTab === s.slug
+                  ? 'bg-sdt-600 text-white border-b-2 border-b-sdt-600'
+                  : 'bg-transparent text-[#5a7a6e] border-b-2 border-b-transparent'
+              )}
+            >
+              {s.name}
+            </button>
           ))}
         </div>
 
         {/* Content: cards grid or detail page */}
         {!activeTab ? (
-          <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:16, paddingTop:24 }}>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pt-6">
             {SERVICES.map((svc, index) => {
               const iconPath = SVC_ICONS[svc.slug]
               return (
-                <div key={svc.slug} onClick={() => setActiveTab(svc.slug)} style={{
-                  background:B.wh, borderRadius:14, border:`1px solid ${B.bdr}`, padding:'24px',
-                  cursor:'pointer', transition:'all .25s',
-                }}
-                  onMouseEnter={e => { e.currentTarget.style.transform='translateY(-3px)'; e.currentTarget.style.borderColor=B.p; e.currentTarget.style.boxShadow=`0 8px 28px ${B.bdr}` }}
-                  onMouseLeave={e => { e.currentTarget.style.transform=''; e.currentTarget.style.borderColor=B.bdr; e.currentTarget.style.boxShadow='' }}
+                <Card
+                  key={svc.slug}
+                  onClick={() => setActiveTab(svc.slug)}
+                  className="bg-white rounded-[14px] border border-[--bdr] p-6 cursor-pointer transition-all duration-[250ms] hover:-translate-y-[3px] hover:border-sdt-600 hover:shadow-lg shadow-none"
                 >
-                  <div style={{ display:'flex', alignItems:'center', gap:14, marginBottom:12 }}>
-                    <div style={{ width:44, height:44, borderRadius:12, background:B.pl, display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0 }}>
-                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={B.p} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d={iconPath}/></svg>
+                  <CardContent className="p-0">
+                    <div className="flex items-center gap-3.5 mb-3">
+                      <div className="w-11 h-11 rounded-xl bg-sdt-100 flex items-center justify-center shrink-0">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={B.p} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d={iconPath}/></svg>
+                      </div>
+                      <div>
+                        <span className="text-[11px] text-sdt-600/30 font-bold">{String(index+1).padStart(2,'0')}</span>
+                        <h3 className="font-display text-base font-bold text-[--nv]">{svc.name}</h3>
+                      </div>
                     </div>
-                    <div>
-                      <span style={{ fontSize:11, color:'rgba(10,107,92,.3)', fontWeight:700 }}>{String(index+1).padStart(2,'0')}</span>
-                      <h3 style={{ fontFamily:"'Syne',sans-serif", fontSize:16, fontWeight:700, color:B.nv, margin:0 }}>{svc.name}</h3>
+                    <div className="flex gap-1.5 flex-wrap mb-2.5">
+                      <Badge className="text-[10px] font-semibold bg-sdt-100 text-sdt-600 border-none">{svc.tag}</Badge>
+                      <Badge className="text-[10px] font-bold bg-sdt-100 text-sdt-800 border-none">{svc.price}</Badge>
+                      {svc.rate && (
+                        <Badge variant="accent" className="text-[9px] font-extrabold py-0">{`RATE 0%`}</Badge>
+                      )}
                     </div>
-                  </div>
-                  <div style={{ display:'flex', gap:6, flexWrap:'wrap', marginBottom:10 }}>
-                    <span style={{ fontSize:10, fontWeight:600, color:B.p, background:B.pl, padding:'2px 8px', borderRadius:100 }}>{svc.tag}</span>
-                    <span style={{ fontSize:10, fontWeight:700, color:B.pd, background:B.pl, padding:'2px 8px', borderRadius:100 }}>{svc.price}</span>
-                    {svc.rate && <span style={{ fontSize:9, fontWeight:800, color:B.a, background:B.al, padding:'2px 6px', borderRadius:100 }}>RATE 0%</span>}
-                  </div>
-                  <p style={{ fontSize:12, lineHeight:1.5, color:B.gr, margin:0 }}>{svc.audience}</p>
-                  <div style={{ marginTop:12, fontSize:12, fontWeight:600, color:B.p }}>Detalii →</div>
-                </div>
+                    <p className="text-xs leading-normal text-[--gr]">{svc.audience}</p>
+                    <div className="mt-3 text-xs font-semibold text-sdt-600">
+                      Detalii <ArrowRight className="w-3 h-3 inline ml-0.5"/>
+                    </div>
+                  </CardContent>
+                </Card>
               )
             })}
           </div>
@@ -464,41 +520,41 @@ export function ServiciiPage() {
       </section>
 
       {/* Footer */}
-      <footer style={{ background:B.nv, padding:'56px 48px 32px', marginTop:40 }}>
-        <div style={{ maxWidth:1200, margin:'0 auto', display:'grid', gridTemplateColumns:'1.5fr 1fr 1fr 1.2fr', gap:40, marginBottom:40 }}>
+      <footer className="bg-[--nv] px-12 pt-14 pb-8 mt-10">
+        <div className="max-w-[1200px] mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[1.5fr_1fr_1fr_1.2fr] gap-10 mb-10">
           <div>
             <Logo height={32} light/>
-            <p style={{ fontSize:13, color:'rgba(255,255,255,.45)', marginTop:16, lineHeight:1.7, maxWidth:260 }}>
-              Clinică stomatologică digitală. {STATS.years} ani de excelență, {STATS.team} specialiști, {STATS.patients} pacienți.
+            <p className="text-[13px] text-white/[.45] mt-4 leading-relaxed max-w-[260px]">
+              Clinica stomatologica digitala. {STATS.years} ani de excelenta, {STATS.team} specialisti, {STATS.patients} pacienti.
             </p>
           </div>
           <div>
-            <div style={{ fontSize:11, fontWeight:700, color:B.wh, letterSpacing:'.15em', textTransform:'uppercase', marginBottom:18 }}>Servicii</div>
+            <div className="text-[11px] font-bold text-white tracking-[.15em] uppercase mb-[18px]">Servicii</div>
             {SERVICES.map(s => (
-              <div key={s.slug} style={{ fontSize:13, marginBottom:9, color:'rgba(255,255,255,.5)', cursor:'pointer' }}>{s.name}</div>
+              <div key={s.slug} className="text-[13px] mb-[9px] text-white/50 cursor-pointer">{s.name}</div>
             ))}
           </div>
           <div>
-            <div style={{ fontSize:11, fontWeight:700, color:B.wh, letterSpacing:'.15em', textTransform:'uppercase', marginBottom:18 }}>Clinică</div>
+            <div className="text-[11px] font-bold text-white tracking-[.15em] uppercase mb-[18px]">Clinica</div>
             {[['Despre noi','/'],['Echipa','/echipa'],['Ambasadori','/ambasadori'],['Tehnologii','/'],['Blog','/'],['Contacte','/']].map(([s,h]) => (
-              <a key={s} href={h} style={{ display:'block', fontSize:13, marginBottom:9, color:'rgba(255,255,255,.5)', textDecoration:'none' }}>{s}</a>
+              <a key={s} href={h} className="block text-[13px] mb-[9px] text-white/50 no-underline">{s}</a>
             ))}
           </div>
           <div>
-            <div style={{ fontSize:11, fontWeight:700, color:B.wh, letterSpacing:'.15em', textTransform:'uppercase', marginBottom:18 }}>Contact</div>
+            <div className="text-[11px] font-bold text-white tracking-[.15em] uppercase mb-[18px]">Contact</div>
             {LOCATIONS.slice(0,3).map(l => (
-              <div key={l.city} style={{ marginBottom:14 }}>
-                <div style={{ fontSize:13, fontWeight:600, color:B.wh }}>{l.city}</div>
-                <div style={{ fontSize:12, color:'rgba(255,255,255,.45)' }}>{l.address} · {l.phone}</div>
+              <div key={l.city} className="mb-3.5">
+                <div className="text-[13px] font-semibold text-white">{l.city}</div>
+                <div className="text-xs text-white/[.45]">{l.address} &middot; {l.phone}</div>
               </div>
             ))}
           </div>
         </div>
-        <div style={{ borderTop:'1px solid rgba(255,255,255,.07)', paddingTop:20, display:'flex', justifyContent:'space-between', alignItems:'center' }}>
-          <span style={{ fontSize:11, color:'rgba(255,255,255,.25)' }}>© {CAMPAIGN_2026.year} Smile Dent Team</span>
-          <div style={{ display:'flex', gap:6 }}>
+        <div className="border-t border-white/[.07] pt-5 flex justify-between items-center">
+          <span className="text-[11px] text-white/25">&copy; {CAMPAIGN_2026.year} Smile Dent Team</span>
+          <div className="flex gap-1.5">
             {['RO','RU','EN'].map(l => (
-              <span key={l} style={{ background:'rgba(255,255,255,.08)', color:'rgba(255,255,255,.5)', padding:'3px 8px', borderRadius:40, fontSize:10, fontWeight:700 }}>{l}</span>
+              <span key={l} className="bg-white/[.08] text-white/50 px-2 py-0.5 rounded-full text-[10px] font-bold">{l}</span>
             ))}
           </div>
         </div>
