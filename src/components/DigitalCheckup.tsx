@@ -192,39 +192,164 @@ function Benefits() {
 
 /* ─── Process Steps ────────────────────── */
 const STEPS = [
-  { num:'01', title:'Înregistrare', desc:'Completezi datele și primești o consultație inițială.' },
-  { num:'02', title:'Protocol foto', desc:'Realizăm fotografii profesionale pentru documentare completă.' },
-  { num:'03', title:'Scanare digitală 3D', desc:'Scanner intraoral de ultimă generație — fără paste, fără disconfort.' },
-  { num:'04', title:'Radiografie CBCT', desc:'Imagini 3D de înaltă rezoluție pentru un diagnostic complet.' },
-  { num:'05', title:'Evaluare detaliată', desc:'Medicul analizează toate datele și identifică problemele.' },
-  { num:'06', title:'Plan de tratament', desc:'Primești un plan personalizat, cu opțiuni și costuri clare.' },
+  { num:'01', title:'Înregistrare', desc:'Completezi datele și primești o consultație inițială.', photo:'https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=400&h=250&fit=crop' },
+  { num:'02', title:'Protocol foto', desc:'Realizăm fotografii profesionale pentru documentare completă.', photo:'https://images.unsplash.com/photo-1606811841689-23dfddce3e95?w=400&h=250&fit=crop' },
+  { num:'03', title:'Scanare digitală 3D', desc:'Scanner intraoral de ultimă generație — fără paste, fără disconfort.', photo:'https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=400&h=250&fit=crop' },
+  { num:'04', title:'Radiografie CBCT', desc:'Imagini 3D de înaltă rezoluție pentru un diagnostic complet.', photo:'https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?w=400&h=250&fit=crop' },
+  { num:'05', title:'Evaluare detaliată', desc:'Medicul analizează toate datele și identifică problemele.', photo:'https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=400&h=250&fit=crop' },
+  { num:'06', title:'Plan de tratament', desc:'Primești un plan personalizat, cu opțiuni și costuri clare.', photo:'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=400&h=250&fit=crop' },
 ]
 
 function Process() {
   return (
-    <section style={{ background:B.ps, padding:'80px 48px' }}>
+    <section style={{ background:B.ps, padding:'72px 48px' }}>
       <div style={{ maxWidth:1200, margin:'0 auto' }}>
-        <div style={{ textAlign:'center', marginBottom:56 }}>
-          <SectionBadge>Cum funcționează</SectionBadge>
-          <h2 style={{ fontFamily:"'Syne',sans-serif", fontSize:38, fontWeight:800, color:B.nv, letterSpacing:'-.03em', margin:'0 0 14px' }}>
-            Etapele unui<br/><span style={{ color:B.p }}>Digital Check-Up</span>
+        <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-end', marginBottom:36 }}>
+          <div>
+            <SectionBadge>Cum funcționează</SectionBadge>
+            <h2 style={{ fontFamily:"'Syne',sans-serif", fontSize:34, fontWeight:800, color:B.nv, letterSpacing:'-.03em', margin:0 }}>
+              Etapele unui <span style={{ color:B.p }}>Digital Check-Up</span>
+            </h2>
+          </div>
+          <div style={{ display:'flex', alignItems:'center', gap:8 }}>
+            <div style={{ fontFamily:"'Syne',sans-serif", fontSize:22, fontWeight:800, color:B.p }}>~30 min</div>
+            <div style={{ fontSize:11, color:B.gr }}>durată totală</div>
+          </div>
+        </div>
+        <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:14 }}>
+          {STEPS.map(s => (
+            <div key={s.num} style={{
+              background:B.wh, borderRadius:14, overflow:'hidden', border:`1px solid ${B.bdr}`,
+              transition:'all .2s',
+            }}
+              onMouseEnter={e => { e.currentTarget.style.borderColor=B.a; e.currentTarget.style.boxShadow=`0 6px 20px ${B.bdr}` }}
+              onMouseLeave={e => { e.currentTarget.style.borderColor=B.bdr; e.currentTarget.style.boxShadow='' }}
+            >
+              <div style={{ position:'relative', height:120, overflow:'hidden' }}>
+                <img src={s.photo} alt={s.title} style={{ width:'100%', height:'100%', objectFit:'cover' }}/>
+                <div style={{
+                  position:'absolute', top:8, left:8, width:32, height:32, borderRadius:'50%',
+                  background:B.a, display:'flex', alignItems:'center', justifyContent:'center',
+                  border:`2px solid ${B.wh}`, boxShadow:'0 2px 8px rgba(0,0,0,.2)',
+                }}>
+                  <span style={{ fontSize:11, fontWeight:800, color:B.wh }}>{s.num}</span>
+                </div>
+              </div>
+              <div style={{ padding:'16px 18px' }}>
+                <h3 style={{ fontFamily:"'Syne',sans-serif", fontSize:15, fontWeight:700, color:B.nv, margin:'0 0 4px' }}>{s.title}</h3>
+                <p style={{ fontSize:12, lineHeight:1.5, color:B.gr, margin:0 }}>{s.desc}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+/* ─── DCU Stats ──────────────────────────── */
+function DcuStats() {
+  return (
+    <section style={{ background:`linear-gradient(135deg,${B.p},${B.pm})`, padding:'48px' }}>
+      <div style={{ maxWidth:1200, margin:'0 auto', display:'flex', justifyContent:'center', gap:56, alignItems:'center' }}>
+        {[['2.200+','Digital Check-Up-uri realizate'],['30','minute — durată medie'],['99.8%','precizie diagnostic'],['4.9','rating Google pacienți']].map(([n,l]) => (
+          <div key={l} style={{ textAlign:'center' }}>
+            <div style={{ fontFamily:"'Syne',sans-serif", fontSize:30, fontWeight:800, color:B.wh }}>{n}</div>
+            <div style={{ fontSize:11, color:'rgba(255,255,255,.6)', marginTop:4 }}>{l}</div>
+          </div>
+        ))}
+      </div>
+    </section>
+  )
+}
+
+/* ─── DCU Testimonials + Video ───────────── */
+function DcuTestimonials() {
+  const reviews = [
+    { text:'Am aflat exact ce am nevoie. Totul transparent, fără presiune. Cel mai bun prim pas.', author:'Ana R.', rating:5 },
+    { text:'În 30 de minute am avut o imagine clară a sănătății mele dentare. Impresionant!', author:'Mihai P.', rating:5 },
+    { text:'Scanarea 3D a fost rapidă și complet fără durere. Recomand oricui.', author:'Elena S.', rating:5 },
+    { text:'Am primit planul cu costuri clare. Nicio surpriză. Exact ce aveam nevoie.', author:'Victor D.', rating:5 },
+  ]
+  return (
+    <section style={{ background:B.wh, padding:'72px 48px' }}>
+      <div style={{ maxWidth:1200, margin:'0 auto' }}>
+        <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:40 }}>
+          {/* Left — Reviews */}
+          <div>
+            <SectionBadge>Ce spun pacienții</SectionBadge>
+            <h2 style={{ fontFamily:"'Syne',sans-serif", fontSize:28, fontWeight:800, color:B.nv, margin:'0 0 20px' }}>
+              Experiența <span style={{ color:B.a }}>Digital Check-Up</span>
+            </h2>
+            <div style={{ display:'flex', flexDirection:'column', gap:12 }}>
+              {reviews.map((r,i) => (
+                <div key={i} style={{ background:B.ps, borderRadius:12, padding:'16px', borderLeft:`3px solid ${B.p}` }}>
+                  <div style={{ color:'#fbb040', fontSize:11, marginBottom:4 }}>{'★'.repeat(r.rating)}</div>
+                  <p style={{ fontSize:13, lineHeight:1.6, color:B.nv, margin:'0 0 6px', fontStyle:'italic' }}>&ldquo;{r.text}&rdquo;</p>
+                  <div style={{ fontSize:12, color:B.gr, fontWeight:600 }}>— {r.author}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+          {/* Right — Video reels */}
+          <div>
+            <SectionBadge>Video feedback</SectionBadge>
+            <h2 style={{ fontFamily:"'Syne',sans-serif", fontSize:28, fontWeight:800, color:B.nv, margin:'0 0 20px' }}>
+              Povești <span style={{ color:B.p }}>reale</span>
+            </h2>
+            <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:10 }}>
+              {[1,2,3].map(i => (
+                <div key={i} style={{
+                  height:280, borderRadius:14, cursor:'pointer',
+                  background:`linear-gradient(160deg, ${B.nv}, #0f2e24)`,
+                  display:'flex', alignItems:'center', justifyContent:'center', position:'relative',
+                }}>
+                  <div style={{ width:44, height:44, borderRadius:'50%', background:B.a, display:'flex', alignItems:'center', justifyContent:'center' }}>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill={B.wh} stroke="none"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                  </div>
+                  <div style={{ position:'absolute', bottom:12, left:12, right:12 }}>
+                    <div style={{ fontSize:11, fontWeight:700, color:B.wh }}>Pacient #{i}</div>
+                    <div style={{ fontSize:9, color:'rgba(255,255,255,.5)' }}>Digital Check-Up</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+/* ─── What you get ───────────────────────── */
+function WhatYouGet() {
+  const items = [
+    { title:'Scanare 3D completă', desc:'Model digital al danturii tale — fără amprentă clasică', icon:'M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z' },
+    { title:'Tomografie 3D CBCT', desc:'Imagini de înaltă rezoluție ale structurii osoase', icon:'M15 12a3 3 0 11-6 0 3 3 0 016 0z M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z' },
+    { title:'Protocol fotografic', desc:'Documentare completă înainte/după', icon:'M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z' },
+    { title:'Plan de tratament PDF', desc:'Document detaliat cu diagnostic, opțiuni și costuri', icon:'M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z M14 2v6h6' },
+    { title:'Consultație 1:1', desc:'Discuție cu specialistul — explicații clare, fără grabă', icon:'M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z' },
+    { title:'Prețuri transparente', desc:'Știi exact cât costă — fără costuri ascunse', icon:'M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z' },
+  ]
+  return (
+    <section style={{ background:`linear-gradient(160deg, ${B.nv}, #0f2e24)`, padding:'72px 48px' }}>
+      <div style={{ maxWidth:1200, margin:'0 auto' }}>
+        <div style={{ textAlign:'center', marginBottom:36 }}>
+          <SectionBadge light>Ce primești</SectionBadge>
+          <h2 style={{ fontFamily:"'Syne',sans-serif", fontSize:32, fontWeight:800, color:B.wh, margin:0 }}>
+            Totul într-un <span style={{ color:B.a }}>Digital Check-Up</span>
           </h2>
         </div>
-        <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:20 }}>
-          {STEPS.map((s, i) => (
-            <div key={s.num} style={{
-              background:B.wh, borderRadius:12, padding:'28px 24px', border:`1px solid ${B.bdr}`,
-              position:'relative', overflow:'hidden',
-            }}>
-              <div style={{ fontFamily:"'Syne',sans-serif", fontSize:48, fontWeight:800, color:B.pl, position:'absolute', top:12, right:16, lineHeight:1 }}>{s.num}</div>
-              <div style={{
-                width:36, height:36, borderRadius:8, background:`linear-gradient(135deg,${B.p},${B.pm})`,
-                display:'flex', alignItems:'center', justifyContent:'center', marginBottom:14,
-              }}>
-                <span style={{ color:B.wh, fontSize:14, fontWeight:800 }}>{s.num}</span>
+        <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:14 }}>
+          {items.map(item => (
+            <div key={item.title} style={{ background:'rgba(255,255,255,.05)', border:'1px solid rgba(255,255,255,.08)', borderRadius:14, padding:'22px', display:'flex', gap:14 }}>
+              <div style={{ width:40, height:40, borderRadius:10, background:'rgba(255,255,255,.08)', display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0 }}>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={B.a} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d={item.icon}/></svg>
               </div>
-              <h3 style={{ fontFamily:"'Syne',sans-serif", fontSize:16, fontWeight:700, color:B.nv, margin:'0 0 6px' }}>{s.title}</h3>
-              <p style={{ fontSize:13, lineHeight:1.6, color:B.gr, margin:0 }}>{s.desc}</p>
+              <div>
+                <h3 style={{ fontFamily:"'Syne',sans-serif", fontSize:14, fontWeight:700, color:B.wh, margin:'0 0 4px' }}>{item.title}</h3>
+                <p style={{ fontSize:12, lineHeight:1.5, color:'rgba(255,255,255,.55)', margin:0 }}>{item.desc}</p>
+              </div>
             </div>
           ))}
         </div>
@@ -466,7 +591,10 @@ export function DigitalCheckupPage() {
       <Hero/>
       <Benefits/>
       <Process/>
+      <DcuStats/>
       <WhenNeeded/>
+      <DcuTestimonials/>
+      <WhatYouGet/>
       <CtaStrip/>
       <Faq/>
       <AppointmentForm/>
