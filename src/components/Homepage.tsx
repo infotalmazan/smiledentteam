@@ -221,7 +221,7 @@ function Hero() {
           </div>
 
           {/* Mini appointment */}
-          <div className="mt-auto p-3.5 bg-sdt-50 rounded-xl border border-transparent shadow-sm">
+          <div className="mt-8 p-3.5 bg-sdt-50 rounded-xl border border-transparent shadow-sm">
             <div className="text-[11px] font-bold text-sdt-600 mb-2">Programare rapida</div>
             <div className="flex gap-2">
               <select className="w-[90px] rounded-lg border border-transparent bg-white px-2 py-2 text-xs font-medium shadow-sm">
