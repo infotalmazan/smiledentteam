@@ -165,20 +165,24 @@ function Hero() {
 
         {/* COL 1 — Headline */}
         <div style={{ padding:'36px 36px 24px 48px', display:'flex', flexDirection:'column', justifyContent:'flex-start' }}>
-          <h1 style={{ fontFamily:"'Syne',sans-serif", fontSize:42, fontWeight:800, lineHeight:1.02, letterSpacing:'-.04em', margin:'0 0 16px', color:B.a }}>
+          <h1 style={{ fontFamily:"'Syne',sans-serif", fontSize:42, fontWeight:800, lineHeight:1.02, letterSpacing:'-.04em', margin:'0 0 20px', color:B.a }}>
             ALEGE-TE<br/>PE TINE.
           </h1>
-          <div style={{ width:40, height:3, background:B.p, borderRadius:2, marginBottom:16, transformOrigin:'left', animation:'barGrow .6s .2s ease both' }}/>
-          <h2 style={{ fontFamily:"'Syne',sans-serif", fontSize:18, fontWeight:700, color:B.nv, letterSpacing:'-.02em', margin:'0 0 16px', lineHeight:1.2 }}>
+          <div style={{ width:40, height:3, background:B.p, borderRadius:2, marginBottom:18, transformOrigin:'left', animation:'barGrow .6s .2s ease both' }}/>
+          <h2 style={{ fontFamily:"'Syne',sans-serif", fontSize:18, fontWeight:700, color:B.nv, letterSpacing:'-.02em', margin:'0 0 14px', lineHeight:1.2 }}>
             Începe cu un Digital Check-Up.
           </h2>
-          <p style={{ fontSize:13, lineHeight:1.65, color:'#4a6a58', maxWidth:320, margin:'0 0 24px' }}>
+          <p style={{ fontSize:13, lineHeight:1.65, color:'#4a6a58', maxWidth:320, margin:'0 0 28px' }}>
             600+ specialiști, tehnologii 3D și 15 ani de experiență — totul pentru un singur lucru: să știi exact ce ai nevoie, înainte să decizi orice.
           </p>
-          <Btn style={{ justifyContent:'center', padding:'12px 24px', fontSize:13 }}>Descoperă Digital Check-Up →</Btn>
+          <button style={{
+            justifyContent:'center', padding:'12px 24px', fontSize:13, fontWeight:700,
+            background:B.a, color:B.wh, border:'none', borderRadius:8, cursor:'pointer',
+            fontFamily:"'DM Sans',sans-serif", width:'100%', textAlign:'center',
+          }}>Descoperă Digital Check-Up →</button>
 
           {/* Trust badges */}
-          <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:8, marginTop:20 }}>
+          <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:8, marginTop:28 }}>
             {[
               ['M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z','Fără durere'],
               ['M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0 1 12 2.944a11.955 11.955 0 0 1 8.618 3.04A12.02 12.02 0 0 1 23 12c0 3.074-1.155 5.877-3.054 8.003l.672.672A11.955 11.955 0 0 0 12 24a11.955 11.955 0 0 0-8.618-3.325l.672-.672A12.02 12.02 0 0 1 1 12c0-3.074 1.155-5.877 3.054-8.003','Garanție'],
@@ -193,14 +197,14 @@ function Hero() {
           </div>
 
           {/* Mini appointment */}
-          <div style={{ marginTop:16, padding:'14px 16px', background:B.ps, borderRadius:8, border:`1px solid ${B.bdr}` }}>
+          <div style={{ marginTop:24, padding:'14px 16px', background:B.ps, borderRadius:8, border:`1px solid ${B.bdr}` }}>
             <div style={{ fontSize:11, fontWeight:700, color:B.p, marginBottom:8 }}>Programare rapidă</div>
             <input type="tel" placeholder="+373 __ ___ ___" style={{
               width:'100%', padding:'8px 12px', border:`1px solid ${B.bdr}`, borderRadius:6,
               fontSize:13, fontFamily:"'DM Sans',sans-serif", background:B.wh, outline:'none', boxSizing:'border-box',
             }}/>
             <button style={{
-              width:'100%', marginTop:8, padding:'9px 16px', background:B.p, color:B.wh, border:'none',
+              width:'100%', marginTop:8, padding:'9px 16px', background:'transparent', color:B.p, border:`1.5px solid ${B.p}`,
               borderRadius:6, fontSize:12, fontWeight:700, cursor:'pointer', fontFamily:"'DM Sans',sans-serif",
             }}>Programează-te →</button>
           </div>
@@ -233,7 +237,7 @@ function Hero() {
             </div>
           ))}
           {/* Locații */}
-          <div style={{ marginTop:12, paddingTop:10, borderTop:`1px solid ${B.bdr}` }}>
+          <div style={{ marginTop:16, paddingTop:14, borderTop:`1px solid ${B.bdr}` }}>
             <div style={{ fontSize:10, fontWeight:700, color:B.p, letterSpacing:'.15em', textTransform:'uppercase', marginBottom:6 }}>Locații</div>
             {[['Chișinău, Centru','str. Ismail 88'],['Chișinău, Râșcani','Bd. Moscova 17/A'],['Iași','str. Arcu 18'],['București','str. G. Puccini 8A']].map(([city,addr]) => (
               <div key={city} style={{ display:'flex', alignItems:'flex-start', gap:6, padding:'3px 0' }}>
@@ -247,13 +251,13 @@ function Hero() {
           </div>
 
           {/* Program */}
-          <div style={{ marginTop:8, display:'flex', alignItems:'center', gap:6 }}>
+          <div style={{ marginTop:12, display:'flex', alignItems:'center', gap:6 }}>
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={B.p} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
             <span style={{ fontSize:10, color:B.gr }}>Lun–Vin 09–19:00 · Sâm 09–14:00</span>
           </div>
 
           {/* Google Reviews */}
-          <div style={{ marginTop:10, background:B.pl, padding:'10px 14px', borderLeft:`3px solid ${B.p}`, borderRadius:'0 8px 8px 0' }}>
+          <div style={{ marginTop:14, background:B.pl, padding:'10px 14px', borderLeft:`3px solid ${B.p}`, borderRadius:'0 8px 8px 0' }}>
             <div style={{ display:'flex', alignItems:'center', gap:8 }}>
               <div style={{ color:'#fbb040', fontSize:12 }}>★★★★★</div>
               <div style={{ fontFamily:"'Syne',sans-serif", fontSize:18, fontWeight:800, color:B.p }}>4.9</div>
