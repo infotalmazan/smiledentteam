@@ -223,17 +223,6 @@ function Hero() {
               <span style={{ fontSize:17, color:B.gr }}>→</span>
             </div>
           ))}
-          <div style={{ marginTop:28, background:B.pl, padding:'18px 20px', borderLeft:`3px solid ${B.a}`, borderRadius:'0 8px 8px 0' }}>
-            <div style={{ fontSize:11, fontWeight:700, color:B.nv, marginBottom:4 }}>Recenzii Google</div>
-            <div style={{ fontFamily:"'Syne',sans-serif", fontSize:26, fontWeight:800, color:B.p }}>★ 4.9</div>
-            <div style={{ fontSize:11, color:B.gr, marginTop:2 }}>bazat pe 1 200+ recenzii verificate</div>
-          </div>
-          <div style={{ marginTop:20, display:'flex', gap:8, flexWrap:'wrap' }}>
-            {['RO','RU','EN'].map(l => (
-              <span key={l} style={{ background:B.pl, color:B.p, padding:'4px 12px', borderRadius:40, fontSize:11, fontWeight:700, letterSpacing:'.1em', cursor:'pointer' }}>{l}</span>
-            ))}
-            <span style={{ background:B.al, color:B.a, padding:'4px 12px', borderRadius:40, fontSize:11, fontWeight:700 }}>Free consult</span>
-          </div>
         </div>
       </div>
     </section>
@@ -595,13 +584,23 @@ function Footer() {
           <Logo height={26} light/>
           <span style={{ fontSize:12, color:'rgba(255,255,255,.28)' }}>© {CAMPAIGN_2026.year} Smile Dent Team. Toate drepturile rezervate.</span>
         </div>
-        <div style={{ display:'flex', gap:24, fontSize:12, color:'rgba(255,255,255,.3)' }}>
-          {['Politica de confidențialitate','Termeni și condiții','Cookies'].map(s => (
-            <span key={s} style={{ cursor:'pointer', transition:'color .15s' }}
-              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = 'rgba(255,255,255,.7)' }}
-              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = 'rgba(255,255,255,.3)' }}
-            >{s}</span>
-          ))}
+        <div style={{ display:'flex', alignItems:'center', gap:20 }}>
+          <div style={{ display:'flex', gap:6 }}>
+            {['RO','RU','EN'].map(l => (
+              <span key={l} style={{ background:'rgba(255,255,255,.08)', color:'rgba(255,255,255,.5)', padding:'4px 10px', borderRadius:40, fontSize:11, fontWeight:700, letterSpacing:'.08em', cursor:'pointer', transition:'all .15s' }}
+                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,.15)'; (e.currentTarget as HTMLElement).style.color = B.wh }}
+                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,.08)'; (e.currentTarget as HTMLElement).style.color = 'rgba(255,255,255,.5)' }}
+              >{l}</span>
+            ))}
+          </div>
+          <div style={{ display:'flex', gap:24, fontSize:12, color:'rgba(255,255,255,.3)' }}>
+            {['Politica de confidențialitate','Termeni și condiții','Cookies'].map(s => (
+              <span key={s} style={{ cursor:'pointer', transition:'color .15s' }}
+                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = 'rgba(255,255,255,.7)' }}
+                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = 'rgba(255,255,255,.3)' }}
+              >{s}</span>
+            ))}
+          </div>
         </div>
       </div>
     </footer>
