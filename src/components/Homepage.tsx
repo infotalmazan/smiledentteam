@@ -356,41 +356,51 @@ function CheckUpStrip() {
 }
 
 /* ─── Services ────────────────────────────── */
-const SVCS_EXTRA = [
-  'Digital Smile Design, Scanner 3Shape Trios, fațete ceramice, albire. Zâmbetul tău, simulat 3D înainte de tratament.',
-  'Tratamentul cariei cu materiale de ultimă generație, obturații invizibile în 30+ nuanțe. Confort maxim.',
-  'Chirurgie ghidată digital, implanturi zigomatice, anestezie generală. Precizie aproape 100%.',
-  'Tomografie 3D, planificare digitală completă, ghiduri chirurgicale imprimate 3D. Implantul tău în locul perfect.',
-  'All-on-4, All-on-6, All-on-8. CAD/CAM pe zirconiu premium. Reabilitare totală cu garanție pe viață.',
-  'Simulare 3D a rezultatului, durată redusă cu 25–30%, costuri previzibile. Tratament modern și confortabil.',
+const SVC_PHOTOS = [
+  'https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=200&h=120&fit=crop',
+  'https://images.unsplash.com/photo-1606811841689-23dfddce3e95?w=200&h=120&fit=crop',
+  'https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?w=200&h=120&fit=crop',
+  'https://images.unsplash.com/photo-1606265752439-1f18756aa5fc?w=200&h=120&fit=crop',
+  'https://images.unsplash.com/photo-1606811971618-4486d14f3f99?w=200&h=120&fit=crop',
+  'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=200&h=120&fit=crop',
+  'https://images.unsplash.com/photo-1598256989800-fe5f95da9787?w=200&h=120&fit=crop',
+  'https://images.unsplash.com/photo-1609840114035-3c981b782dfe?w=200&h=120&fit=crop',
+  'https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=200&h=120&fit=crop',
 ]
 
 function Services() {
   return (
-    <section id="servicii" style={{ background:B.cr, padding:'96px 52px' }}>
-      <SHead eyebrow="Servicii complete" title={<>Tot ce ai nevoie,<br/>într-un singur loc</>}
-        sub="De la prevenție la reabilitare totală — acoperim toate specialitățile stomatologice cu tehnologii de ultimă generație."
-      />
-      <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:18 }}>
+    <section id="servicii" style={{ background:B.cr, padding:'48px 52px 40px' }}>
+      <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-end', marginBottom:24 }}>
+        <div>
+          <Badge>Servicii complete</Badge>
+          <h2 style={{ fontFamily:"'Syne',sans-serif", fontSize:30, fontWeight:800, color:B.nv, letterSpacing:'-.03em', margin:'0', lineHeight:1.1 }}>
+            Tot ce ai nevoie, într-un singur loc
+          </h2>
+        </div>
+        <a href="/servicii" style={{ fontSize:13, fontWeight:700, color:B.p, textDecoration:'none' }}>Toate serviciile →</a>
+      </div>
+      <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:10 }}>
         {SERVICES.map((s, i) => (
-          <div key={s.slug} style={{
-            background:B.wh, border:`1px solid ${B.bdr}`, borderRadius:14, padding:'28px 24px', cursor:'pointer',
-            transition:'transform .2s,box-shadow .2s,border-color .2s',
-          }}
-          onMouseEnter={e => { const el=e.currentTarget; el.style.transform='translateY(-4px)'; el.style.boxShadow='0 12px 36px rgba(10,107,92,.1)'; el.style.borderColor=B.p }}
-          onMouseLeave={e => { const el=e.currentTarget; el.style.transform='translateY(0)'; el.style.boxShadow='none'; el.style.borderColor=B.bdr }}
-          >
-            <div style={{ width:48, height:48, borderRadius:12, background:`linear-gradient(135deg,${B.pm},${B.p})`,
-              display:'flex', alignItems:'center', justifyContent:'center', fontSize:22, color:B.wh, marginBottom:18 }}>
-              {s.icon}
+          <a key={s.slug} href="/servicii" style={{ textDecoration:'none' }}>
+            <div style={{
+              background:B.wh, border:`1px solid ${B.bdr}`, borderRadius:10, cursor:'pointer',
+              display:'grid', gridTemplateColumns:'80px 1fr', overflow:'hidden',
+              transition:'transform .2s,box-shadow .2s,border-color .2s', height:72,
+            }}
+            onMouseEnter={e => { const el=e.currentTarget; el.style.transform='translateY(-2px)'; el.style.boxShadow='0 6px 20px rgba(10,107,92,.08)'; el.style.borderColor=B.p }}
+            onMouseLeave={e => { const el=e.currentTarget; el.style.transform=''; el.style.boxShadow=''; el.style.borderColor=B.bdr }}
+            >
+              <img src={SVC_PHOTOS[i] || SVC_PHOTOS[0]} alt={s.name} style={{ width:'100%', height:'100%', objectFit:'cover' }}/>
+              <div style={{ padding:'10px 14px', display:'flex', flexDirection:'column', justifyContent:'center' }}>
+                <div style={{ fontFamily:"'Syne',sans-serif", fontSize:13, fontWeight:700, color:B.nv, lineHeight:1.2, marginBottom:2 }}>{s.name}</div>
+                <div style={{ display:'flex', alignItems:'center', gap:6 }}>
+                  <span style={{ fontSize:10, fontWeight:600, color:B.p }}>{s.price}</span>
+                  {s.rate && <span style={{ fontSize:8, fontWeight:800, color:B.a, background:B.al, padding:'1px 5px', borderRadius:100 }}>RATE 0%</span>}
+                </div>
+              </div>
             </div>
-            <div style={{ fontSize:10, fontWeight:700, color:B.a, letterSpacing:'.12em', textTransform:'uppercase', marginBottom:6 }}>{s.tag}</div>
-            <h3 style={{ fontSize:22, fontWeight:800, letterSpacing:'-.02em', color:B.nv, marginBottom:10 }}>{s.name.split(' ')[0]}</h3>
-            <p style={{ fontSize:14, lineHeight:1.72, color:'#4a6a58', marginBottom:20 }}>{SVCS_EXTRA[i]}</p>
-            <div style={{ display:'flex', alignItems:'center', gap:6, fontSize:13, fontWeight:600, color:B.p }}>
-              Află mai mult <span>→</span>
-            </div>
-          </div>
+          </a>
         ))}
       </div>
     </section>
