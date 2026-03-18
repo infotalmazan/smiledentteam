@@ -367,48 +367,47 @@ function CheckUpStrip() {
 }
 
 /* ─── Services ────────────────────────────── */
-const SVC_DATA: { photo:string; solution:string }[] = [
-  { photo:'https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=400&h=220&fit=crop', solution:'Dinți noi, ficși, fără durere' },
-  { photo:'https://images.unsplash.com/photo-1606811841689-23dfddce3e95?w=400&h=220&fit=crop', solution:'Zâmbet restaurat, natural' },
-  { photo:'https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?w=400&h=220&fit=crop', solution:'Arcadă completă într-o zi' },
-  { photo:'https://images.unsplash.com/photo-1606265752439-1f18756aa5fc?w=400&h=220&fit=crop', solution:'Zâmbet de Hollywood' },
-  { photo:'https://images.unsplash.com/photo-1606811971618-4486d14f3f99?w=400&h=220&fit=crop', solution:'Dinți drepți, discret' },
-  { photo:'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=400&h=220&fit=crop', solution:'Știi exact ce ai nevoie' },
-  { photo:'https://images.unsplash.com/photo-1598256989800-fe5f95da9787?w=400&h=220&fit=crop', solution:'Prevenție fără durere' },
-  { photo:'https://images.unsplash.com/photo-1609840114035-3c981b782dfe?w=400&h=220&fit=crop', solution:'Intervenții precise, sigure' },
-  { photo:'https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=400&h=220&fit=crop', solution:'Consultație de oriunde' },
+const SVC_DATA: { photo:string; desc:string }[] = [
+  { photo:'https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=400&h=260&fit=crop', desc:'Dinți noi, ficși, fără durere. Planificare 3D completă pentru un rezultat predictibil și natural.' },
+  { photo:'https://images.unsplash.com/photo-1606811841689-23dfddce3e95?w=400&h=260&fit=crop', desc:'Zâmbet restaurat cu coroane premium. Materiale de ultimă generație, garanție pe viață.' },
+  { photo:'https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?w=400&h=260&fit=crop', desc:'Arcadă completă într-o zi. Alternativa modernă la proteze — dinți ficși pe implanturi.' },
+  { photo:'https://images.unsplash.com/photo-1606265752439-1f18756aa5fc?w=400&h=260&fit=crop', desc:'Zâmbetul pe care l-ai visat. Fațete ceramice personalizate cu Digital Smile Design.' },
+  { photo:'https://images.unsplash.com/photo-1606811971618-4486d14f3f99?w=400&h=260&fit=crop', desc:'Dinți drepți, discret și rapid. Aliniere invizibilă pentru copii și adulți.' },
+  { photo:'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=400&h=260&fit=crop', desc:'Primul pas către un zâmbet sănătos. Evaluare completă, digitală, fără disconfort.' },
+  { photo:'https://images.unsplash.com/photo-1598256989800-fe5f95da9787?w=400&h=260&fit=crop', desc:'Prevenție fără durere. Igienizare profesională și detecție timpurie cu scanner digital.' },
+  { photo:'https://images.unsplash.com/photo-1609840114035-3c981b782dfe?w=400&h=260&fit=crop', desc:'Intervenții precise cu ghidaj 3D. Extracții, augmentări și chirurgie ghidată digital.' },
+  { photo:'https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=400&h=260&fit=crop', desc:'Consultație video de oriunde din lume. Plan personalizat înainte de a ajunge la clinică.' },
 ]
 
 function Services() {
   return (
-    <section id="servicii" style={{ background:B.cr, padding:'48px 52px 40px' }}>
-      <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-end', marginBottom:20 }}>
+    <section id="servicii" style={{ background:B.cr, padding:'36px 52px 32px' }}>
+      <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-end', marginBottom:14 }}>
         <div>
           <Badge>Servicii complete</Badge>
-          <h2 style={{ fontFamily:"'Syne',sans-serif", fontSize:28, fontWeight:800, color:B.nv, letterSpacing:'-.03em', margin:'0', lineHeight:1.1 }}>
+          <h2 style={{ fontFamily:"'Syne',sans-serif", fontSize:26, fontWeight:800, color:B.nv, letterSpacing:'-.03em', margin:'0', lineHeight:1.1 }}>
             Tot ce ai nevoie, într-un singur loc
           </h2>
         </div>
         <a href="/servicii" style={{ fontSize:13, fontWeight:700, color:B.p, textDecoration:'none' }}>Toate serviciile →</a>
       </div>
-      <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:12 }}>
+      <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:10 }}>
         {SERVICES.map((s, i) => (
           <a key={s.slug} href="/servicii" style={{ textDecoration:'none' }}>
             <div style={{
-              background:B.wh, border:`1px solid ${B.bdr}`, borderRadius:12, cursor:'pointer',
+              background:B.wh, border:`1px solid ${B.bdr}`, borderRadius:10, cursor:'pointer',
               overflow:'hidden', transition:'transform .2s,box-shadow .2s,border-color .2s',
             }}
-            onMouseEnter={e => { const el=e.currentTarget; el.style.transform='translateY(-3px)'; el.style.boxShadow='0 8px 24px rgba(10,107,92,.1)'; el.style.borderColor=B.p }}
+            onMouseEnter={e => { const el=e.currentTarget; el.style.transform='translateY(-2px)'; el.style.boxShadow='0 6px 20px rgba(10,107,92,.08)'; el.style.borderColor=B.p }}
             onMouseLeave={e => { const el=e.currentTarget; el.style.transform=''; el.style.boxShadow=''; el.style.borderColor=B.bdr }}
             >
-              <div style={{ position:'relative', height:90, overflow:'hidden' }}>
+              <div style={{ position:'relative', height:105, overflow:'hidden' }}>
                 <img src={SVC_DATA[i]?.photo || SVC_DATA[0].photo} alt={s.name} style={{ width:'100%', height:'100%', objectFit:'cover' }}/>
-                <div style={{ position:'absolute', inset:0, background:'linear-gradient(to top, rgba(10,30,24,.4) 0%, transparent 60%)' }}/>
-                {s.rate && <span style={{ position:'absolute', top:6, right:6, fontSize:8, fontWeight:800, color:B.wh, background:B.a, padding:'2px 7px', borderRadius:100 }}>RATE 0%</span>}
+                <div style={{ position:'absolute', inset:0, background:'linear-gradient(to top, rgba(10,30,24,.25) 0%, transparent 50%)' }}/>
               </div>
-              <div style={{ padding:'10px 14px 12px' }}>
-                <div style={{ fontFamily:"'Syne',sans-serif", fontSize:14, fontWeight:700, color:B.nv, lineHeight:1.2, marginBottom:3 }}>{s.name}</div>
-                <div style={{ fontSize:11, color:B.gr, lineHeight:1.4 }}>{SVC_DATA[i]?.solution || ''}</div>
+              <div style={{ padding:'10px 13px 11px' }}>
+                <div style={{ fontFamily:"'Syne',sans-serif", fontSize:13, fontWeight:700, color:B.nv, lineHeight:1.2, marginBottom:3 }}>{s.name}</div>
+                <div style={{ fontSize:10.5, color:B.gr, lineHeight:1.45 }}>{SVC_DATA[i]?.desc || ''}</div>
               </div>
             </div>
           </a>
