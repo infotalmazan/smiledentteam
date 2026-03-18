@@ -266,13 +266,18 @@ function Hero() {
       </div>
 
       {/* Stats strip — full width, pinned to bottom */}
-      <div style={{ background:`linear-gradient(135deg,${B.p},${B.pm})`, padding:'22px 52px', display:'flex', justifyContent:'center', gap:48, alignItems:'center', flexShrink:0 }}>
-        {[[STATS.years,'ani de excelență'],[STATS.team,'specialiști'],[STATS.patients,'pacienți tratați'],[STATS.locations,'filiale'],['0%','dobândă la rate']].map(([n,l]) => (
-          <div key={String(l)} style={{ display:'flex', alignItems:'baseline', gap:8, textAlign:'center' }}>
+      <div style={{ background:`linear-gradient(135deg,${B.p},${B.pm})`, padding:'22px 52px', display:'flex', justifyContent:'center', gap:44, alignItems:'center', flexShrink:0 }}>
+        {[[STATS.years,'ani de excelență'],[STATS.team,'specialiști'],[STATS.patients,'pacienți tratați'],['3','filiale']].map(([n,l]) => (
+          <div key={String(l)} style={{ display:'flex', alignItems:'baseline', gap:8 }}>
             <div style={{ fontFamily:"'Syne',sans-serif", fontSize:28, fontWeight:800, color:B.wh, lineHeight:1 }}>{n}</div>
             <div style={{ fontSize:12, color:'rgba(255,255,255,.65)', fontWeight:500 }}>{l}</div>
           </div>
         ))}
+        {/* Rate 0% — pink accent */}
+        <div style={{ display:'flex', alignItems:'center', gap:8, background:B.a, padding:'8px 20px', borderRadius:100, marginLeft:8 }}>
+          <div style={{ fontFamily:"'Syne',sans-serif", fontSize:24, fontWeight:800, color:B.wh, lineHeight:1 }}>0%</div>
+          <div style={{ fontSize:11, color:'rgba(255,255,255,.85)', fontWeight:600, lineHeight:1.2 }}>dobândă<br/>la rate</div>
+        </div>
       </div>
     </section>
   )
@@ -659,11 +664,11 @@ function Footer() {
         </div>
         <div>
           <div style={{ fontSize:11, fontWeight:700, color:B.wh, letterSpacing:'.15em', textTransform:'uppercase', marginBottom:20 }}>Clinică</div>
-          {['Despre noi','Echipa','Tehnologii','Vlog','Blog','Cariere','Contacte'].map(s => (
-            <div key={s} style={{ fontSize:13, marginBottom:10, color:'rgba(255,255,255,.58)', cursor:'pointer', transition:'color .15s' }}
+          {[['Despre noi','/'],['Echipa','/echipa'],['Ambasadori','/ambasadori'],['Tehnologii','/'],['Blog','/'],['Cariere','/'],['Contacte','/']].map(([s,h]) => (
+            <a key={s} href={h} style={{ display:'block', fontSize:13, marginBottom:10, color:'rgba(255,255,255,.58)', textDecoration:'none', transition:'color .15s' }}
               onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = B.wh }}
               onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = 'rgba(255,255,255,.58)' }}
-            >{s}</div>
+            >{s}</a>
           ))}
         </div>
         <div>
