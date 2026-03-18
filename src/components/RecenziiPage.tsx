@@ -1,6 +1,6 @@
 'use client'
 import { useState } from 'react'
-import { BRAND as B, STATS, LOCATIONS, SERVICES } from '@/lib/brand'
+import { BRAND as B, STATS, LOCATIONS, SERVICES, CAMPAIGN_2026 } from '@/lib/brand'
 import { Logo } from './Logo'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
@@ -401,45 +401,71 @@ function AppointmentForm() {
 /* ─── Footer (matches Servicii dark footer) ─── */
 function Footer() {
   return (
-    <footer className="bg-[#0a1e18] px-12 pb-8 pt-14">
-      <div className="mx-auto grid max-w-[1200px] grid-cols-[1.5fr_1fr_1fr_1.2fr] gap-10 mb-10">
-        <div>
-          <Logo height={32} light />
-          <p className="mt-4 max-w-[260px] text-[13px] leading-relaxed text-white/[.45]">
-            Clinica stomatologica digitala. {STATS.years} ani de excelenta, {STATS.team} specialisti, {STATS.patients} pacienti.
-          </p>
-        </div>
-        <div>
-          <div className="mb-[18px] text-[11px] font-bold uppercase tracking-[.15em] text-white">Servicii</div>
-          {SERVICES.map(s => (
-            <div key={s.slug} className="mb-[9px] text-[13px] text-white/50 cursor-pointer">{s.name}</div>
-          ))}
-        </div>
-        <div>
-          <div className="mb-[18px] text-[11px] font-bold uppercase tracking-[.15em] text-white">Clinica</div>
-          {[['Despre noi','/'],['Echipa','/echipa'],['Ambasadori','/ambasadori'],['Tehnologii','/'],['Blog','/'],['Contacte','/']].map(([s, h]) => (
-            <a key={s} href={h} className="block mb-[9px] text-[13px] text-white/50 no-underline">{s}</a>
-          ))}
-        </div>
-        <div>
-          <div className="mb-[18px] text-[11px] font-bold uppercase tracking-[.15em] text-white">Contact</div>
-          {LOCATIONS.slice(0, 3).map(l => (
-            <div key={l.city} className="mb-3.5">
-              <div className="text-[13px] font-semibold text-white">{l.city}</div>
-              <div className="text-xs text-white/[.45]">{l.address} &middot; {l.phone}</div>
+    <>
+      <div className="section-line" />
+      <footer className="pt-16 pb-8 px-[52px]" style={{ background: B.nv }}>
+        <div className="grid gap-12 mb-12" style={{ gridTemplateColumns: '1.5fr 1fr 1fr 1fr' }}>
+          <div>
+            <div className="mb-5"><Logo height={34} light/></div>
+            <p className="text-sm leading-[1.75] text-white/60 max-w-[260px]">
+              Clinica stomatologica digitala. 15 ani de excelenta, {STATS.team} specialisti, {STATS.patients} pacienti, {STATS.locations} filiale.
+            </p>
+            <div className="mt-5 p-3 px-4 bg-pink-500/[.12] border border-pink-500/20 rounded-lg">
+              <div className="font-display text-base font-semibold text-pink-500">{CAMPAIGN_2026.slogan}</div>
             </div>
-          ))}
+            <div className="flex gap-2.5 mt-4">
+              {['FB','IG','YT','TK'].map(s => (
+                <div key={s}
+                  className="w-[34px] h-[34px] rounded-lg bg-white/[.07] flex items-center justify-center cursor-pointer text-[11px] font-bold text-white/50 hover:bg-sdt-600/45 transition-colors"
+                >{s}</div>
+              ))}
+            </div>
+          </div>
+          <div>
+            <div className="text-[11px] font-bold text-white tracking-[.15em] uppercase mb-5">Servicii</div>
+            <div className="text-[13px] mb-2.5 text-pink-500 cursor-pointer font-semibold">Digital Check-Up</div>
+            {SERVICES.map(s => (
+              <div key={s.slug} className="text-[13px] mb-2.5 text-white/[.58] cursor-pointer hover:text-white transition-colors">{s.name}</div>
+            ))}
+          </div>
+          <div>
+            <div className="text-[11px] font-bold text-white tracking-[.15em] uppercase mb-5">Clinica</div>
+            {[['Despre noi','/'],['Echipa','/echipa'],['Ambasadori','/ambasadori'],['Tehnologii','/'],['Blog','/'],['Cariere','/'],['Contacte','/']].map(([s,h]) => (
+              <a key={s} href={h} className="block text-[13px] mb-2.5 text-white/[.58] no-underline hover:text-white transition-colors">{s}</a>
+            ))}
+          </div>
+          <div>
+            <div className="text-[11px] font-bold text-white tracking-[.15em] uppercase mb-5">Contact</div>
+            {LOCATIONS.slice(0,3).map(l => (
+              <div key={l.city} className="mb-4 leading-[1.65]">
+                <div className="text-[13px] font-semibold text-white">{l.city}</div>
+                <div className="text-xs text-white/[.52]">{l.address}</div>
+                <div className="text-xs text-white/[.52]">{l.phone}</div>
+              </div>
+            ))}
+            <a href="mailto:info@smiledent.md" className="text-[13px] text-sdt-500 font-semibold no-underline">info@smiledent.md</a>
+          </div>
         </div>
-      </div>
-      <div className="border-t border-white/[.07] pt-5 flex justify-between items-center">
-        <span className="text-[11px] text-white/25">&copy; 2026 Smile Dent Team</span>
-        <div className="flex gap-1.5">
-          {['RO','RU','EN'].map(l => (
-            <span key={l} className="rounded-full bg-white/[.08] px-2 py-0.5 text-[10px] font-bold text-white/50">{l}</span>
-          ))}
+        <div className="border-t border-white/[.07] pt-6 flex justify-between items-center">
+          <div className="flex items-center gap-4">
+            <Logo height={26} light/>
+            <span className="text-xs text-white/[.28]">&copy; {CAMPAIGN_2026.year} Smile Dent Team. Toate drepturile rezervate.</span>
+          </div>
+          <div className="flex items-center gap-5">
+            <div className="flex gap-1.5">
+              {['RO','RU','EN'].map(l => (
+                <span key={l} className="bg-white/[.08] text-white/50 px-2.5 py-1 rounded-full text-[11px] font-bold tracking-[.08em] cursor-pointer hover:bg-white/15 hover:text-white transition-all">{l}</span>
+              ))}
+            </div>
+            <div className="flex gap-6 text-xs text-white/30">
+              {['Politica de confidentialitate','Termeni si conditii','Cookies'].map(s => (
+                <span key={s} className="cursor-pointer hover:text-white/70 transition-colors">{s}</span>
+              ))}
+            </div>
+          </div>
         </div>
-      </div>
-    </footer>
+      </footer>
+    </>
   )
 }
 
