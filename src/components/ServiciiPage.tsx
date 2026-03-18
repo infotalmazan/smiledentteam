@@ -71,16 +71,38 @@ const SVC_DETAILS: Record<string, { desc: string; benefits: [string,string][]; t
     ],
     techs: ['Invisalign','iTero Scanner','ClinCheck','Accelerated Ortho'],
   },
+  allon: {
+    desc: 'Dinți ficși pe implanturi — alternativa modernă la protezele mobile. Reabilitare completă a danturii pe 4, 5, 6 sau 8 implanturi, fără durere și fără stres.',
+    benefits: [
+      ['M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z','Dinți ficși în aceeași zi — încărcare imediată'],
+      ['M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z','Planificare 3D completă pre-operatorie'],
+      ['M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z','Alternativă la proteze mobile — nu se mișcă, nu cad'],
+      ['M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z','Sedare conștientă disponibilă pentru confort maxim'],
+    ],
+    techs: ['All-On-4','All-On-6','Straumann','Nobel Biocare','CBCT 3D','Ghid chirurgical'],
+  },
+  'consultatie-online': {
+    desc: 'Ești plecat din țară, dar vrei un tratament dentar acasă? Începe cu o consultație online — discutăm la distanță, îți oferim un plan clar și personalizat, iar tu vii pregătit la prima vizită.',
+    benefits: [
+      ['M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z','Consultație video cu specialistul'],
+      ['M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z','Trimite tomografia — analiză completă la distanță'],
+      ['M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z','Plan de tratament personalizat înainte de sosire'],
+      ['M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z','Disponibil pentru diaspora: UK, Germania, Franța, USA'],
+    ],
+    techs: ['Consultație Video','Radiografie digitală','Plan 3D la distanță','Programare prioritară'],
+  },
 }
 
 /* ─── SVG icon paths per service ─────────── */
 const SVC_ICONS: Record<string, string> = {
-  estetica:      'M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1-8.313-12.454z',
-  terapie:       'M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z',
-  chirurgie:     'M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z',
-  implantologie: 'M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z M14 2v6h6 M16 13H8 M16 17H8 M10 9H8',
-  protetica:     'M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z',
-  ortodontie:    'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z',
+  estetica:              'M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1-8.313-12.454z',
+  terapie:               'M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z',
+  chirurgie:             'M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z',
+  implantologie:         'M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z M14 2v6h6 M16 13H8 M16 17H8 M10 9H8',
+  protetica:             'M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z',
+  ortodontie:            'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z',
+  allon:                 'M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z',
+  'consultatie-online':  'M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z',
 }
 
 /* ─── Shared components ──────────────────── */
@@ -202,10 +224,11 @@ function ServiceCard({ svc, index, isOpen, onToggle }: {
               <span style={{ fontSize:12, color:'rgba(10,107,92,.3)', fontWeight:700 }}>{String(index+1).padStart(2,'0')}</span>
               <h3 style={{ fontFamily:"'Syne',sans-serif", fontSize:20, fontWeight:700, color:B.nv, margin:0 }}>{svc.name}</h3>
             </div>
-            <span style={{
-              fontSize:11, fontWeight:600, color:B.p, background:B.pl,
-              padding:'3px 10px', borderRadius:100, letterSpacing:'.05em',
-            }}>{svc.tag}</span>
+            <div style={{ display:'flex', alignItems:'center', gap:8, flexWrap:'wrap' }}>
+              <span style={{ fontSize:11, fontWeight:600, color:B.p, background:B.pl, padding:'3px 10px', borderRadius:100, letterSpacing:'.05em' }}>{svc.tag}</span>
+              <span style={{ fontSize:11, fontWeight:700, color:B.pd, background:B.pl, padding:'3px 10px', borderRadius:100 }}>{svc.price}</span>
+              {svc.rate && <span style={{ fontSize:10, fontWeight:800, color:B.a, background:B.al, padding:'3px 8px', borderRadius:100, letterSpacing:'.05em' }}>RATE 0%</span>}
+            </div>
           </div>
         </div>
         <div style={{
@@ -248,6 +271,12 @@ function ServiceCard({ svc, index, isOpen, onToggle }: {
                   }}>{t}</span>
                 ))}
               </div>
+              {svc.audience && (
+                <div style={{ marginBottom:16, padding:'10px 14px', background:B.ps, borderRadius:8, border:`1px solid ${B.bdr}` }}>
+                  <div style={{ fontSize:10, fontWeight:700, color:B.p, letterSpacing:'.1em', textTransform:'uppercase', marginBottom:4 }}>Pentru cine</div>
+                  <div style={{ fontSize:12, color:B.nv, fontWeight:500 }}>{svc.audience}</div>
+                </div>
+              )}
               <div style={{ display:'flex', flexDirection:'column', gap:10 }}>
                 <Btn style={{ justifyContent:'center', fontSize:14, padding:'12px 24px' }}>Programează-te →</Btn>
                 <a href="/digital-checkup" style={{ textDecoration:'none' }}>
