@@ -43,10 +43,10 @@ function SectionBadge({ children, light }: { children: string; light?: boolean }
 function Nav() {
   return (
     <>
-      <div style={{ height:3, background:B.a }}/>
+      
       <nav style={{
         position:'sticky', top:0, zIndex:100, background:'rgba(255,255,255,.97)',
-        backdropFilter:'blur(12px)', borderBottom:`1px solid ${B.bdr}`,
+        backdropFilter:'blur(12px)', borderTop:`3px solid ${B.a}`, borderBottom:`1px solid ${B.bdr}`,
         padding:'14px 48px', display:'flex', justifyContent:'space-between', alignItems:'center',
       }}>
         <a href="/" style={{ textDecoration:'none' }}><Logo height={36}/></a>
@@ -59,7 +59,7 @@ function Nav() {
           ))}
         </div>
         <div style={{ display:'flex', gap:10, alignItems:'center' }}>
-          <a href="/login" style={{ textDecoration:'none' }}><button style={{ background:'transparent', color:B.p, border:`1.5px solid ${B.p}`, padding:'8px 18px', borderRadius:8, fontSize:13, fontWeight:600, cursor:'pointer', fontFamily:"'DM Sans',sans-serif" }}>Autentificare</button></a>
+          <a href="/login" style={{ textDecoration:'none' }}><button style={{ background:'transparent', color:B.p, border:`1.5px solid ${B.p}`, padding:'8px 18px', borderRadius:8, fontSize:13, fontWeight:600, cursor:'pointer', fontFamily:"'DM Sans',sans-serif" }}>Cabinetul meu</button></a>
           <Btn pink style={{ fontSize:13, padding:'10px 22px' }}>Programează-te</Btn>
         </div>
       </nav>

@@ -116,10 +116,10 @@ function Navbar() {
   }, [])
   return (
     <>
-    <div style={{ height:3, background:B.a }}/>
     <nav style={{
       display:'flex', justifyContent:'space-between', alignItems:'center',
       padding:'0 52px', height:70, background:'rgba(255,255,255,.97)',
+      borderTop:`3px solid ${B.a}`,
       boxShadow:sc?'0 2px 20px rgba(10,107,92,.1)':'0 1px 0 rgba(10,107,92,.1)',
       position:'sticky', top:0, zIndex:200, backdropFilter:'blur(8px)',
     }}>
@@ -146,9 +146,9 @@ function Navbar() {
             background:'transparent', color:B.p, border:`1.5px solid ${B.p}`,
             padding:'8px 18px', fontSize:13, fontWeight:600, cursor:'pointer',
             borderRadius:6, fontFamily:"'DM Sans',sans-serif",
-          }}>Autentificare</button>
+          }}>Cabinetul meu</button>
         </a>
-        <Btn style={{ fontSize:13, padding:'9px 22px' }}>Programează-te</Btn>
+        <Btn pink style={{ fontSize:13, padding:'9px 22px' }}>Programează-te</Btn>
       </div>
     </nav>
     </>
