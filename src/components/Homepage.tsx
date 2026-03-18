@@ -131,8 +131,8 @@ function Navbar() {
           ['Recenzii','#recenzii'],
         ].map(([label, href]) => (
           <a key={label} href={href} style={{
-            fontSize:14, fontWeight: label==='Digital Check-Up'?700:500,
-            color: label==='Digital Check-Up'?B.a:'#3a5a50',
+            fontSize:14, fontWeight:500,
+            color:'#3a5a50',
             textDecoration:'none', padding:'4px 0',
             borderBottom:'2px solid transparent',
           }}>{label}</a>
