@@ -377,13 +377,11 @@ function AppointmentForm() {
             <input placeholder="Prenume" style={inputStyle}/>
             <input placeholder="Nume" style={inputStyle}/>
           </div>
-          <input placeholder="Telefon" type="tel" style={{ ...inputStyle, marginBottom:14 }}/>
-          <input placeholder="Email" type="email" style={{ ...inputStyle, marginBottom:14 }}/>
-          <select style={{ ...inputStyle, marginBottom:14, color:B.gr }}>
+          <input placeholder="Telefon *" type="tel" style={{ ...inputStyle, marginBottom:14 }}/>
+          <select style={{ ...inputStyle, marginBottom:20, color:B.gr }}>
             <option>Selectează locația</option>
             {LOCATIONS.map(l => <option key={l.city}>{l.city} — {l.address}</option>)}
           </select>
-          <textarea placeholder="Mesaj opțional" rows={3} style={{ ...inputStyle, marginBottom:20, resize:'vertical' }}/>
           <Btn pink style={{ width:'100%', justifyContent:'center', fontSize:15, padding:'14px' }}>
             Trimite cererea →
           </Btn>

@@ -59,18 +59,18 @@ export const CAMPAIGN_2026 = {
 
 // ─── Brand Ambassadors (from Marketing Board 2025) ───
 export const AMBASSADORS = [
-  { name: 'Dumitru Talmazan',   role: 'Fondator & CEO',           slug: 'talmazan' },
-  { name: 'Nicoleta Adam',      role: 'Brand Ambassador',         slug: 'adam' },
-  { name: 'Victoria Cosovan',   role: 'Brand Ambassador',         slug: 'cosovan' },
-  { name: 'Valeriu Rașcu',      role: 'Brand Ambassador',         slug: 'rascu' },
-  { name: 'Maria Marian',       role: 'Brand Ambassador',         slug: 'marian' },
-  { name: 'Akord',              role: 'Muzician / Ambassador',    slug: 'akord' },
-  { name: 'Daniel Malareu',     role: 'Brand Ambassador',         slug: 'malareu' },
-  { name: 'Cristian Spătaru',   role: 'Brand Ambassador',         slug: 'spataru' },
-  { name: 'Veronica Coberman',  role: 'Jurnalist / Ambassador',   slug: 'coberman' },
-  { name: 'Elena Parpaut',      role: 'Brand Ambassador',         slug: 'parpaut' },
-  { name: 'Dorin Galben',       role: 'Brand Ambassador',         slug: 'galben' },
-  { name: 'Veronica Cociu',     role: 'TV Presenter / Ambassador',slug: 'cociu' },
+  { name: 'Dumitru Talmazan',   role: 'Marketing & Business',     slug: 'talmazan',  photo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=300&fit=crop&crop=face', featured: true },
+  { name: 'Nicoleta Adam',      role: 'Fashion & Lifestyle',      slug: 'adam',       photo: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&h=300&fit=crop&crop=face', featured: true },
+  { name: 'Victoria Cosovan',   role: 'Profesor universitar',     slug: 'cosovan',    photo: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=300&h=300&fit=crop&crop=face', featured: true },
+  { name: 'Valeriu Rașcu',      role: 'Influencer & Creator',     slug: 'rascu',      photo: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=300&h=300&fit=crop&crop=face', featured: true },
+  { name: 'Maria Marian',       role: 'Antreprenor',              slug: 'marian',     photo: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=300&h=300&fit=crop&crop=face', featured: true },
+  { name: 'Akord',              role: 'Muzician',                 slug: 'akord',      photo: 'https://images.unsplash.com/photo-1531384441138-2736e62e0919?w=300&h=300&fit=crop&crop=face', featured: true },
+  { name: 'Daniel Malareu',     role: 'Sport & Fitness',          slug: 'malareu',    photo: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=300&h=300&fit=crop&crop=face', featured: false },
+  { name: 'Cristian Spătaru',   role: 'IT & Tech',                slug: 'spataru',    photo: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=300&h=300&fit=crop&crop=face', featured: false },
+  { name: 'Veronica Coberman',  role: 'Jurnalism & Media',        slug: 'coberman',   photo: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=300&h=300&fit=crop&crop=face', featured: false },
+  { name: 'Elena Parpaut',      role: 'Medicină & Sănătate',      slug: 'parpaut',    photo: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=300&h=300&fit=crop&crop=face', featured: false },
+  { name: 'Dorin Galben',       role: 'HoReCa & Gastronomie',     slug: 'galben',     photo: 'https://images.unsplash.com/photo-1519345182560-3f2917c472ef?w=300&h=300&fit=crop&crop=face', featured: false },
+  { name: 'Veronica Cociu',     role: 'TV & Entertainment',       slug: 'cociu',      photo: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=300&h=300&fit=crop&crop=face', featured: false },
 ] as const
 
 // ─── Diaspora Markets (from Marketing Board) ───

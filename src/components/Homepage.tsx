@@ -489,36 +489,57 @@ const FAQS = [
 
 /* ─── Ambasadori ─────────────────────────── */
 function Ambasadori() {
-  const colors = ['#0a6b5c','#0d8a72','#e8157a','#074d42','#D97706','#2563EB','#059669','#6366f1','#DC2626','#0D9488','#EC4899','#6C3FA0']
+  const [showAll, setShowAll] = useState(false)
+  const featured = AMBASSADORS.filter(a => a.featured)
+  const rest = AMBASSADORS.filter(a => !a.featured)
+  const visible = showAll ? AMBASSADORS : featured
+
   return (
     <section id="ambasadori" style={{ background:B.wh, padding:'72px 52px', borderTop:`1px solid ${B.bdr}` }}>
       <div style={{ textAlign:'center', marginBottom:44 }}>
-        <Badge>Ambasadori SDT</Badge>
-        <SHead title={<>Oamenii care<br/>aleg <span style={{ color:B.a }}>Smile Dent Team</span></>}/>
+        <Badge>Ambasadori Smile Dent Team</Badge>
+        <SHead title={<>Zâmbete care <span style={{ color:B.a }}>inspiră</span></>}/>
         <p style={{ fontSize:15, color:B.gr, maxWidth:500, margin:'0 auto' }}>
-          Personalități care ne-au ales și ne reprezintă. Fiecare zâmbet — o poveste de încredere.
+          Personalități din diverse industrii care ne-au ales și ne reprezintă.
         </p>
       </div>
-      <div style={{ display:'grid', gridTemplateColumns:'repeat(6, 1fr)', gap:16 }}>
-        {AMBASSADORS.map((amb, i) => (
+      <div style={{ display:'grid', gridTemplateColumns:'repeat(6, 1fr)', gap:18, maxWidth:1100, margin:'0 auto' }}>
+        {visible.map(amb => (
           <div key={amb.slug} style={{
-            padding:'24px 16px', borderRadius:14, border:`1px solid ${B.bdr}`,
-            textAlign:'center', transition:'all .25s', cursor:'pointer', background:B.wh,
+            borderRadius:16, overflow:'hidden', cursor:'pointer', position:'relative',
+            border:`1px solid ${B.bdr}`, transition:'all .3s', background:B.wh,
           }}
-            onMouseEnter={e => { const t = e.currentTarget; t.style.transform='translateY(-3px)'; t.style.borderColor=B.p; t.style.boxShadow=`0 8px 24px ${B.bdr}` }}
-            onMouseLeave={e => { const t = e.currentTarget; t.style.transform=''; t.style.borderColor=B.bdr; t.style.boxShadow='' }}
+            onMouseEnter={e => { e.currentTarget.style.transform='translateY(-4px)'; e.currentTarget.style.boxShadow=`0 12px 32px ${B.bdr}` }}
+            onMouseLeave={e => { e.currentTarget.style.transform=''; e.currentTarget.style.boxShadow='' }}
           >
-            <div style={{
-              width:56, height:56, borderRadius:'50%', margin:'0 auto 12px',
-              background:`linear-gradient(135deg, ${colors[i % colors.length]}, ${colors[(i+3) % colors.length]})`,
-              display:'flex', alignItems:'center', justifyContent:'center',
-              fontSize:18, fontWeight:800, color:B.wh, fontFamily:"'Syne',sans-serif",
-            }}>{amb.name.split(' ').map(n => n[0]).join('')}</div>
-            <div style={{ fontSize:13, fontWeight:700, color:B.nv, marginBottom:2 }}>{amb.name}</div>
-            <div style={{ fontSize:11, color:B.gr }}>{amb.role}</div>
+            <div style={{ position:'relative', paddingTop:'110%', overflow:'hidden' }}>
+              <img src={amb.photo} alt={amb.name} style={{ position:'absolute', inset:0, width:'100%', height:'100%', objectFit:'cover', transition:'transform .4s' }}
+                onMouseEnter={e => e.currentTarget.style.transform='scale(1.05)'}
+                onMouseLeave={e => e.currentTarget.style.transform=''}
+              />
+              <div style={{ position:'absolute', bottom:0, left:0, right:0, height:'60%', background:'linear-gradient(to top, rgba(10,30,24,.9) 0%, transparent 100%)', pointerEvents:'none' }}/>
+              <div style={{ position:'absolute', bottom:0, left:0, right:0, padding:'14px' }}>
+                <div style={{ fontFamily:"'Syne',sans-serif", fontSize:13, fontWeight:700, color:B.wh, lineHeight:1.2 }}>{amb.name}</div>
+                <div style={{ fontSize:10, color:'rgba(255,255,255,.6)', marginTop:2 }}>{amb.role}</div>
+              </div>
+            </div>
           </div>
         ))}
       </div>
+      {rest.length > 0 && !showAll && (
+        <div style={{ textAlign:'center', marginTop:28 }}>
+          <button onClick={() => setShowAll(true)} style={{
+            background:'transparent', border:`1.5px solid ${B.p}`, color:B.p,
+            padding:'10px 28px', borderRadius:100, fontSize:13, fontWeight:700,
+            cursor:'pointer', fontFamily:"'DM Sans',sans-serif", transition:'all .2s',
+          }}
+            onMouseEnter={e => { e.currentTarget.style.background=B.p; e.currentTarget.style.color=B.wh }}
+            onMouseLeave={e => { e.currentTarget.style.background='transparent'; e.currentTarget.style.color=B.p }}
+          >
+            Vezi toți ambasadorii ({AMBASSADORS.length}) →
+          </button>
+        </div>
+      )}
     </section>
   )
 }
