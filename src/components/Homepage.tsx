@@ -522,16 +522,18 @@ function Ambasadori() {
         ))}
       </div>
       <div style={{ textAlign:'center', marginTop:28 }}>
-        <button style={{
-          background:'transparent', border:`1.5px solid ${B.p}`, color:B.p,
-          padding:'10px 28px', borderRadius:100, fontSize:13, fontWeight:700,
-          cursor:'pointer', fontFamily:"'DM Sans',sans-serif", transition:'all .2s',
-        }}
-          onMouseEnter={e => { e.currentTarget.style.background=B.p; e.currentTarget.style.color=B.wh }}
-          onMouseLeave={e => { e.currentTarget.style.background='transparent'; e.currentTarget.style.color=B.p }}
-        >
-          Vezi toți →
-        </button>
+        <a href="/ambasadori" style={{ textDecoration:'none' }}>
+          <button style={{
+            background:'transparent', border:`1.5px solid ${B.p}`, color:B.p,
+            padding:'10px 28px', borderRadius:100, fontSize:13, fontWeight:700,
+            cursor:'pointer', fontFamily:"'DM Sans',sans-serif", transition:'all .2s',
+          }}
+            onMouseEnter={e => { e.currentTarget.style.background=B.p; e.currentTarget.style.color=B.wh }}
+            onMouseLeave={e => { e.currentTarget.style.background='transparent'; e.currentTarget.style.color=B.p }}
+          >
+            Vezi toți ambasadorii →
+          </button>
+        </a>
       </div>
     </section>
   )
