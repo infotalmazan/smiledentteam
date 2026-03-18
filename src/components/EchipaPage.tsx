@@ -83,7 +83,7 @@ function Hero() {
       <div className="mx-auto flex max-w-[1200px] items-end justify-between">
         <div>
           <SectionBadge>Echipa noastra</SectionBadge>
-          <h1 className="font-display mb-3.5 text-[42px] font-extrabold leading-[1.08] tracking-[-0.03em] text-[#0a1e18]">
+          <h1 className="font-display mb-3.5 text-[42px] font-semibold leading-[1.08] tracking-[-0.03em] text-[#0a1e18]">
             Echipa ta de<br/><span className="text-sdt-600">specialisti</span>
           </h1>
           <p className="max-w-[460px] text-[15px] leading-[1.7] text-[#5a7a6e]">
@@ -93,7 +93,7 @@ function Hero() {
         <div className="flex gap-6">
           {[['600+','specialisti'],['15','ani experienta'],['3','filiale']].map(([n,l]) => (
             <div key={l} className="text-center">
-              <div className="font-display text-2xl font-extrabold text-sdt-600">{n}</div>
+              <div className="font-display text-2xl font-semibold text-sdt-600">{n}</div>
               <div className="text-[11px] text-[#5a7a6e]">{l}</div>
             </div>
           ))}
@@ -169,7 +169,7 @@ function DoctorsSection() {
                         {doc.rating}
                       </span>
                     </div>
-                    <div className="font-display text-base font-bold leading-tight text-white">{doc.name}</div>
+                    <div className="font-display text-base font-medium leading-tight text-white">{doc.name}</div>
                     <div className="mt-0.5 text-[11px] text-white/70">{doc.title}</div>
                     <div className="mt-1 text-[10px] text-white/50">{doc.years} ani de experienta</div>
                   </div>
@@ -201,7 +201,7 @@ function DoctorsSection() {
               <CardContent className="p-7">
                 <div className="mb-1 flex items-start justify-between">
                   <div>
-                    <h3 className="font-display text-2xl font-extrabold text-[#0a1e18]">{selectedDoc.name}</h3>
+                    <h3 className="font-display text-2xl font-semibold text-[#0a1e18]">{selectedDoc.name}</h3>
                     <div className="mt-0.5 text-sm text-[#5a7a6e]">{selectedDoc.title}</div>
                   </div>
                   <button onClick={() => setSelected(null)} className="cursor-pointer border-none bg-transparent p-1 text-[#5a7a6e]">
@@ -261,7 +261,7 @@ function AmbasadoriSection() {
       <div className="mx-auto max-w-[1100px]">
         <div className="mb-10 text-center">
           <SectionBadge>Zambete care inspira</SectionBadge>
-          <h2 className="font-display mb-2.5 text-[32px] font-extrabold text-[#0a1e18]">
+          <h2 className="font-display mb-2.5 text-[32px] font-semibold text-[#0a1e18]">
             Ambasadorii <span className="text-pink-500">Smile Dent Team</span>
           </h2>
           <p className="mx-auto max-w-[440px] text-sm text-[#5a7a6e]">Personalitati din diverse industrii care ne-au ales si ne reprezinta.</p>
@@ -278,7 +278,7 @@ function AmbasadoriSection() {
                   />
                   <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-[60%]" style={{ background: 'linear-gradient(to top, rgba(10,30,24,.9) 0%, transparent 100%)' }} />
                   <div className="absolute bottom-0 left-0 right-0 p-3">
-                    <div className="font-display text-xs font-bold leading-tight text-white">{amb.name}</div>
+                    <div className="font-display text-xs font-medium leading-tight text-white">{amb.name}</div>
                     <div className="mt-0.5 text-[10px] text-white/60">{amb.role}</div>
                   </div>
                 </div>
@@ -301,7 +301,7 @@ function CtaStrip() {
   return (
     <section className="px-12 py-[52px]" style={{ background: `linear-gradient(135deg,${B.p},${B.pm})` }}>
       <div className="mx-auto max-w-[900px] text-center">
-        <h2 className="font-display mb-3 text-[30px] font-extrabold text-white">
+        <h2 className="font-display mb-3 text-[30px] font-semibold text-white">
           Alege-ti specialistul. Programeaza-te acum.
         </h2>
         <p className="mb-6 text-[15px] text-white/70">
@@ -322,7 +322,7 @@ function AppointmentForm() {
       <Card className="mx-auto max-w-[700px] rounded-[20px] border-sdt-600/10 bg-sdt-50 p-0 shadow-none">
         <CardContent className="px-9 py-10">
           <div className="mb-7 text-center">
-            <h2 className="font-display mb-2 text-[26px] font-extrabold text-[#0a1e18]">Programeaza-te acum</h2>
+            <h2 className="font-display mb-2 text-[26px] font-semibold text-[#0a1e18]">Programeaza-te acum</h2>
             <p className="text-[13px] text-[#5a7a6e]">Completeaza formularul — te contactam rapid.</p>
           </div>
           <div className="mb-3 grid grid-cols-2 gap-3">
@@ -363,7 +363,7 @@ function Footer() {
           <p className="mt-4 max-w-[260px] text-[13px] leading-[1.7] text-white/[.45]">
             Clinica stomatologica digitala. {STATS.years} ani de excelenta, {STATS.team} specialisti, {STATS.patients} pacienti.
           </p>
-          <div className="font-display mt-4 text-base font-extrabold text-pink-500">{CAMPAIGN_2026.slogan}</div>
+          <div className="font-display mt-4 text-base font-semibold text-pink-500">{CAMPAIGN_2026.slogan}</div>
         </div>
         <div>
           <div className="mb-[18px] text-[11px] font-bold uppercase tracking-[.15em] text-white">Servicii</div>

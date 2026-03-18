@@ -79,7 +79,7 @@ function Hero() {
       <div className="mx-auto grid max-w-[1200px] grid-cols-2 items-center gap-10 px-12 pb-16 pt-[72px]">
         <div>
           <SectionBadge light>Pentru diaspora</SectionBadge>
-          <h1 className="font-display mb-[18px] text-[44px] font-extrabold leading-[1.08] tracking-tight text-white">
+          <h1 className="font-display mb-[18px] text-[44px] font-semibold leading-[1.08] tracking-tight text-white">
             Ești în <span className="text-pink-500">străinătate</span>?<br />Începe cu o consultație online.
           </h1>
           <p className="mb-7 max-w-[440px] text-base leading-relaxed text-white/[.65]">
@@ -131,7 +131,7 @@ function Hero() {
               animation: 'pulse 3s ease-in-out infinite',
             }}
           >
-            <div className="font-display text-[32px] font-extrabold leading-none text-pink-500">455K+</div>
+            <div className="font-display text-[32px] font-semibold leading-none text-pink-500">455K+</div>
             <div className="mt-1 text-center text-[11px] leading-tight text-white/60">moldoveni<br />în diasporă</div>
           </div>
         </div>
@@ -153,7 +153,7 @@ function Process() {
     <section className="bg-white px-12 py-[72px]">
       <div className="mx-auto max-w-[1200px]">
         <SectionBadge>Cum funcționează</SectionBadge>
-        <h2 className="font-display mb-9 text-[34px] font-extrabold tracking-tight text-[#0a1e18]">
+        <h2 className="font-display mb-9 text-[34px] font-semibold tracking-tight text-[#0a1e18]">
           4 pași simpli către <span className="text-sdt-600">tratamentul tău</span>
         </h2>
         <div className="grid grid-cols-2 items-start gap-10">
@@ -193,7 +193,7 @@ function Process() {
                   <span className={cn('text-sm font-extrabold', i === 0 ? 'text-white' : 'text-sdt-600')}>{s.num}</span>
                 </div>
                 <div>
-                  <h3 className="font-display mb-1 text-base font-bold text-[#0a1e18]">{s.title}</h3>
+                  <h3 className="font-display mb-1 text-base font-medium text-[#0a1e18]">{s.title}</h3>
                   <p className="m-0 text-[13px] leading-relaxed text-[#5a7a6e]">{s.desc}</p>
                 </div>
               </div>
@@ -221,7 +221,7 @@ function JourneyTimeline() {
       <div className="mx-auto max-w-[1100px]">
         <div className="mb-9 text-center">
           <SectionBadge>Călătoria ta</SectionBadge>
-          <h2 className="font-display mb-2 text-[32px] font-extrabold tracking-tight text-[#0a1e18]">
+          <h2 className="font-display mb-2 text-[32px] font-semibold tracking-tight text-[#0a1e18]">
             Ce se întâmplă <span className="text-pink-500">pas cu pas</span>?
           </h2>
           <p className="mx-auto max-w-[460px] text-sm text-[#5a7a6e]">
@@ -245,7 +245,7 @@ function JourneyTimeline() {
               </div>
               {/* Content */}
               <CardContent className="p-3.5 pt-3.5">
-                <h3 className="font-display mb-1 text-[15px] font-bold text-[#0a1e18]">{j.title}</h3>
+                <h3 className="font-display mb-1 text-[15px] font-medium text-[#0a1e18]">{j.title}</h3>
                 <p className="mb-2 text-xs leading-snug text-[#5a7a6e]">{j.desc}</p>
                 <div className="flex flex-col gap-[3px]">
                   {j.detail.slice(0, 2).map(d => (
@@ -283,7 +283,7 @@ function Benefits() {
       <div className="mx-auto max-w-[1200px]">
         <div className="mb-12 text-center">
           <SectionBadge>De ce online</SectionBadge>
-          <h2 className="font-display text-[36px] font-extrabold tracking-tight text-[#0a1e18]">
+          <h2 className="font-display text-[36px] font-semibold tracking-tight text-[#0a1e18]">
             Avantajele consultației <span className="text-sdt-600">online</span>
           </h2>
         </div>
@@ -297,7 +297,7 @@ function Benefits() {
                 <div className="mb-3.5 flex h-11 w-11 items-center justify-center rounded-xl bg-sdt-100">
                   <b.icon className="h-5 w-5 text-sdt-600" strokeWidth={1.8} />
                 </div>
-                <h3 className="font-display mb-1.5 text-base font-bold text-[#0a1e18]">{b.title}</h3>
+                <h3 className="font-display mb-1.5 text-base font-medium text-[#0a1e18]">{b.title}</h3>
                 <p className="m-0 text-[13px] leading-relaxed text-[#5a7a6e]">{b.desc}</p>
               </CardContent>
             </Card>
@@ -313,7 +313,7 @@ function CtaStrip() {
   return (
     <section className="px-12 py-14" style={{ background: `linear-gradient(135deg, ${B.p}, ${B.pm})` }}>
       <div className="mx-auto max-w-[900px] text-center">
-        <h2 className="font-display mb-3 text-[32px] font-extrabold text-white">
+        <h2 className="font-display mb-3 text-[32px] font-semibold text-white">
           Oriunde ai fi. În fiecare țară. Alege-te pe tine.
         </h2>
         <p className="mx-auto mb-7 max-w-[480px] text-[15px] text-white/70">
@@ -342,12 +342,12 @@ function DiasporaTestimonials() {
         <div className="mb-8 flex items-end justify-between">
           <div>
             <SectionBadge>Feedback din diasporă</SectionBadge>
-            <h2 className="font-display text-[32px] font-extrabold text-[#0a1e18]">
+            <h2 className="font-display text-[32px] font-semibold text-[#0a1e18]">
               Pacienți din <span className="text-sdt-600">toată lumea</span>
             </h2>
           </div>
           <div className="flex items-center gap-1.5">
-            <div className="font-display text-[22px] font-extrabold text-sdt-600">4.9</div>
+            <div className="font-display text-[22px] font-semibold text-sdt-600">4.9</div>
             <div className="text-xs text-[#fbb040]">★★★★★</div>
             <div className="text-[11px] text-[#5a7a6e]">Google</div>
           </div>
@@ -392,7 +392,7 @@ function VideoReels() {
     <section className="bg-white px-12 py-[72px]">
       <div className="mx-auto max-w-[1200px]">
         <SectionBadge>Video testimoniale</SectionBadge>
-        <h2 className="font-display mb-7 text-[32px] font-extrabold text-[#0a1e18]">
+        <h2 className="font-display mb-7 text-[32px] font-semibold text-[#0a1e18]">
           Povești <span className="text-pink-500">reale</span> din diasporă
         </h2>
         <div className="flex gap-3.5 overflow-x-auto pb-2">
@@ -439,14 +439,14 @@ function WhyChoose() {
     <section className="px-12 py-[72px]" style={{ background: `linear-gradient(160deg, ${B.nv}, #0f2e24)` }}>
       <div className="mx-auto max-w-[1200px]">
         <SectionBadge light>De ce Smile Dent Team</SectionBadge>
-        <h2 className="font-display mb-9 text-[32px] font-extrabold text-white">
+        <h2 className="font-display mb-9 text-[32px] font-semibold text-white">
           6 motive să alegi <span className="text-pink-500">SDT</span>
         </h2>
         <div className="grid grid-cols-3 gap-4">
           {reasons.map(r => (
             <div key={r.num} className="rounded-[14px] border border-white/[.08] bg-white/5 p-6">
-              <span className="font-display text-[28px] font-extrabold text-white/10">{r.num}</span>
-              <h3 className="font-display my-1.5 text-base font-bold text-white">{r.title}</h3>
+              <span className="font-display text-[28px] font-semibold text-white/10">{r.num}</span>
+              <h3 className="font-display my-1.5 text-base font-medium text-white">{r.title}</h3>
               <p className="m-0 text-[13px] leading-relaxed text-white/[.55]">{r.desc}</p>
             </div>
           ))}
@@ -463,7 +463,7 @@ function AppointmentForm() {
       <div className="mx-auto grid max-w-[1200px] grid-cols-2 items-center gap-14">
         <div>
           <SectionBadge>Programare online</SectionBadge>
-          <h2 className="font-display mb-3.5 text-[32px] font-extrabold leading-[1.1] text-[#0a1e18]">
+          <h2 className="font-display mb-3.5 text-[32px] font-semibold leading-[1.1] text-[#0a1e18]">
             Completează formularul<br /><span className="text-pink-500">și te contactăm</span>
           </h2>
           <p className="mb-6 max-w-[400px] text-sm leading-relaxed text-[#5a7a6e]">
@@ -536,7 +536,7 @@ function Footer() {
           <p className="mt-4 max-w-[260px] text-[13px] leading-relaxed text-white/[.45]">
             Clinică stomatologică digitală. {STATS.years} ani de excelență, {STATS.team} specialiști, {STATS.patients} pacienți.
           </p>
-          <div className="font-display mt-4 text-base font-extrabold text-pink-500">{CAMPAIGN_2026.slogan}</div>
+          <div className="font-display mt-4 text-base font-semibold text-pink-500">{CAMPAIGN_2026.slogan}</div>
         </div>
         <div>
           <div className="mb-[18px] text-[11px] font-bold uppercase tracking-[.15em] text-white">Servicii</div>

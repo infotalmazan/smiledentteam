@@ -256,7 +256,7 @@ function ServiceDetail({ svc }: { svc: typeof SERVICES[number] }) {
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={B.wh} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d={iconPath}/></svg>
             </div>
             <div>
-              <h2 className="font-display text-[28px] font-extrabold text-[--nv] leading-none">{svc.name}</h2>
+              <h2 className="font-display text-[28px] font-semibold text-[--nv] leading-none">{svc.name}</h2>
               <div className="flex gap-2 mt-1">
                 <Badge className="text-[11px] font-semibold bg-sdt-100 text-sdt-600 border-none">{svc.tag}</Badge>
                 <Badge className="text-[11px] font-bold bg-sdt-100 text-sdt-800 border-none">{svc.price}</Badge>
@@ -352,7 +352,7 @@ function ServiceDetail({ svc }: { svc: typeof SERVICES[number] }) {
           <Card className="bg-sdt-100 rounded-[14px] min-w-[200px] shrink-0 border-dashed border-[--bdr] shadow-none">
             <CardContent className="p-5 flex items-center justify-center h-full">
               <div className="text-center">
-                <div className="font-display text-lg font-extrabold text-sdt-600">4.9</div>
+                <div className="font-display text-lg font-semibold text-sdt-600">4.9</div>
                 <div className="text-[#fbb040] text-[10px] mt-0.5">★★★★★</div>
                 <div className="text-[10px] text-[--gr] mt-1">1 200+ recenzii Google</div>
               </div>
@@ -401,7 +401,7 @@ function ServiceDetail({ svc }: { svc: typeof SERVICES[number] }) {
               <p className="text-base leading-relaxed text-[--nv] mb-3 italic font-display font-semibold">
                 &ldquo;{detail.ambassador.quote}&rdquo;
               </p>
-              <div className="font-display text-[15px] font-extrabold text-pink-500">&mdash; {detail.ambassador.name}</div>
+              <div className="font-display text-[15px] font-semibold text-pink-500">&mdash; {detail.ambassador.name}</div>
               <a href="/ambasadori" className="text-xs font-semibold text-pink-500 mt-2.5 no-underline">
                 Vezi profilul complet <ArrowRight className="w-3 h-3 inline ml-0.5"/>
               </a>
@@ -412,7 +412,7 @@ function ServiceDetail({ svc }: { svc: typeof SERVICES[number] }) {
 
       {/* CTA */}
       <div className="py-10 text-center">
-        <h3 className="font-display text-[22px] font-extrabold text-[--nv] mb-2.5">
+        <h3 className="font-display text-[22px] font-semibold text-[--nv] mb-2.5">
           Pregatit pentru {svc.name.toLowerCase()}?
         </h3>
         <p className="text-sm text-[--gr] mb-5">Programeaza-te acum si fa primul pas.</p>
@@ -440,7 +440,7 @@ export function ServiciiPage() {
             <span className="w-1.5 h-1.5 rounded-full bg-pink-500"/>
             <span className="text-[11px] font-bold tracking-[.12em] uppercase text-pink-500">Servicii complete</span>
           </div>
-          <h1 className="font-display text-[38px] font-extrabold text-[--nv] leading-[1.08] mb-3">
+          <h1 className="font-display text-[38px] font-semibold text-[--nv] leading-[1.08] mb-3">
             Tot ce ai nevoie,<br/>intr-un <span className="text-sdt-600">singur loc.</span>
           </h1>
           <p className="text-[15px] text-[--gr] max-w-[500px]">
@@ -495,7 +495,7 @@ export function ServiciiPage() {
                       </div>
                       <div>
                         <span className="text-[11px] text-sdt-600/30 font-bold">{String(index+1).padStart(2,'0')}</span>
-                        <h3 className="font-display text-base font-bold text-[--nv]">{svc.name}</h3>
+                        <h3 className="font-display text-base font-medium text-[--nv]">{svc.name}</h3>
                       </div>
                     </div>
                     <div className="flex gap-1.5 flex-wrap mb-2.5">

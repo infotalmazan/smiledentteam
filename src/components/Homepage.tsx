@@ -123,7 +123,7 @@ function SHead({ eyebrow, title, sub, center, light }: {
     <div className={cn('mb-[52px]', center && 'text-center')}>
       {eyebrow && <div className="mb-4"><SdtBadge light={light}>{eyebrow}</SdtBadge></div>}
       <h2 className={cn(
-        'font-display text-[40px] font-extrabold tracking-[-0.03em] leading-[1.06] mb-3.5',
+        'font-display text-[40px] font-semibold tracking-[-0.03em] leading-[1.06] mb-3.5',
         light ? 'text-white' : 'text-[#0a1e18]'
       )}>{title}</h2>
       {sub && <p className={cn(
@@ -191,11 +191,11 @@ function Hero() {
 
         {/* COL 1 — Headline */}
         <div className="pt-6 pr-9 pb-0 pl-12 flex flex-col justify-start">
-          <h1 className="animate-slide-up font-display text-6xl font-extrabold leading-[0.95] tracking-[-0.04em] mb-5 text-pink-500">
+          <h1 className="animate-slide-up font-display text-6xl font-semibold leading-[0.95] tracking-[-0.04em] mb-5 text-pink-500">
             ALEGE-TE<br/>PE TINE.
           </h1>
           <div className="mb-4 h-[3px] w-12 rounded-full bg-pink-500" />
-          <h2 className="animate-slide-up stagger-2 font-display text-lg font-bold text-[#0a1e18] tracking-[-0.02em] mb-3.5 leading-[1.2]">
+          <h2 className="animate-slide-up stagger-2 font-display text-lg font-medium text-[#0a1e18] tracking-[-0.02em] mb-3.5 leading-[1.2]">
             Incepe cu un Digital Check-Up.
           </h2>
           <p className="animate-slide-up stagger-3 text-[13px] leading-[1.65] text-[#4a6a58] max-w-[320px] mb-7">
@@ -290,7 +290,7 @@ function Hero() {
               <div className="text-[#fbb040] text-xs flex gap-0.5">
                 {[1,2,3,4,5].map(i => <Star key={i} className="w-3 h-3 fill-current" />)}
               </div>
-              <div className="font-display text-lg font-extrabold text-sdt-600">4.9</div>
+              <div className="font-display text-lg font-semibold text-sdt-600">4.9</div>
             </div>
             <div className="text-[10px] text-[#5a7a6e] mt-0.5">1 200+ recenzii Google verificate</div>
           </div>
@@ -301,13 +301,13 @@ function Hero() {
       <div className="flex justify-center gap-11 items-center shrink-0 py-[22px] px-[52px]" style={{ background: `linear-gradient(135deg, ${B.p}, ${B.pm})` }}>
         {[[STATS.years,'ani de excelenta'],[STATS.team,'specialisti'],[STATS.patients,'pacienti tratati'],['3','filiale']].map(([n,l]) => (
           <div key={String(l)} className="flex items-baseline gap-2">
-            <div className="font-display text-4xl font-extrabold text-white leading-none">{n}</div>
+            <div className="font-display text-4xl font-semibold text-white leading-none">{n}</div>
             <div className="text-xs text-white/[.65] font-medium">{l}</div>
           </div>
         ))}
         {/* Rate 0% — pink accent */}
         <div className="flex items-center gap-2 bg-pink-500 py-2 px-5 rounded-full ml-2">
-          <div className="font-display text-2xl font-extrabold text-white leading-none">0%</div>
+          <div className="font-display text-2xl font-semibold text-white leading-none">0%</div>
           <div className="text-[11px] text-white/[.85] font-semibold leading-[1.2]">dobanda<br/>la rate</div>
         </div>
       </div>
@@ -333,7 +333,7 @@ function CheckUpStrip() {
               PRODUS FLAGSHIP {CAMPAIGN_2026.year}
             </span>
           </div>
-          <h2 className="font-display text-[30px] font-extrabold text-white tracking-[-0.03em] leading-[1.1] mb-2">
+          <h2 className="font-display text-[30px] font-semibold text-white tracking-[-0.03em] leading-[1.1] mb-2">
             Digital Check-Up
           </h2>
           <p className="text-[13px] text-white/[.65] max-w-[340px] leading-[1.6]">
@@ -395,7 +395,7 @@ function Services() {
       <div className="flex justify-between items-end mb-4">
         <div className="max-w-[600px]">
           <SdtBadge>Servicii complete</SdtBadge>
-          <h2 className="font-display text-[26px] font-extrabold text-[#0a1e18] tracking-[-0.03em] leading-[1.1] mb-2 mt-2">
+          <h2 className="font-display text-[26px] font-semibold text-[#0a1e18] tracking-[-0.03em] leading-[1.1] mb-2 mt-2">
             Tot ce ai nevoie, intr-un singur loc
           </h2>
           <p className="text-[13px] text-[#5a7a6e] leading-[1.5]">
@@ -452,7 +452,7 @@ function Technologies() {
             Analog &rarr; digital <ArrowRight className="w-4 h-4 ml-1" />
           </Button>
           <div className="mt-8 p-[22px] rounded-[14px] text-white" style={{ background: `linear-gradient(135deg, ${B.pm}, ${B.p})` }}>
-            <div className="font-display text-[44px] font-extrabold leading-none">6</div>
+            <div className="font-display text-[44px] font-semibold leading-none">6</div>
             <div className="text-xs font-semibold opacity-[.85] mt-1">tehnologii certificate</div>
             <div className="text-[11px] opacity-60 mt-1">utilizate zilnic in clinica noastra</div>
           </div>
@@ -461,7 +461,7 @@ function Technologies() {
           {TECHS.map(t => (
             <Card key={t.n} className="glass hover-glow border-transparent p-[22px] transition-all">
               <div className="flex justify-between items-start mb-3">
-                <span className="font-display text-[26px] font-extrabold text-sdt-600/[.18] leading-none">{t.n}</span>
+                <span className="font-display text-[26px] font-semibold text-sdt-600/[.18] leading-none">{t.n}</span>
                 <Badge variant="accent" className="text-[9px] font-bold px-2 py-0.5">{t.tag}</Badge>
               </div>
               <h4 className="text-sm font-bold text-[#0a1e18] mb-2">{t.name}</h4>
@@ -531,7 +531,7 @@ function Reviews() {
           <div className="text-[#fbb040] text-xl mb-1 flex gap-0.5 justify-center">
             {[1,2,3,4,5].map(i => <Star key={i} className="w-5 h-5 fill-current" />)}
           </div>
-          <div className="font-display text-[40px] font-extrabold text-sdt-600 leading-none">4.9</div>
+          <div className="font-display text-[40px] font-semibold text-sdt-600 leading-none">4.9</div>
           <div className="text-xs text-[#5a7a6e] mt-1">1 200+ recenzii</div>
           <div className="text-[11px] text-sdt-600 font-semibold mt-1.5">Google Verified</div>
         </div>
@@ -581,7 +581,7 @@ function VideoReels() {
       <div className="flex justify-between items-end mb-6">
         <div>
           <SdtBadge>Video feedback</SdtBadge>
-          <h2 className="font-display text-[28px] font-extrabold text-[#0a1e18] tracking-[-0.03em] leading-[1.1] mt-2">
+          <h2 className="font-display text-[28px] font-semibold text-[#0a1e18] tracking-[-0.03em] leading-[1.1] mt-2">
             Povesti <span className="text-pink-500">reale</span>
           </h2>
         </div>
@@ -626,7 +626,7 @@ function Ambasadori() {
     <section id="ambasadori" className="bg-white py-[72px] px-[52px] border-t border-transparent">
       <div className="text-center mb-11">
         <SdtBadge>Zambete care inspira</SdtBadge>
-        <h2 className="font-display text-[40px] font-extrabold tracking-[-0.03em] leading-[1.06] text-[#0a1e18] mt-4 mb-3.5">
+        <h2 className="font-display text-[40px] font-semibold tracking-[-0.03em] leading-[1.06] text-[#0a1e18] mt-4 mb-3.5">
           Ambasadorii <span className="text-pink-500">Smile Dent Team</span>
         </h2>
         <p className="text-[15px] text-[#5a7a6e] max-w-[500px] mx-auto">
@@ -644,7 +644,7 @@ function Ambasadori() {
               />
               <div className="absolute bottom-0 left-0 right-0 h-[60%] pointer-events-none" style={{ background: 'linear-gradient(to top, rgba(10,30,24,.9) 0%, transparent 100%)' }} />
               <div className="absolute bottom-0 left-0 right-0 p-3.5">
-                <div className="font-display text-[13px] font-bold text-white leading-[1.2]">{amb.name}</div>
+                <div className="font-display text-[13px] font-medium text-white leading-[1.2]">{amb.name}</div>
                 <div className="text-[10px] text-white/60 mt-0.5">{amb.role}</div>
               </div>
             </div>
@@ -708,10 +708,10 @@ function Appointment() {
       <div className="flex gap-20 items-center">
         <div className="flex-1 text-white">
           <div className="mb-8 p-5 px-6 bg-pink-500 rounded-xl">
-            <div className="font-display text-[32px] font-extrabold text-white tracking-[-0.02em]">{CAMPAIGN_2026.slogan}</div>
+            <div className="font-display text-[32px] font-semibold text-white tracking-[-0.02em]">{CAMPAIGN_2026.slogan}</div>
             <div className="text-sm text-white/80 mt-1.5">Investeste in sanatatea ta — incepe cu Digital Check-Up.</div>
           </div>
-          <h2 className="font-display text-[38px] font-extrabold leading-[1.06] tracking-[-0.03em] mb-5 text-white">
+          <h2 className="font-display text-[38px] font-semibold leading-[1.06] tracking-[-0.03em] mb-5 text-white">
             Fa primul pas<br/>spre zambetul perfect
           </h2>
           <p className="text-[17px] leading-[1.75] text-white/75 max-w-[380px] mb-8">
@@ -766,7 +766,7 @@ function Footer() {
               Clinica stomatologica digitala. 15 ani de excelenta, {STATS.team} specialisti, {STATS.patients} pacienti, {STATS.locations} filiale.
             </p>
             <div className="mt-5 p-3 px-4 bg-pink-500/[.12] border border-pink-500/20 rounded-lg">
-              <div className="font-display text-base font-extrabold text-pink-500">{CAMPAIGN_2026.slogan}</div>
+              <div className="font-display text-base font-semibold text-pink-500">{CAMPAIGN_2026.slogan}</div>
             </div>
             <div className="flex gap-2.5 mt-4">
               {['FB','IG','YT','TK'].map(s => (

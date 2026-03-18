@@ -190,7 +190,7 @@ function AmbassadorProfile({ amb, onNav }: { amb: typeof AMBASSADORS[number]; on
           <Badge variant="accent" className="mb-2.5 bg-pink-500/15 text-[10px] font-bold tracking-[.1em] text-pink-500">
             AMBASADOR SDT
           </Badge>
-          <h1 className="font-display text-[42px] font-extrabold leading-[1.05] text-white">
+          <h1 className="font-display text-[42px] font-semibold leading-[1.05] text-white">
             {amb.name}
           </h1>
           <div className="mt-1.5 text-base text-white/70">{amb.role}</div>
@@ -216,7 +216,7 @@ function AmbassadorProfile({ amb, onNav }: { amb: typeof AMBASSADORS[number]; on
 
         {/* Quote */}
         <div className="border-b border-sdt-600/10 py-10 text-center">
-          <div className="font-display mx-auto max-w-[700px] text-2xl font-bold italic leading-[1.4] text-[#0a1e18]">
+          <div className="font-display mx-auto max-w-[700px] text-2xl font-medium italic leading-[1.4] text-[#0a1e18]">
             &ldquo;{detail.quote}&rdquo;
           </div>
           <div className="mt-3 text-sm font-bold text-pink-500">— {amb.name}</div>
@@ -259,7 +259,7 @@ function AmbassadorProfile({ amb, onNav }: { amb: typeof AMBASSADORS[number]; on
 
         {/* CTA */}
         <div className="border-b border-sdt-600/10 py-10 text-center">
-          <h3 className="font-display mb-2 text-[22px] font-extrabold text-[#0a1e18]">
+          <h3 className="font-display mb-2 text-[22px] font-semibold text-[#0a1e18]">
             Inspirat de {amb.name.split(' ')[0]}?
           </h3>
           <p className="mb-5 text-sm text-[#5a7a6e]">Începe și tu cu un Digital Check-Up.</p>
@@ -317,7 +317,7 @@ function AllAmbassadors({ onSelect }: { onSelect: (slug:string) => void }) {
             <span className="h-1.5 w-1.5 rounded-full bg-pink-500" />
             Zâmbete care inspiră
           </Badge>
-          <h1 className="font-display mb-3.5 text-[42px] font-extrabold leading-[1.08] text-[#0a1e18]">
+          <h1 className="font-display mb-3.5 text-[42px] font-semibold leading-[1.08] text-[#0a1e18]">
             Ambasadorii<br/><span className="text-pink-500">Smile Dent Team</span>
           </h1>
           <p className="m-0 max-w-[520px] text-base leading-[1.7] text-[#5a7a6e]">
@@ -351,7 +351,7 @@ function AllAmbassadors({ onSelect }: { onSelect: (slug:string) => void }) {
                     <Badge variant="accent" className="mb-1.5 px-2 py-0.5 text-[9px] font-bold tracking-[.05em]">
                       AMBASADOR
                     </Badge>
-                    <div className="font-display text-base font-bold leading-tight text-white">{amb.name}</div>
+                    <div className="font-display text-base font-medium leading-tight text-white">{amb.name}</div>
                     <div className="mt-0.5 text-[11px] text-white/65">{amb.role}</div>
                     {detail && <div className="mt-1 text-[10px] text-white/[.45]">Serviciu: {detail.service}</div>}
                   </div>

@@ -133,7 +133,7 @@ function Hero() {
         {/* Left */}
         <div>
           <SectionBadge light>Produs Flagship 2026</SectionBadge>
-          <h1 className="font-display text-[52px] font-extrabold text-white leading-[1.05] tracking-[-0.03em] mb-5">
+          <h1 className="font-display text-[52px] font-semibold text-white leading-[1.05] tracking-[-0.03em] mb-5">
             Digital<br /><span className="text-pink-500">Check-Up</span>
           </h1>
           <p className="text-lg leading-[1.7] text-white/70 max-w-[480px] mb-9">
@@ -153,7 +153,7 @@ function Hero() {
           <div className="flex gap-8 mt-11">
             {[['30 min', 'Durată'], ['100%', 'Digital'], ['0', 'Disconfort']].map(([n, l]) => (
               <div key={l}>
-                <div className="font-display text-[28px] font-extrabold text-pink-500">{n}</div>
+                <div className="font-display text-[28px] font-semibold text-pink-500">{n}</div>
                 <div className="text-xs text-white/[.45] mt-0.5">{l}</div>
               </div>
             ))}
@@ -167,7 +167,7 @@ function Hero() {
             style={{ background: `linear-gradient(135deg, ${B.pm}22, ${B.a}11)` }}
           >
             <CheckCircle className="w-20 h-20 text-pink-500" strokeWidth={1.2} />
-            <div className="font-display text-[22px] font-extrabold text-white text-center">
+            <div className="font-display text-[22px] font-semibold text-white text-center">
               Scanare 3D<br />Completă
             </div>
             <div className="text-[13px] text-white/50 text-center max-w-[240px]">
@@ -180,7 +180,7 @@ function Hero() {
             style={{ animation: 'float 4s ease-in-out infinite' }}
           >
             <div className="text-[11px] text-[#5a7a6e] mb-0.5">Precizie</div>
-            <div className="font-display text-xl font-extrabold text-sdt-600">99.8%</div>
+            <div className="font-display text-xl font-semibold text-sdt-600">99.8%</div>
           </div>
           <div
             className="absolute bottom-[40px] -left-[20px] bg-white rounded-xl px-[18px] py-3 shadow-[0_8px_32px_rgba(0,0,0,.15)]"
@@ -211,7 +211,7 @@ function Benefits() {
       <div className="max-w-[1200px] mx-auto">
         <div className="text-center mb-14">
           <SectionBadge>De ce Digital Check-Up</SectionBadge>
-          <h2 className="font-display text-[38px] font-extrabold text-sdt-900 tracking-[-0.03em] mb-3.5">
+          <h2 className="font-display text-[38px] font-semibold text-sdt-900 tracking-[-0.03em] mb-3.5">
             Beneficiile unui<br /><span className="text-sdt-600">Digital Check-Up</span>
           </h2>
           <p className="text-[15px] text-[#5a7a6e] max-w-[520px] mx-auto">
@@ -229,7 +229,7 @@ function Benefits() {
                 <div className="w-12 h-12 rounded-xl bg-sdt-100 flex items-center justify-center mb-[18px]">
                   <Icon className="w-[22px] h-[22px] text-sdt-600" strokeWidth={1.8} />
                 </div>
-                <h3 className="font-display text-[17px] font-bold text-sdt-900 mb-2">{b.title}</h3>
+                <h3 className="font-display text-[17px] font-medium text-sdt-900 mb-2">{b.title}</h3>
                 <p className="text-[13px] leading-[1.65] text-[#5a7a6e] m-0">{b.desc}</p>
               </Card>
             )
@@ -257,12 +257,12 @@ function Process() {
         <div className="flex justify-between items-end mb-9">
           <div>
             <SectionBadge>Cum funcționează</SectionBadge>
-            <h2 className="font-display text-[34px] font-extrabold text-sdt-900 tracking-[-0.03em] m-0">
+            <h2 className="font-display text-[34px] font-semibold text-sdt-900 tracking-[-0.03em] m-0">
               Etapele unui <span className="text-sdt-600">Digital Check-Up</span>
             </h2>
           </div>
           <div className="flex items-center gap-2">
-            <div className="font-display text-[22px] font-extrabold text-sdt-600">~30 min</div>
+            <div className="font-display text-[22px] font-semibold text-sdt-600">~30 min</div>
             <div className="text-[11px] text-[#5a7a6e]">durată totală</div>
           </div>
         </div>
@@ -279,7 +279,7 @@ function Process() {
                 </div>
               </div>
               <CardContent className="px-[18px] py-4">
-                <h3 className="font-display text-[15px] font-bold text-sdt-900 mb-1">{s.title}</h3>
+                <h3 className="font-display text-[15px] font-medium text-sdt-900 mb-1">{s.title}</h3>
                 <p className="text-xs leading-[1.5] text-[#5a7a6e] m-0">{s.desc}</p>
               </CardContent>
             </Card>
@@ -302,7 +302,7 @@ function DcuStats() {
           ['4.9', 'rating Google pacienți'],
         ].map(([n, l]) => (
           <div key={l} className="text-center">
-            <div className="font-display text-[30px] font-extrabold text-white">{n}</div>
+            <div className="font-display text-[30px] font-semibold text-white">{n}</div>
             <div className="text-[11px] text-white/60 mt-1">{l}</div>
           </div>
         ))}
@@ -326,7 +326,7 @@ function DcuTestimonials() {
           {/* Left — Reviews */}
           <div>
             <SectionBadge>Ce spun pacienții</SectionBadge>
-            <h2 className="font-display text-[28px] font-extrabold text-sdt-900 mb-5">
+            <h2 className="font-display text-[28px] font-semibold text-sdt-900 mb-5">
               Experiența <span className="text-pink-500">Digital Check-Up</span>
             </h2>
             <div className="flex flex-col gap-3">
@@ -342,7 +342,7 @@ function DcuTestimonials() {
           {/* Right — Video reels */}
           <div>
             <SectionBadge>Video feedback</SectionBadge>
-            <h2 className="font-display text-[28px] font-extrabold text-sdt-900 mb-5">
+            <h2 className="font-display text-[28px] font-semibold text-sdt-900 mb-5">
               Povești <span className="text-sdt-600">reale</span>
             </h2>
             <div className="grid grid-cols-3 gap-2.5">
@@ -387,7 +387,7 @@ function WhatYouGet() {
       <div className="max-w-[1200px] mx-auto">
         <div className="text-center mb-9">
           <SectionBadge light>Ce primești</SectionBadge>
-          <h2 className="font-display text-[32px] font-extrabold text-white m-0">
+          <h2 className="font-display text-[32px] font-semibold text-white m-0">
             Totul într-un <span className="text-pink-500">Digital Check-Up</span>
           </h2>
         </div>
@@ -400,7 +400,7 @@ function WhatYouGet() {
                   <Icon className="w-[18px] h-[18px] text-pink-500" strokeWidth={1.8} />
                 </div>
                 <div>
-                  <h3 className="font-display text-sm font-bold text-white mb-1">{item.title}</h3>
+                  <h3 className="font-display text-sm font-medium text-white mb-1">{item.title}</h3>
                   <p className="text-xs leading-[1.5] text-white/[.55] m-0">{item.desc}</p>
                 </div>
               </div>
@@ -428,7 +428,7 @@ function WhenNeeded() {
       <div className="max-w-[1200px] mx-auto grid grid-cols-2 gap-[60px] items-center">
         <div>
           <SectionBadge>Ai nevoie de check-up?</SectionBadge>
-          <h2 className="font-display text-[34px] font-extrabold text-sdt-900 tracking-[-0.03em] mb-3.5 leading-[1.1]">
+          <h2 className="font-display text-[34px] font-semibold text-sdt-900 tracking-[-0.03em] mb-3.5 leading-[1.1]">
             Când ar trebui<br />să faci un <span className="text-sdt-600">Digital Check-Up</span>?
           </h2>
           <p className="text-sm leading-[1.7] text-[#5a7a6e] mb-7 max-w-[420px]">
@@ -461,7 +461,7 @@ function CtaStrip() {
   return (
     <section className="py-[60px] px-12" style={{ background: `linear-gradient(135deg, ${B.p}, ${B.pm})` }}>
       <div className="max-w-[900px] mx-auto text-center">
-        <h2 className="font-display text-[34px] font-extrabold text-white mb-3.5 tracking-[-0.02em]">
+        <h2 className="font-display text-[34px] font-semibold text-white mb-3.5 tracking-[-0.02em]">
           Alege-te pe tine. Programează un Digital Check-Up.
         </h2>
         <p className="text-base text-white/70 mb-8 max-w-[540px] mx-auto">
@@ -499,7 +499,7 @@ function Faq() {
       <div className="max-w-[800px] mx-auto">
         <div className="text-center mb-12">
           <SectionBadge>Întrebări frecvente</SectionBadge>
-          <h2 className="font-display text-[34px] font-extrabold text-sdt-900 tracking-[-0.03em] m-0">
+          <h2 className="font-display text-[34px] font-semibold text-sdt-900 tracking-[-0.03em] m-0">
             Tot ce trebuie să știi
           </h2>
         </div>
@@ -541,7 +541,7 @@ function AppointmentForm() {
       <div className="max-w-[1200px] mx-auto grid grid-cols-2 gap-[60px] items-center">
         <div>
           <SectionBadge>Programare</SectionBadge>
-          <h2 className="font-display text-[34px] font-extrabold text-sdt-900 mb-3.5 tracking-[-0.02em] leading-[1.1]">
+          <h2 className="font-display text-[34px] font-semibold text-sdt-900 mb-3.5 tracking-[-0.02em] leading-[1.1]">
             Programează-ți<br /><span className="text-pink-500">Digital Check-Up</span>
           </h2>
           <p className="text-sm leading-[1.7] text-[#5a7a6e] mb-7 max-w-[400px]">
@@ -599,7 +599,7 @@ function Footer() {
           <p className="text-[13px] text-white/[.45] mt-4 leading-[1.7] max-w-[260px]">
             Clinică stomatologică digitală. {STATS.years} ani de excelență, {STATS.team} specialiști, {STATS.patients} pacienți.
           </p>
-          <div className="font-display text-base font-extrabold text-pink-500 mt-4">{CAMPAIGN_2026.slogan}</div>
+          <div className="font-display text-base font-semibold text-pink-500 mt-4">{CAMPAIGN_2026.slogan}</div>
         </div>
         <div>
           <div className="text-[11px] font-bold text-white tracking-[.15em] uppercase mb-[18px]">Servicii</div>
