@@ -160,10 +160,10 @@ function Hero() {
   return (
     <section style={{ background:B.wh, borderBottom:`1px solid ${B.bdr}` }}>
       <div style={{ height:4, background:`linear-gradient(90deg,${B.p},${B.pm},${B.a})`, transformOrigin:'left', animation:'barGrow .8s ease both' }}/>
-      <div style={{ display:'grid', gridTemplateColumns:'1fr 1px 1.35fr 1px 0.85fr', minHeight:'calc(100vh - 114px)' }}>
+      <div style={{ display:'grid', gridTemplateColumns:'1fr 1px 1.35fr 1px 0.85fr', minHeight:520 }}>
 
         {/* COL 1 — Headline */}
-        <div style={{ padding:'36px 40px 32px 52px', display:'flex', flexDirection:'column', justifyContent:'center' }}>
+        <div style={{ padding:'48px 40px 36px 52px', display:'flex', flexDirection:'column', justifyContent:'flex-start' }}>
           <h1 style={{ fontFamily:"'Syne',sans-serif", fontSize:44, fontWeight:800, lineHeight:1.02, letterSpacing:'-.04em', margin:'0 0 10px', color:B.a }}>
             ALEGE-TE<br/>PE TINE.
           </h1>
@@ -178,33 +178,20 @@ function Hero() {
             <Btn style={{ justifyContent:'center', padding:'12px 24px' }}>Consultație GRATUITĂ →</Btn>
             <Btn outline style={{ justifyContent:'center', padding:'12px 24px' }}>Descoperă Digital Check-Up</Btn>
           </div>
-          <div style={{ display:'flex', gap:20, marginTop:28, paddingTop:20, borderTop:`1px solid ${B.bdr}` }}>
-            {[[STATS.years,'ani'],[STATS.team,'specialiști'],[STATS.patients,'pacienți'],[STATS.locations,'filiale']].map(([n,l]) => (
-              <div key={String(l)}>
-                <div style={{ fontFamily:"'Syne',sans-serif", fontSize:24, fontWeight:800, color:B.p, lineHeight:1 }}>{n}</div>
-                <div style={{ fontSize:10, color:B.gr, marginTop:3, fontWeight:500 }}>{l}</div>
-              </div>
-            ))}
-          </div>
         </div>
 
         <div style={{ background:B.bdr }}/>
 
         {/* COL 2 — Photo */}
         <div style={{ position:'relative', overflow:'hidden' }}>
-          <TeamPhoto style={{ objectPosition:'center 20%' }}/>
+          <TeamPhoto style={{ objectPosition:'center 30%' }}/>
           <div style={{ position:'absolute', inset:0, background:'linear-gradient(to top,rgba(10,30,24,.22) 0%,transparent 55%)', pointerEvents:'none' }}/>
-          <FloatCard cls="fl2" style={{ position:'absolute', bottom:24, left:-14 }}>
-            <div style={{ color:'#fbb040', fontSize:14, marginBottom:2 }}>★★★★★</div>
-            <div style={{ fontFamily:"'Syne',sans-serif", fontSize:16, fontWeight:800, color:B.nv }}>4.9 / 5.0</div>
-            <div style={{ fontSize:11, color:B.gr }}>1 200+ recenzii Google</div>
-          </FloatCard>
         </div>
 
         <div style={{ background:B.bdr }}/>
 
         {/* COL 3 — Services list */}
-        <div style={{ padding:'24px 28px', display:'flex', flexDirection:'column', justifyContent:'center' }}>
+        <div style={{ padding:'48px 28px 36px', display:'flex', flexDirection:'column', justifyContent:'flex-start' }}>
           <div style={{ fontSize:10, fontWeight:700, color:B.p, letterSpacing:'.22em', textTransform:'uppercase', marginBottom:12 }}>Servicii</div>
           {SVC_LIST.map((s, i) => (
             <div key={s} style={{ display:'flex', alignItems:'center', justifyContent:'space-between',
@@ -227,6 +214,16 @@ function Hero() {
             <div style={{ fontSize:10, color:B.gr, marginTop:2 }}>1 200+ recenzii Google verificate</div>
           </div>
         </div>
+      </div>
+
+      {/* Stats strip — full width */}
+      <div style={{ background:`linear-gradient(135deg,${B.p},${B.pm})`, padding:'20px 52px', display:'flex', justifyContent:'space-between', alignItems:'center' }}>
+        {[[STATS.years,'ani de excelență'],[STATS.team,'specialiști'],[STATS.patients,'pacienți tratați'],[STATS.locations,'filiale']].map(([n,l]) => (
+          <div key={String(l)} style={{ display:'flex', alignItems:'baseline', gap:10 }}>
+            <div style={{ fontFamily:"'Syne',sans-serif", fontSize:28, fontWeight:800, color:B.wh, lineHeight:1 }}>{n}</div>
+            <div style={{ fontSize:12, color:'rgba(255,255,255,.65)', fontWeight:500 }}>{l}</div>
+          </div>
+        ))}
       </div>
     </section>
   )
