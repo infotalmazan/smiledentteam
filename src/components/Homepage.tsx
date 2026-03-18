@@ -351,12 +351,12 @@ function CheckUpStrip() {
         <div style={{ display:'flex', flexDirection:'column', gap:8, alignItems:'flex-end' }}>
           <a href="/digital-checkup" style={{ textDecoration:'none' }}>
             <button style={{
-              background:'transparent', color:B.wh, border:`2px solid ${B.a}`, padding:'13px 26px', borderRadius:8,
+              background:B.wh, color:B.p, border:`2px solid ${B.a}`, padding:'13px 26px', borderRadius:8,
               fontSize:14, fontWeight:800, cursor:'pointer', fontFamily:"'DM Sans',sans-serif", whiteSpace:'nowrap',
               transition:'all .2s',
             }}
-              onMouseEnter={e => { e.currentTarget.style.background=B.a; e.currentTarget.style.transform='translateY(-2px)' }}
-              onMouseLeave={e => { e.currentTarget.style.background='transparent'; e.currentTarget.style.transform='' }}
+              onMouseEnter={e => { e.currentTarget.style.background=B.a; e.currentTarget.style.color=B.wh; e.currentTarget.style.transform='translateY(-2px)' }}
+              onMouseLeave={e => { e.currentTarget.style.background=B.wh; e.currentTarget.style.color=B.p; e.currentTarget.style.transform='' }}
             >Programează Digital Check-Up →</button>
           </a>
           <span style={{ fontSize:10, color:'rgba(255,255,255,.4)' }}>Durată ~30 min</span>
@@ -465,7 +465,7 @@ function Technologies() {
 /* ─── Before / After ──────────────────────── */
 function BeforeAfter() {
   const cases = [
-    { label:'Implanturi + Protetică', before:'Dinți lipsă, carii avansate', after:'Zâmbet complet restaurat', photoBefore:'https://images.unsplash.com/photo-1606811841689-23dfddce3e95?w=300&h=200&fit=crop', photoAfter:'https://images.unsplash.com/photo-1581585090421-4b0a0e5e3e44?w=300&h=200&fit=crop' },
+    { label:'Implanturi + Protetică', before:'Dinți lipsă, carii avansate', after:'Zâmbet complet restaurat', photoBefore:'https://images.unsplash.com/photo-1606811841689-23dfddce3e95?w=300&h=200&fit=crop', photoAfter:'https://images.unsplash.com/photo-1606811971618-4486d14f3f99?w=300&h=200&fit=crop' },
     { label:'Digital Smile Design',   before:'Dinți inegali, decolorați',   after:'Fațete ceramice perfecte', photoBefore:'https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?w=300&h=200&fit=crop', photoAfter:'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=300&h=200&fit=crop' },
     { label:'Ortodonție Digitală',    before:'Malocluzii, spații',          after:'Aliniere perfectă 3D', photoBefore:'https://images.unsplash.com/photo-1598256989800-fe5f95da9787?w=300&h=200&fit=crop', photoAfter:'https://images.unsplash.com/photo-1609840114035-3c981b782dfe?w=300&h=200&fit=crop' },
     { label:'All-on-4 Complet',       before:'Edentație totală',            after:'Arcadă completă 1 zi', photoBefore:'https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=300&h=200&fit=crop', photoAfter:'https://images.unsplash.com/photo-1606811971618-4486d14f3f99?w=300&h=200&fit=crop' },
