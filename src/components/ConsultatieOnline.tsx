@@ -200,92 +200,59 @@ const JOURNEY = [
 
 function JourneyTimeline() {
   return (
-    <section style={{ background:B.ps, padding:'80px 48px', position:'relative' }}>
-      <div style={{ maxWidth:1000, margin:'0 auto' }}>
-        <div style={{ textAlign:'center', marginBottom:56 }}>
+    <section style={{ background:B.ps, padding:'64px 48px' }}>
+      <div style={{ maxWidth:1100, margin:'0 auto' }}>
+        <div style={{ textAlign:'center', marginBottom:36 }}>
           <SectionBadge>Călătoria ta</SectionBadge>
-          <h2 style={{ fontFamily:"'Syne',sans-serif", fontSize:36, fontWeight:800, color:B.nv, letterSpacing:'-.03em', margin:'0 0 12px' }}>
-            Ce se întâmplă <span style={{ color:B.p }}>pas cu pas</span>?
+          <h2 style={{ fontFamily:"'Syne',sans-serif", fontSize:32, fontWeight:800, color:B.nv, letterSpacing:'-.03em', margin:'0 0 8px' }}>
+            Ce se întâmplă <span style={{ color:B.a }}>pas cu pas</span>?
           </h2>
-          <p style={{ fontSize:15, color:B.gr, maxWidth:500, margin:'0 auto' }}>
-            De la decizie la zâmbet — fiecare etapă explicată clar, cu imagini și detalii.
+          <p style={{ fontSize:14, color:B.gr, maxWidth:460, margin:'0 auto' }}>
+            De la decizie la zâmbet — fiecare etapă explicată clar.
           </p>
         </div>
 
-        {/* Timeline line */}
-        <div style={{ position:'relative' }}>
-          {/* Vertical line */}
-          <div style={{ position:'absolute', left:'50%', top:0, bottom:0, width:2, background:B.bdr, transform:'translateX(-50%)' }}/>
-
+        {/* Compact timeline — 2 columns, 3 rows */}
+        <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:14 }}>
           {JOURNEY.map((j, i) => (
             <div key={j.step} style={{
-              display:'grid', gridTemplateColumns: j.side==='left' ? '1fr 60px 1fr' : '1fr 60px 1fr',
-              gap:0, marginBottom: i < JOURNEY.length-1 ? 48 : 0, alignItems:'center',
-            }}>
-              {/* Left content or empty */}
-              {j.side === 'left' ? (
-                <div style={{ paddingRight:32 }}>
-                  <div style={{ background:B.wh, borderRadius:16, overflow:'hidden', border:`1px solid ${B.bdr}`, boxShadow:`0 4px 20px ${B.bdr}` }}>
-                    <div style={{ height:180, overflow:'hidden' }}>
-                      <img src={j.photo} alt={j.title} style={{ width:'100%', height:'100%', objectFit:'cover' }}/>
-                    </div>
-                    <div style={{ padding:'20px' }}>
-                      <h3 style={{ fontFamily:"'Syne',sans-serif", fontSize:18, fontWeight:700, color:B.nv, margin:'0 0 6px' }}>{j.title}</h3>
-                      <p style={{ fontSize:13, lineHeight:1.6, color:B.gr, margin:'0 0 12px' }}>{j.desc}</p>
-                      <div style={{ display:'flex', flexDirection:'column', gap:5 }}>
-                        {j.detail.map(d => (
-                          <div key={d} style={{ display:'flex', alignItems:'flex-start', gap:6 }}>
-                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={B.p} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ marginTop:2, flexShrink:0 }}><polyline points="20 6 9 17 4 12"/></svg>
-                            <span style={{ fontSize:12, color:B.nv, fontWeight:500 }}>{d}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ) : <div/>}
-
-              {/* Center dot */}
-              <div style={{ display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', zIndex:2 }}>
+              background:B.wh, borderRadius:14, overflow:'hidden', border:`1px solid ${B.bdr}`,
+              display:'grid', gridTemplateColumns:'120px 1fr', transition:'all .2s',
+            }}
+              onMouseEnter={e => { e.currentTarget.style.borderColor=B.a; e.currentTarget.style.boxShadow=`0 6px 20px ${B.bdr}` }}
+              onMouseLeave={e => { e.currentTarget.style.borderColor=B.bdr; e.currentTarget.style.boxShadow='' }}
+            >
+              {/* Photo */}
+              <div style={{ position:'relative' }}>
+                <img src={j.photo} alt={j.title} style={{ width:'100%', height:'100%', objectFit:'cover', minHeight:140 }}/>
                 <div style={{
-                  width:44, height:44, borderRadius:'50%',
-                  background: i === JOURNEY.length-1 ? B.a : `linear-gradient(135deg,${B.p},${B.pm})`,
+                  position:'absolute', top:8, left:8,
+                  width:32, height:32, borderRadius:'50%', background:B.a,
                   display:'flex', alignItems:'center', justifyContent:'center',
-                  border:`3px solid ${B.wh}`, boxShadow:`0 2px 12px ${B.bdr}`,
+                  border:`2px solid ${B.wh}`, boxShadow:'0 2px 8px rgba(0,0,0,.2)',
                 }}>
-                  <span style={{ fontSize:12, fontWeight:800, color:B.wh }}>{j.step}</span>
+                  <span style={{ fontSize:11, fontWeight:800, color:B.wh }}>{j.step}</span>
                 </div>
               </div>
-
-              {/* Right content or empty */}
-              {j.side === 'right' ? (
-                <div style={{ paddingLeft:32 }}>
-                  <div style={{ background:B.wh, borderRadius:16, overflow:'hidden', border:`1px solid ${B.bdr}`, boxShadow:`0 4px 20px ${B.bdr}` }}>
-                    <div style={{ height:180, overflow:'hidden' }}>
-                      <img src={j.photo} alt={j.title} style={{ width:'100%', height:'100%', objectFit:'cover' }}/>
+              {/* Content */}
+              <div style={{ padding:'14px 16px' }}>
+                <h3 style={{ fontFamily:"'Syne',sans-serif", fontSize:15, fontWeight:700, color:B.nv, margin:'0 0 4px' }}>{j.title}</h3>
+                <p style={{ fontSize:12, lineHeight:1.5, color:B.gr, margin:'0 0 8px' }}>{j.desc}</p>
+                <div style={{ display:'flex', flexDirection:'column', gap:3 }}>
+                  {j.detail.slice(0,2).map(d => (
+                    <div key={d} style={{ display:'flex', alignItems:'center', gap:5 }}>
+                      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke={B.a} strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" style={{flexShrink:0}}><polyline points="20 6 9 17 4 12"/></svg>
+                      <span style={{ fontSize:11, color:B.nv, fontWeight:500 }}>{d}</span>
                     </div>
-                    <div style={{ padding:'20px' }}>
-                      <h3 style={{ fontFamily:"'Syne',sans-serif", fontSize:18, fontWeight:700, color:B.nv, margin:'0 0 6px' }}>{j.title}</h3>
-                      <p style={{ fontSize:13, lineHeight:1.6, color:B.gr, margin:'0 0 12px' }}>{j.desc}</p>
-                      <div style={{ display:'flex', flexDirection:'column', gap:5 }}>
-                        {j.detail.map(d => (
-                          <div key={d} style={{ display:'flex', alignItems:'flex-start', gap:6 }}>
-                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={B.p} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ marginTop:2, flexShrink:0 }}><polyline points="20 6 9 17 4 12"/></svg>
-                            <span style={{ fontSize:12, color:B.nv, fontWeight:500 }}>{d}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
+                  ))}
                 </div>
-              ) : <div/>}
+              </div>
             </div>
           ))}
         </div>
 
-        {/* Bottom CTA */}
-        <div style={{ textAlign:'center', marginTop:56 }}>
-          <Btn pink style={{ fontSize:16, padding:'16px 40px' }}>Începe călătoria ta →</Btn>
+        <div style={{ textAlign:'center', marginTop:28 }}>
+          <Btn pink style={{ fontSize:15, padding:'14px 36px' }}>Începe călătoria ta →</Btn>
         </div>
       </div>
     </section>
