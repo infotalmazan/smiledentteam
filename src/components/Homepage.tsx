@@ -367,31 +367,31 @@ const TECHS = [
 
 function Technologies() {
   return (
-    <section id="tehnologii" style={{ background:B.wh, padding:'96px 52px' }}>
-      <div style={{ display:'flex', gap:80, alignItems:'flex-start' }}>
-        <div style={{ width:320, flexShrink:0 }}>
-          <SHead eyebrow="Tehnologii 2025" title={<>Viitorul<br/>stomatologiei,<br/>acum la tine</>}
-            sub="Investim permanent în cele mai noi tehnologii pentru că tu meriți cel mai bun tratament posibil."
+    <section id="tehnologii" style={{ background:B.wh, padding:'80px 52px' }}>
+      <div style={{ display:'flex', gap:48, alignItems:'flex-start' }}>
+        <div style={{ width:260, flexShrink:0 }}>
+          <SHead eyebrow="Tehnologii 2025" title={<>Viitorul<br/>stomatologiei</>}
+            sub="Investim în cele mai noi tehnologii pentru cel mai bun tratament posibil."
           />
-          <Btn>Tranziția analog → digital →</Btn>
-          <div style={{ marginTop:40, padding:'28px', background:`linear-gradient(135deg,${B.pm},${B.p})`, borderRadius:16, color:B.wh }}>
-            <div style={{ fontFamily:"'Syne',sans-serif", fontSize:52, fontWeight:800, lineHeight:1 }}>6</div>
-            <div style={{ fontSize:13, fontWeight:600, opacity:.85, marginTop:4 }}>tehnologii certificate</div>
-            <div style={{ fontSize:12, opacity:.6, marginTop:6 }}>utilizate zilnic în clinica noastră</div>
+          <Btn>Analog → digital →</Btn>
+          <div style={{ marginTop:32, padding:'22px', background:`linear-gradient(135deg,${B.pm},${B.p})`, borderRadius:14, color:B.wh }}>
+            <div style={{ fontFamily:"'Syne',sans-serif", fontSize:44, fontWeight:800, lineHeight:1 }}>6</div>
+            <div style={{ fontSize:12, fontWeight:600, opacity:.85, marginTop:4 }}>tehnologii certificate</div>
+            <div style={{ fontSize:11, opacity:.6, marginTop:4 }}>utilizate zilnic în clinica noastră</div>
           </div>
         </div>
-        <div style={{ flex:1, display:'grid', gridTemplateColumns:'1fr 1fr', gap:16 }}>
+        <div style={{ flex:1, display:'grid', gridTemplateColumns:'1fr 1fr', gap:14 }}>
           {TECHS.map(t => (
-            <div key={t.n} style={{ background:B.ps, border:`1px solid ${B.bdr}`, borderRadius:14, padding:'26px', transition:'transform .2s,box-shadow .2s' }}
+            <div key={t.n} style={{ background:B.ps, border:`1px solid ${B.bdr}`, borderRadius:14, padding:'22px', transition:'transform .2s,box-shadow .2s' }}
               onMouseEnter={e => { const el=e.currentTarget; el.style.transform='translateY(-3px)'; el.style.boxShadow='0 8px 28px rgba(10,107,92,.1)' }}
               onMouseLeave={e => { const el=e.currentTarget; el.style.transform='translateY(0)'; el.style.boxShadow='none' }}
             >
-              <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-start', marginBottom:16 }}>
-                <span style={{ fontFamily:"'Syne',sans-serif", fontSize:32, fontWeight:800, color:'rgba(10,107,92,.18)', lineHeight:1 }}>{t.n}</span>
-                <span style={{ background:B.al, color:B.a, fontSize:10, fontWeight:700, padding:'3px 10px', borderRadius:40 }}>{t.tag}</span>
+              <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-start', marginBottom:12 }}>
+                <span style={{ fontFamily:"'Syne',sans-serif", fontSize:26, fontWeight:800, color:'rgba(10,107,92,.18)', lineHeight:1 }}>{t.n}</span>
+                <span style={{ background:B.al, color:B.a, fontSize:9, fontWeight:700, padding:'2px 8px', borderRadius:40 }}>{t.tag}</span>
               </div>
-              <h4 style={{ fontSize:16, fontWeight:700, color:B.nv, marginBottom:10 }}>{t.name}</h4>
-              <p style={{ fontSize:13, lineHeight:1.7, color:'#4a6a58' }}>{t.desc}</p>
+              <h4 style={{ fontSize:14, fontWeight:700, color:B.nv, marginBottom:8 }}>{t.name}</h4>
+              <p style={{ fontSize:12, lineHeight:1.65, color:'#4a6a58' }}>{t.desc}</p>
             </div>
           ))}
         </div>
@@ -489,22 +489,17 @@ const FAQS = [
 
 /* ─── Ambasadori ─────────────────────────── */
 function Ambasadori() {
-  const [showAll, setShowAll] = useState(false)
-  const featured = AMBASSADORS.filter(a => a.featured)
-  const rest = AMBASSADORS.filter(a => !a.featured)
-  const visible = showAll ? AMBASSADORS : featured
-
   return (
     <section id="ambasadori" style={{ background:B.wh, padding:'72px 52px', borderTop:`1px solid ${B.bdr}` }}>
       <div style={{ textAlign:'center', marginBottom:44 }}>
-        <Badge>Ambasadori Smile Dent Team</Badge>
-        <SHead title={<>Zâmbete care <span style={{ color:B.a }}>inspiră</span></>}/>
+        <Badge>Zâmbete care inspiră</Badge>
+        <SHead title={<>Ambasadorii <span style={{ color:B.a }}>Smile Dent Team</span></>}/>
         <p style={{ fontSize:15, color:B.gr, maxWidth:500, margin:'0 auto' }}>
           Personalități din diverse industrii care ne-au ales și ne reprezintă.
         </p>
       </div>
       <div style={{ display:'grid', gridTemplateColumns:'repeat(6, 1fr)', gap:18, maxWidth:1100, margin:'0 auto' }}>
-        {visible.map(amb => (
+        {AMBASSADORS.map(amb => (
           <div key={amb.slug} style={{
             borderRadius:16, overflow:'hidden', cursor:'pointer', position:'relative',
             border:`1px solid ${B.bdr}`, transition:'all .3s', background:B.wh,
@@ -526,20 +521,18 @@ function Ambasadori() {
           </div>
         ))}
       </div>
-      {rest.length > 0 && !showAll && (
-        <div style={{ textAlign:'center', marginTop:28 }}>
-          <button onClick={() => setShowAll(true)} style={{
-            background:'transparent', border:`1.5px solid ${B.p}`, color:B.p,
-            padding:'10px 28px', borderRadius:100, fontSize:13, fontWeight:700,
-            cursor:'pointer', fontFamily:"'DM Sans',sans-serif", transition:'all .2s',
-          }}
-            onMouseEnter={e => { e.currentTarget.style.background=B.p; e.currentTarget.style.color=B.wh }}
-            onMouseLeave={e => { e.currentTarget.style.background='transparent'; e.currentTarget.style.color=B.p }}
-          >
-            Vezi toți ambasadorii ({AMBASSADORS.length}) →
-          </button>
-        </div>
-      )}
+      <div style={{ textAlign:'center', marginTop:28 }}>
+        <button style={{
+          background:'transparent', border:`1.5px solid ${B.p}`, color:B.p,
+          padding:'10px 28px', borderRadius:100, fontSize:13, fontWeight:700,
+          cursor:'pointer', fontFamily:"'DM Sans',sans-serif", transition:'all .2s',
+        }}
+          onMouseEnter={e => { e.currentTarget.style.background=B.p; e.currentTarget.style.color=B.wh }}
+          onMouseLeave={e => { e.currentTarget.style.background='transparent'; e.currentTarget.style.color=B.p }}
+        >
+          Vezi toți →
+        </button>
+      </div>
     </section>
   )
 }
