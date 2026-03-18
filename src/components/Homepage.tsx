@@ -289,9 +289,18 @@ function Hero() {
 
 /* ─── Digital Check-Up strip ──────────────── */
 function CheckUpStrip() {
+  const steps = [
+    { icon:'M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z M14 2v6h6', label:'Înregistrare' },
+    { icon:'M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z', label:'Scanare 3D' },
+    { icon:'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z', label:'Plan digital' },
+  ]
   return (
-    <section style={{ background:`linear-gradient(135deg,${B.p},${B.pm})`, padding:'48px 52px' }}>
-      <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', gap:40 }}>
+    <section style={{ background:`linear-gradient(135deg,${B.p},${B.pm})`, padding:'52px 52px', position:'relative', overflow:'hidden' }}>
+      {/* Decorative circles */}
+      <div style={{ position:'absolute', top:-60, right:-40, width:200, height:200, borderRadius:'50%', border:'1px solid rgba(255,255,255,.06)' }}/>
+      <div style={{ position:'absolute', bottom:-80, left:-60, width:260, height:260, borderRadius:'50%', border:'1px solid rgba(255,255,255,.04)' }}/>
+      <div style={{ display:'grid', gridTemplateColumns:'1fr auto 1fr', gap:36, alignItems:'center', maxWidth:1200, margin:'0 auto' }}>
+        {/* Left — text */}
         <div>
           <div style={{ display:'inline-flex', alignItems:'center', gap:8,
             background:'rgba(255,255,255,.15)', border:'1px solid rgba(255,255,255,.25)',
@@ -300,22 +309,46 @@ function CheckUpStrip() {
               ✦ PRODUS FLAGSHIP {CAMPAIGN_2026.year}
             </span>
           </div>
-          <h2 style={{ fontFamily:"'Syne',sans-serif", fontSize:34, fontWeight:800, color:B.wh, letterSpacing:'-.03em', lineHeight:1.1, margin:'0 0 12px' }}>
+          <h2 style={{ fontFamily:"'Syne',sans-serif", fontSize:32, fontWeight:800, color:B.wh, letterSpacing:'-.03em', lineHeight:1.1, margin:'0 0 10px' }}>
             Digital Check-Up
           </h2>
-          <p style={{ fontSize:16, color:'rgba(255,255,255,.78)', maxWidth:500 }}>
-            Primul pas către un zâmbet sănătos. O evaluare completă, digitală și fără disconfort —
-            detectăm problemele înainte să devină costisitoare.
+          <p style={{ fontSize:14, color:'rgba(255,255,255,.7)', maxWidth:360, margin:0, lineHeight:1.6 }}>
+            Primul pas către un zâmbet sănătos. Evaluare completă, digitală și fără disconfort.
           </p>
         </div>
-        <div style={{ flexShrink:0, display:'flex', flexDirection:'column', gap:10, alignItems:'flex-end' }}>
+        {/* Center — 3 step process */}
+        <div style={{ display:'flex', alignItems:'center', gap:0 }}>
+          {steps.map((s,i) => (
+            <div key={s.label} style={{ display:'flex', alignItems:'center' }}>
+              <div style={{ textAlign:'center' }}>
+                <div style={{
+                  width:52, height:52, borderRadius:'50%', background:'rgba(255,255,255,.12)',
+                  border:'1.5px solid rgba(255,255,255,.25)', display:'flex', alignItems:'center', justifyContent:'center',
+                  margin:'0 auto 6px',
+                }}>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={B.wh} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d={s.icon}/></svg>
+                </div>
+                <div style={{ fontSize:10, fontWeight:600, color:'rgba(255,255,255,.7)', whiteSpace:'nowrap' }}>{s.label}</div>
+              </div>
+              {i < steps.length - 1 && (
+                <div style={{ width:32, height:1, background:'rgba(255,255,255,.2)', margin:'0 6px', marginBottom:18 }}/>
+              )}
+            </div>
+          ))}
+        </div>
+        {/* Right — CTA */}
+        <div style={{ display:'flex', flexDirection:'column', gap:10, alignItems:'flex-end' }}>
           <a href="/digital-checkup" style={{ textDecoration:'none' }}>
             <button style={{
               background:B.wh, color:B.p, border:'none', padding:'14px 28px', borderRadius:8,
               fontSize:14, fontWeight:800, cursor:'pointer', fontFamily:"'DM Sans',sans-serif", whiteSpace:'nowrap',
-            }}>Programează Digital Check-Up →</button>
+              transition:'transform .2s, box-shadow .2s',
+            }}
+              onMouseEnter={e => { e.currentTarget.style.transform='translateY(-2px)'; e.currentTarget.style.boxShadow='0 6px 20px rgba(0,0,0,.15)' }}
+              onMouseLeave={e => { e.currentTarget.style.transform=''; e.currentTarget.style.boxShadow='' }}
+            >Programează Digital Check-Up →</button>
           </a>
-          <span style={{ fontSize:12, color:'rgba(255,255,255,.55)' }}>digital-checkup.smiledent.md</span>
+          <span style={{ fontSize:11, color:'rgba(255,255,255,.45)' }}>de la 25€ · Durată ~30 min</span>
         </div>
       </div>
     </section>
@@ -736,9 +769,9 @@ export function Homepage() {
       <style>{ANIM_CSS}</style>
       <Navbar/>
       <Hero/>
-      <CheckUpStrip/>
       <Services/>
       <Technologies/>
+      <CheckUpStrip/>
       <BeforeAfter/>
       <Reviews/>
       <Ambasadori/>
