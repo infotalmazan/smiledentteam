@@ -188,6 +188,110 @@ function Process() {
   )
 }
 
+/* ─── Journey Timeline ────────────────────── */
+const JOURNEY = [
+  { step:'01', title:'Decizi să acționezi', desc:'Ai o problemă dentară sau vrei un zâmbet nou. Completezi formularul online sau ne scrii pe WhatsApp.', detail:['Formularul durează 2 minute','Nu ai nevoie de tomografie încă','Echipa te contactează în max. 24h'], photo:'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=500&h=300&fit=crop', side:'left' },
+  { step:'02', title:'Trimiti documentele', desc:'Încarcă tomografia panoramică (dacă ai) și fotografii ale danturii. Dacă nu ai tomografie — te ghidăm unde poți face una în orașul tău.', detail:['Acceptăm CBCT, OPG, fotografii intra-orale','Upload securizat pe platforma noastră','Dacă nu ai — te direcționăm la un centru din orașul tău'], photo:'https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=500&h=300&fit=crop', side:'right' },
+  { step:'03', title:'Consultație video 1:1', desc:'Medicul specialist analizează documentele și discutați pe video call. Primești explicații clare, vizuale, despre situația ta.', detail:['Durată: 20-30 minute','Folosim screen sharing pentru a-ți arăta imaginile','Poți pune orice întrebare — fără grabă'], photo:'https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=500&h=300&fit=crop', side:'left' },
+  { step:'04', title:'Primești planul complet', desc:'În 48h primești un document detaliat: diagnostic, opțiuni de tratament, etape, durată estimată și costuri exacte.', detail:['Plan PDF profesional cu toate detaliile','2-3 opțiuni de tratament cu costuri','Informații despre Rate 0% dacă e cazul','Fără costuri ascunse — prețul final = prețul din plan'], photo:'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=500&h=300&fit=crop', side:'right' },
+  { step:'05', title:'Programare și pregătire', desc:'Alegi data vizitei. Echipa pregătește totul: materiale, laborator, programări consecutive — pentru a economisi maximum de timp.', detail:['Programare în funcție de zborul tău','Tratamente consecutive — minim vizite','Coordonator personal dedicat'], photo:'https://images.unsplash.com/photo-1552664730-d307ca884978?w=500&h=300&fit=crop', side:'left' },
+  { step:'06', title:'Vii și zâmbești', desc:'Când ajungi la clinică, totul este pregătit. Începi tratamentul imediat, fără așteptare, fără surprize. Pleci cu un zâmbet nou.', detail:['Transfer aeroport disponibil','Totul pregătit — start imediat','Rezultat conform planului aprobat','Suport post-tratament la distanță'], photo:'https://images.unsplash.com/photo-1606811841689-23dfddce3e95?w=500&h=300&fit=crop', side:'right' },
+]
+
+function JourneyTimeline() {
+  return (
+    <section style={{ background:B.ps, padding:'80px 48px', position:'relative' }}>
+      <div style={{ maxWidth:1000, margin:'0 auto' }}>
+        <div style={{ textAlign:'center', marginBottom:56 }}>
+          <SectionBadge>Călătoria ta</SectionBadge>
+          <h2 style={{ fontFamily:"'Syne',sans-serif", fontSize:36, fontWeight:800, color:B.nv, letterSpacing:'-.03em', margin:'0 0 12px' }}>
+            Ce se întâmplă <span style={{ color:B.p }}>pas cu pas</span>?
+          </h2>
+          <p style={{ fontSize:15, color:B.gr, maxWidth:500, margin:'0 auto' }}>
+            De la decizie la zâmbet — fiecare etapă explicată clar, cu imagini și detalii.
+          </p>
+        </div>
+
+        {/* Timeline line */}
+        <div style={{ position:'relative' }}>
+          {/* Vertical line */}
+          <div style={{ position:'absolute', left:'50%', top:0, bottom:0, width:2, background:B.bdr, transform:'translateX(-50%)' }}/>
+
+          {JOURNEY.map((j, i) => (
+            <div key={j.step} style={{
+              display:'grid', gridTemplateColumns: j.side==='left' ? '1fr 60px 1fr' : '1fr 60px 1fr',
+              gap:0, marginBottom: i < JOURNEY.length-1 ? 48 : 0, alignItems:'center',
+            }}>
+              {/* Left content or empty */}
+              {j.side === 'left' ? (
+                <div style={{ paddingRight:32 }}>
+                  <div style={{ background:B.wh, borderRadius:16, overflow:'hidden', border:`1px solid ${B.bdr}`, boxShadow:`0 4px 20px ${B.bdr}` }}>
+                    <div style={{ height:180, overflow:'hidden' }}>
+                      <img src={j.photo} alt={j.title} style={{ width:'100%', height:'100%', objectFit:'cover' }}/>
+                    </div>
+                    <div style={{ padding:'20px' }}>
+                      <h3 style={{ fontFamily:"'Syne',sans-serif", fontSize:18, fontWeight:700, color:B.nv, margin:'0 0 6px' }}>{j.title}</h3>
+                      <p style={{ fontSize:13, lineHeight:1.6, color:B.gr, margin:'0 0 12px' }}>{j.desc}</p>
+                      <div style={{ display:'flex', flexDirection:'column', gap:5 }}>
+                        {j.detail.map(d => (
+                          <div key={d} style={{ display:'flex', alignItems:'flex-start', gap:6 }}>
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={B.p} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ marginTop:2, flexShrink:0 }}><polyline points="20 6 9 17 4 12"/></svg>
+                            <span style={{ fontSize:12, color:B.nv, fontWeight:500 }}>{d}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ) : <div/>}
+
+              {/* Center dot */}
+              <div style={{ display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', zIndex:2 }}>
+                <div style={{
+                  width:44, height:44, borderRadius:'50%',
+                  background: i === JOURNEY.length-1 ? B.a : `linear-gradient(135deg,${B.p},${B.pm})`,
+                  display:'flex', alignItems:'center', justifyContent:'center',
+                  border:`3px solid ${B.wh}`, boxShadow:`0 2px 12px ${B.bdr}`,
+                }}>
+                  <span style={{ fontSize:12, fontWeight:800, color:B.wh }}>{j.step}</span>
+                </div>
+              </div>
+
+              {/* Right content or empty */}
+              {j.side === 'right' ? (
+                <div style={{ paddingLeft:32 }}>
+                  <div style={{ background:B.wh, borderRadius:16, overflow:'hidden', border:`1px solid ${B.bdr}`, boxShadow:`0 4px 20px ${B.bdr}` }}>
+                    <div style={{ height:180, overflow:'hidden' }}>
+                      <img src={j.photo} alt={j.title} style={{ width:'100%', height:'100%', objectFit:'cover' }}/>
+                    </div>
+                    <div style={{ padding:'20px' }}>
+                      <h3 style={{ fontFamily:"'Syne',sans-serif", fontSize:18, fontWeight:700, color:B.nv, margin:'0 0 6px' }}>{j.title}</h3>
+                      <p style={{ fontSize:13, lineHeight:1.6, color:B.gr, margin:'0 0 12px' }}>{j.desc}</p>
+                      <div style={{ display:'flex', flexDirection:'column', gap:5 }}>
+                        {j.detail.map(d => (
+                          <div key={d} style={{ display:'flex', alignItems:'flex-start', gap:6 }}>
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={B.p} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ marginTop:2, flexShrink:0 }}><polyline points="20 6 9 17 4 12"/></svg>
+                            <span style={{ fontSize:12, color:B.nv, fontWeight:500 }}>{d}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ) : <div/>}
+            </div>
+          ))}
+        </div>
+
+        {/* Bottom CTA */}
+        <div style={{ textAlign:'center', marginTop:56 }}>
+          <Btn pink style={{ fontSize:16, padding:'16px 40px' }}>Începe călătoria ta →</Btn>
+        </div>
+      </div>
+    </section>
+  )
+}
+
 /* ─── Benefits ─────────────────────────── */
 function Benefits() {
   const items = [
@@ -483,6 +587,7 @@ export function ConsultatieOnlinePage() {
       <Nav/>
       <Hero/>
       <Process/>
+      <JourneyTimeline/>
       <Benefits/>
       <DiasporaTestimonials/>
       <VideoReels/>
