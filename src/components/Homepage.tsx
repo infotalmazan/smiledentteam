@@ -407,8 +407,13 @@ function Services() {
         </a>
       </div>
       <div className="grid grid-cols-3 gap-3">
-        {SERVICES.map((s, i) => (
-          <a key={s.slug} href="/servicii" className="no-underline">
+        {SERVICES.map((s, i) => {
+          const svcHref = s.slug === 'implantologie' ? '/servicii/implant-dentar'
+            : s.slug === 'digital-checkup' ? '/digital-checkup'
+            : s.slug === 'consultatie-online' ? '/consultatie-online'
+            : '/servicii'
+          return (
+          <a key={s.slug} href={svcHref} className="no-underline">
             <Card className={cn(
               'img-zoom hover-glow cursor-pointer overflow-hidden border-transparent rounded-2xl shadow-sm hover:shadow-card-hover hover:border-sdt-600 transition-all',
               'animate-slide-up',
@@ -424,7 +429,7 @@ function Services() {
               </CardContent>
             </Card>
           </a>
-        ))}
+        )})}
       </div>
     </section>
   )

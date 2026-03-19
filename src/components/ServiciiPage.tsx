@@ -554,7 +554,14 @@ export function ServiciiPage() {
           >
             Toate serviciile
           </button>
-          {SERVICES.map(s => (
+          {SERVICES.map(s => {
+            const hasLanding = s.slug === 'implantologie' || s.slug === 'digital-checkup' || s.slug === 'consultatie-online'
+            const landingUrl = s.slug === 'implantologie' ? '/servicii/implant-dentar' : s.slug === 'digital-checkup' ? '/digital-checkup' : s.slug === 'consultatie-online' ? '/consultatie-online' : ''
+            return hasLanding ? (
+              <a key={s.slug} href={landingUrl}
+                className={cn('px-3.5 py-2.5 text-xs font-semibold cursor-pointer font-sans border-none rounded-t-lg transition-all whitespace-nowrap no-underline bg-transparent text-[#5a7a6e] border-b-2 border-b-transparent hover:text-sdt-600')}
+              >{s.name}</a>
+            ) : (
             <button
               key={s.slug}
               onClick={() => setActiveTab(s.slug)}
@@ -567,7 +574,8 @@ export function ServiciiPage() {
             >
               {s.name}
             </button>
-          ))}
+            )
+          })}
         </div>
 
         {/* Content: cards grid or detail page */}
@@ -575,10 +583,11 @@ export function ServiciiPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pt-6">
             {SERVICES.map((svc, index) => {
               const iconPath = SVC_ICONS[svc.slug]
+              const landingUrl = svc.slug === 'implantologie' ? '/servicii/implant-dentar' : svc.slug === 'digital-checkup' ? '/digital-checkup' : svc.slug === 'consultatie-online' ? '/consultatie-online' : ''
               return (
                 <Card
                   key={svc.slug}
-                  onClick={() => setActiveTab(svc.slug)}
+                  onClick={() => { if (landingUrl) { window.location.href = landingUrl } else { setActiveTab(svc.slug) } }}
                   className="bg-white rounded-[14px] border border-[--bdr] p-6 cursor-pointer transition-all duration-[250ms] hover:-translate-y-[3px] hover:border-sdt-600 hover:shadow-lg shadow-none"
                 >
                   <CardContent className="p-0">
