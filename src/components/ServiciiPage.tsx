@@ -555,8 +555,8 @@ export function ServiciiPage() {
             Toate serviciile
           </button>
           {SERVICES.map(s => {
-            const hasLanding = s.slug === 'implantologie' || s.slug === 'digital-checkup' || s.slug === 'consultatie-online'
-            const landingUrl = s.slug === 'implantologie' ? '/servicii/implant-dentar' : s.slug === 'digital-checkup' ? '/digital-checkup' : s.slug === 'consultatie-online' ? '/consultatie-online' : ''
+            const hasLanding = ['implantologie','protetica','digital-checkup','consultatie-online'].includes(s.slug)
+            const landingUrl = s.slug === 'implantologie' ? '/servicii/implant-dentar' : s.slug === 'protetica' ? '/servicii/coroane-dentare' : s.slug === 'digital-checkup' ? '/digital-checkup' : s.slug === 'consultatie-online' ? '/consultatie-online' : ''
             return hasLanding ? (
               <a key={s.slug} href={landingUrl}
                 className={cn('px-3.5 py-2.5 text-xs font-semibold cursor-pointer font-sans border-none rounded-t-lg transition-all whitespace-nowrap no-underline bg-transparent text-[#5a7a6e] border-b-2 border-b-transparent hover:text-sdt-600')}
@@ -583,7 +583,7 @@ export function ServiciiPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pt-6">
             {SERVICES.map((svc, index) => {
               const iconPath = SVC_ICONS[svc.slug]
-              const landingUrl = svc.slug === 'implantologie' ? '/servicii/implant-dentar' : svc.slug === 'digital-checkup' ? '/digital-checkup' : svc.slug === 'consultatie-online' ? '/consultatie-online' : ''
+              const landingUrl = svc.slug === 'implantologie' ? '/servicii/implant-dentar' : svc.slug === 'protetica' ? '/servicii/coroane-dentare' : svc.slug === 'digital-checkup' ? '/digital-checkup' : svc.slug === 'consultatie-online' ? '/consultatie-online' : ''
               return (
                 <Card
                   key={svc.slug}

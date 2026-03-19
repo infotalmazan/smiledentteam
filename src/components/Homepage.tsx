@@ -180,6 +180,7 @@ function Navbar() {
 const SVC_LIST = SERVICES.map(s => s.name)
 const SVC_URL: Record<string, string> = {
   'Implant Dentar': '/servicii/implant-dentar',
+  'Coroane Dentare': '/servicii/coroane-dentare',
   'Digital Check-Up': '/digital-checkup',
   'Consultație Online': '/consultatie-online',
 }
@@ -417,6 +418,7 @@ function Services() {
       <div className="grid grid-cols-3 gap-3">
         {SERVICES.map((s, i) => {
           const svcHref = s.slug === 'implantologie' ? '/servicii/implant-dentar'
+            : s.slug === 'protetica' ? '/servicii/coroane-dentare'
             : s.slug === 'digital-checkup' ? '/digital-checkup'
             : s.slug === 'consultatie-online' ? '/consultatie-online'
             : '/servicii'

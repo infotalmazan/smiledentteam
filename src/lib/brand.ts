@@ -37,6 +37,20 @@ export const LOCATIONS = [
   { city: 'București',          address: 'str. G. Puccini 8A',     phone: '+40 31 433 7004' },
 ] as const
 
+// ─── Service Color Accents (unique per service, aligned with brand) ───
+// Each service gets a secondary accent color for hero gradients, keeping teal as base
+export const SVC_COLORS: Record<string, { accent: string; accentLight: string; gradient: string }> = {
+  implantologie:      { accent: '#0a6b5c', accentLight: '#e6f4f0', gradient: 'linear-gradient(160deg, #0a1e18 0%, #0f2e24 50%, #074d42 100%)' },
+  protetica:          { accent: '#2563EB', accentLight: '#dbeafe', gradient: 'linear-gradient(160deg, #0a1520 0%, #0f1e30 50%, #1e3a5f 100%)' },
+  allon:              { accent: '#7c3aed', accentLight: '#ede9fe', gradient: 'linear-gradient(160deg, #1a0a2e 0%, #1e1245 50%, #2d1b69 100%)' },
+  estetica:           { accent: '#e8157a', accentLight: '#fde6f0', gradient: 'linear-gradient(160deg, #2a0a18 0%, #3d0f24 50%, #5c1535 100%)' },
+  ortodontie:         { accent: '#0891b2', accentLight: '#cffafe', gradient: 'linear-gradient(160deg, #0a1e20 0%, #0f2832 50%, #0e3744 100%)' },
+  'digital-checkup':  { accent: '#0a6b5c', accentLight: '#e6f4f0', gradient: 'linear-gradient(160deg, #0a1e18 0%, #0f2e24 50%, #074d42 100%)' },
+  terapie:            { accent: '#059669', accentLight: '#d1fae5', gradient: 'linear-gradient(160deg, #0a1e14 0%, #0f2e1e 50%, #0d4030 100%)' },
+  chirurgie:          { accent: '#dc2626', accentLight: '#fee2e2', gradient: 'linear-gradient(160deg, #1e0a0a 0%, #2e0f0f 50%, #4a1515 100%)' },
+  'consultatie-online': { accent: '#0a6b5c', accentLight: '#e6f4f0', gradient: 'linear-gradient(160deg, #0a1e18 0%, #0f2e24 50%, #074d42 100%)' },
+}
+
 // ─── Services (9 categories — ordered by business priority) ───
 export const SERVICES = [
   { slug: 'implantologie',      name: 'Implant Dentar',            tag: 'Planificare 3D',       icon: '◈', price: 'de la 350€',   rate: true,  audience: '35+ ani, lipsa dinților, parodontită' },
