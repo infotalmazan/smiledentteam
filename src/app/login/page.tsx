@@ -1,11 +1,11 @@
 import type { Metadata } from 'next'
-import { LoginPage } from '@/components/Homepage'
+import { AuthLoginPage } from '@/components/LoginPage'
 
 export const metadata: Metadata = {
-  title: 'Autentificare — Smile Dent Team',
-  description: 'Accesează contul tău Smile Dent Team pentru a vedea istoricul tratamentelor, programările și documentele tale.',
+  title: 'Autentificare — Cabinetul Meu | Smile Dent Team',
+  description: 'Accesează cabinetul tău personal Smile Dent Team. Programări, dosarul digital, mesaje cu medicul, istoric tratamente.',
 }
 
 export default function Page() {
-  return <LoginPage />
+  return <AuthLoginPage />
 }
