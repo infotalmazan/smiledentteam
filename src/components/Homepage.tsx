@@ -612,6 +612,60 @@ function DespreNoiPreview() {
   )
 }
 
+/* ─── Cariere Preview ────────────────────── */
+function CarierePreview() {
+  return (
+    <section className="relative overflow-hidden py-16 px-[52px]" style={{ background: `linear-gradient(135deg, ${B.p}, ${B.pm})` }}>
+      <div className="flex items-center gap-16">
+        <div className="flex-1">
+          <div className="inline-flex items-center gap-2 bg-white/[.15] border border-white/25 px-3.5 py-1 rounded-full mb-4">
+            <span className="w-[7px] h-[7px] rounded-full bg-pink-500" />
+            <span className="text-[11px] font-bold text-white tracking-[.08em]">CARIERE SDT</span>
+          </div>
+          <h2 className="font-display text-[32px] font-semibold text-white tracking-[-0.03em] leading-[1.1] mb-3">
+            Construieste viitorul <span className="text-pink-300">stomatologiei.</span>
+          </h2>
+          <p className="text-[14px] text-white/[.65] max-w-[420px] leading-[1.65] mb-6">
+            Alatura-te unei echipe de {STATS.team} profesionisti. 6 pozitii deschise in 4 tari — salariu competitiv, tehnologii de top si dezvoltare continua.
+          </p>
+          <div className="flex gap-3 mb-6">
+            {[['6','pozitii deschise'],['4','tari'],['85%','retentie']].map(([n,l]) => (
+              <div key={l} className="text-center bg-white/[.08] border border-white/[.12] rounded-xl px-4 py-2.5">
+                <div className="font-display text-lg font-semibold text-white">{n}</div>
+                <div className="text-[10px] text-white/50">{l}</div>
+              </div>
+            ))}
+          </div>
+          <a href="/cariere" className="no-underline">
+            <Button variant="outline" className="btn-shine bg-white text-sdt-600 border-2 border-pink-500 text-sm font-extrabold hover:bg-pink-500 hover:text-white transition-all hover:-translate-y-0.5 rounded-full">
+              Vezi pozitiile deschise <ArrowRight className="w-4 h-4 ml-1" />
+            </Button>
+          </a>
+        </div>
+        <div className="w-[360px] shrink-0 space-y-2.5">
+          {[
+            { title: 'Medic Stomatolog — Protetica', loc: 'Chisinau', urgent: true },
+            { title: 'Medic Ortodont', loc: 'Chisinau', urgent: true },
+            { title: 'Medic Implantolog', loc: 'Iasi', urgent: true },
+          ].map(j => (
+            <a key={j.title} href="/cariere" className="no-underline block bg-white/[.08] border border-white/[.12] rounded-xl p-3.5 hover:bg-white/[.12] transition-colors cursor-pointer">
+              <div className="flex items-center justify-between">
+                <div>
+                  <div className="text-[13px] font-semibold text-white">{j.title}</div>
+                  <div className="text-[11px] text-white/50 mt-0.5 flex items-center gap-1">
+                    <MapPin className="w-3 h-3" />{j.loc}
+                  </div>
+                </div>
+                {j.urgent && <span className="text-[9px] font-bold text-pink-400 bg-pink-500/20 px-2 py-0.5 rounded">URGENT</span>}
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
 /* ─── FAQ ─────────────────────────────────── */
 const FAQS = [
   { q:'Ce este Digital Check-Up?', a:'O procedura moderna care combina Protocol Fotografic, Scanner 3Shape, Radiografie 3D si Consultatie Personalizata pentru o analiza completa a sanatatii dentare.' },
@@ -841,7 +895,7 @@ function Footer() {
           </div>
           <div>
             <div className="text-[11px] font-bold text-white tracking-[.15em] uppercase mb-5">Clinica</div>
-            {[['Despre noi','/despre-noi'],['Echipa','/echipa'],['Ambasadori','/ambasadori'],['Tehnologii','/tehnologii'],['Blog','/'],['Cariere','/'],['Contacte','/']].map(([s,h]) => (
+            {[['Despre noi','/despre-noi'],['Echipa','/echipa'],['Ambasadori','/ambasadori'],['Tehnologii','/tehnologii'],['Blog','/'],['Cariere','/cariere'],['Contacte','/']].map(([s,h]) => (
               <a key={s} href={h} className="block text-[13px] mb-2.5 text-white/[.58] no-underline hover:text-white transition-colors">{s}</a>
             ))}
           </div>
@@ -906,6 +960,7 @@ export function Homepage() {
       <VideoReels/>
       <Ambasadori/>
       <DespreNoiPreview/>
+      <CarierePreview/>
       <FAQ/>
       <Appointment/>
       <Footer/>
