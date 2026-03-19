@@ -91,20 +91,22 @@ const notifIcon = (t: string) => {
 /* ─── Modal wrapper ─── */
 function Modal({ children, onClose, wide }: { children: React.ReactNode; onClose: () => void; wide?: boolean }) {
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center" onClick={onClose}>
+    <div className="fixed inset-0 z-[100] flex items-center justify-center" onClick={onClose} style={{ padding: '40px 20px' }}>
       <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" />
       <div
-        className="relative bg-white rounded-2xl shadow-2xl max-h-[80vh] overflow-y-auto animate-slide-up mx-4"
+        className="relative bg-white rounded-2xl shadow-2xl overflow-hidden flex flex-col"
         onClick={e => e.stopPropagation()}
-        style={{ maxWidth: wide ? 640 : 480, width: '100%' }}
+        style={{ maxWidth: wide ? 640 : 480, width: '100%', maxHeight: 'calc(100vh - 80px)' }}
       >
         <button
           onClick={onClose}
-          className="sticky top-3 float-right mr-3 w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center cursor-pointer border-none hover:bg-gray-200 transition-colors z-10"
+          className="absolute top-4 right-4 w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center cursor-pointer border-none hover:bg-gray-200 transition-colors z-20"
         >
           <X className="w-4 h-4 text-gray-500" />
         </button>
-        {children}
+        <div className="overflow-y-auto flex-1">
+          {children}
+        </div>
       </div>
     </div>
   )
@@ -466,7 +468,7 @@ export function CabinetDashboard() {
               ) : newApptStep === 1 ? (
                 <div>
                   <div className="text-[13px] font-semibold mb-3" style={{ color: B.nv }}>Alege serviciul:</div>
-                  <div className="space-y-1.5 max-h-[50vh] overflow-y-auto pr-1">
+                  <div className="space-y-1.5">
                     {SERVICES.map(s => (
                       <label key={s.slug} className={cn(
                         'flex items-center gap-3 p-3 rounded-xl border cursor-pointer transition-all',
