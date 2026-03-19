@@ -91,20 +91,24 @@ const notifIcon = (t: string) => {
 /* ─── Modal wrapper ─── */
 function Modal({ children, onClose, wide }: { children: React.ReactNode; onClose: () => void; wide?: boolean }) {
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center" onClick={onClose} style={{ padding: '40px 20px' }}>
-      <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" />
+    <div
+      className="fixed z-[200] flex items-center justify-center"
+      style={{ top: 0, left: 0, right: 0, bottom: 0 }}
+      onClick={onClose}
+    >
+      <div className="absolute inset-0 bg-black/40" />
       <div
-        className="relative bg-white rounded-2xl shadow-2xl overflow-hidden flex flex-col"
+        className="relative bg-white rounded-2xl shadow-2xl flex flex-col"
         onClick={e => e.stopPropagation()}
-        style={{ maxWidth: wide ? 640 : 480, width: '100%', maxHeight: 'calc(100vh - 80px)' }}
+        style={{ maxWidth: wide ? 640 : 460, width: 'calc(100% - 40px)', maxHeight: 'calc(100vh - 120px)' }}
       >
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center cursor-pointer border-none hover:bg-gray-200 transition-colors z-20"
+          className="absolute top-3 right-3 w-7 h-7 rounded-full bg-gray-100 flex items-center justify-center cursor-pointer border-none hover:bg-gray-200 transition-colors z-20"
         >
-          <X className="w-4 h-4 text-gray-500" />
+          <X className="w-3.5 h-3.5 text-gray-500" />
         </button>
-        <div className="overflow-y-auto flex-1">
+        <div className="overflow-y-auto flex-1 rounded-2xl">
           {children}
         </div>
       </div>
@@ -445,12 +449,11 @@ export function CabinetDashboard() {
         {/* New appointment modal */}
         {showNewAppointment && (
           <Modal onClose={() => { setShowNewAppointment(false); setNewApptDone(false) }}>
-            <div className="p-6">
-              <h2 className="text-[18px] font-semibold mb-1" style={{ color: B.nv }}>Programare noua</h2>
-              {!newApptDone && <div className="text-[12px] text-[#5a7a6e] mb-4">Pasul {newApptStep} din 3</div>}
-              {/* Progress bar */}
+            <div className="p-5 pt-4">
+              <h2 className="text-[16px] font-semibold mb-0.5 pr-8" style={{ color: B.nv }}>Programare noua</h2>
+              {!newApptDone && <div className="text-[11px] text-[#5a7a6e] mb-3">Pasul {newApptStep} din 3</div>}
               {!newApptDone && (
-                <div className="flex gap-1 mb-5">
+                <div className="flex gap-1 mb-4">
                   {[1, 2, 3].map(s => (
                     <div key={s} className={cn('h-1 flex-1 rounded-full', s <= newApptStep ? 'bg-sdt-600' : 'bg-gray-200')} />
                   ))}
@@ -458,38 +461,37 @@ export function CabinetDashboard() {
               )}
 
               {newApptDone ? (
-                <div className="text-center py-8">
-                  <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-4">
-                    <CheckCircle className="w-8 h-8 text-green-600" />
+                <div className="text-center py-6">
+                  <div className="w-14 h-14 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-3">
+                    <CheckCircle className="w-7 h-7 text-green-600" />
                   </div>
-                  <div className="text-[16px] font-semibold mb-2" style={{ color: B.nv }}>Programare confirmata!</div>
+                  <div className="text-[15px] font-semibold mb-1" style={{ color: B.nv }}>Programare confirmata!</div>
                   <div className="text-[12px] text-[#5a7a6e]">Vei primi o notificare de confirmare.</div>
                 </div>
               ) : newApptStep === 1 ? (
                 <div>
-                  <div className="text-[13px] font-semibold mb-3" style={{ color: B.nv }}>Alege serviciul:</div>
-                  <div className="space-y-1.5">
+                  <div className="text-[13px] font-semibold mb-2" style={{ color: B.nv }}>Alege serviciul:</div>
+                  <div className="space-y-1">
                     {SERVICES.map(s => (
                       <label key={s.slug} className={cn(
-                        'flex items-center gap-3 p-3 rounded-xl border cursor-pointer transition-all',
-                        newApptService === s.slug ? 'border-sdt-400 bg-sdt-50 shadow-sm' : 'border-[--bdr] hover:border-sdt-200'
+                        'flex items-center gap-2.5 py-2.5 px-3 rounded-lg border cursor-pointer transition-all',
+                        newApptService === s.slug ? 'border-sdt-400 bg-sdt-50' : 'border-transparent hover:bg-gray-50'
                       )}>
                         <div className={cn(
-                          'w-5 h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0 transition-all',
+                          'w-4 h-4 rounded-full border-2 flex items-center justify-center flex-shrink-0 transition-all',
                           newApptService === s.slug ? 'border-sdt-600' : 'border-gray-300'
                         )}>
-                          {newApptService === s.slug && <div className="w-2.5 h-2.5 rounded-full bg-sdt-600" />}
+                          {newApptService === s.slug && <div className="w-2 h-2 rounded-full bg-sdt-600" />}
                         </div>
                         <input type="radio" name="service" value={s.slug} checked={newApptService === s.slug}
                           onChange={() => setNewApptService(s.slug)} className="sr-only" />
                         <div className="flex-1 min-w-0">
-                          <div className="text-[13px] font-medium" style={{ color: B.nv }}>{s.name}</div>
-                          <div className="text-[10px] text-[#5a7a6e]">{s.tag}</div>
+                          <div className="text-[12px] font-medium" style={{ color: B.nv }}>{s.name}</div>
                         </div>
                       </label>
                     ))}
                   </div>
-                  <Button className="w-full mt-4 bg-sdt-600 hover:bg-sdt-700 text-white text-[12px]"
+                  <Button className="w-full mt-3 bg-sdt-600 hover:bg-sdt-700 text-white text-[12px]"
                     disabled={!newApptService} onClick={() => setNewApptStep(2)}>
                     Continua <ChevronRight className="w-4 h-4 ml-1" />
                   </Button>
