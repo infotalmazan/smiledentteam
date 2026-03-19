@@ -472,6 +472,13 @@ function Technologies() {
           </Card>
         ))}
       </div>
+      <div className="text-center mt-8">
+        <a href="/tehnologii" className="no-underline">
+          <Button variant="outline" className="btn-shine rounded-full text-sdt-600 border-sdt-600 hover:bg-sdt-600 hover:text-white transition-all text-[13px] font-bold px-7">
+            Toate tehnologiile <ArrowRight className="w-4 h-4 ml-1" />
+          </Button>
+        </a>
+      </div>
     </section>
   )
 }
@@ -834,7 +841,7 @@ function Footer() {
           </div>
           <div>
             <div className="text-[11px] font-bold text-white tracking-[.15em] uppercase mb-5">Clinica</div>
-            {[['Despre noi','/despre-noi'],['Echipa','/echipa'],['Ambasadori','/ambasadori'],['Tehnologii','/'],['Blog','/'],['Cariere','/'],['Contacte','/']].map(([s,h]) => (
+            {[['Despre noi','/despre-noi'],['Echipa','/echipa'],['Ambasadori','/ambasadori'],['Tehnologii','/tehnologii'],['Blog','/'],['Cariere','/'],['Contacte','/']].map(([s,h]) => (
               <a key={s} href={h} className="block text-[13px] mb-2.5 text-white/[.58] no-underline hover:text-white transition-colors">{s}</a>
             ))}
           </div>
