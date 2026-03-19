@@ -91,16 +91,16 @@ const notifIcon = (t: string) => {
 /* ─── Modal wrapper ─── */
 function Modal({ children, onClose, wide }: { children: React.ReactNode; onClose: () => void; wide?: boolean }) {
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4" onClick={onClose}>
+    <div className="fixed inset-0 z-[100] flex items-center justify-center" onClick={onClose}>
       <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" />
       <div
-        className="relative bg-white rounded-2xl shadow-2xl max-h-[85vh] overflow-y-auto animate-fadeUp"
+        className="relative bg-white rounded-2xl shadow-2xl max-h-[80vh] overflow-y-auto animate-slide-up mx-4"
         onClick={e => e.stopPropagation()}
-        style={{ maxWidth: wide ? 640 : 560, width: '90%' }}
+        style={{ maxWidth: wide ? 640 : 480, width: '100%' }}
       >
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center cursor-pointer border-none hover:bg-gray-200 transition-colors z-10"
+          className="sticky top-3 float-right mr-3 w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center cursor-pointer border-none hover:bg-gray-200 transition-colors z-10"
         >
           <X className="w-4 h-4 text-gray-500" />
         </button>
@@ -466,17 +466,23 @@ export function CabinetDashboard() {
               ) : newApptStep === 1 ? (
                 <div>
                   <div className="text-[13px] font-semibold mb-3" style={{ color: B.nv }}>Alege serviciul:</div>
-                  <div className="space-y-1.5 max-h-[45vh] overflow-y-auto pr-1">
+                  <div className="space-y-1.5 max-h-[50vh] overflow-y-auto pr-1">
                     {SERVICES.map(s => (
                       <label key={s.slug} className={cn(
-                        'flex items-center gap-3 p-2.5 rounded-xl border cursor-pointer transition-all',
-                        newApptService === s.slug ? 'border-sdt-400 bg-sdt-50' : 'border-[--bdr] hover:border-sdt-200'
+                        'flex items-center gap-3 p-3 rounded-xl border cursor-pointer transition-all',
+                        newApptService === s.slug ? 'border-sdt-400 bg-sdt-50 shadow-sm' : 'border-[--bdr] hover:border-sdt-200'
                       )}>
+                        <div className={cn(
+                          'w-5 h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0 transition-all',
+                          newApptService === s.slug ? 'border-sdt-600' : 'border-gray-300'
+                        )}>
+                          {newApptService === s.slug && <div className="w-2.5 h-2.5 rounded-full bg-sdt-600" />}
+                        </div>
                         <input type="radio" name="service" value={s.slug} checked={newApptService === s.slug}
-                          onChange={() => setNewApptService(s.slug)} className="accent-[#0a6b5c]" />
+                          onChange={() => setNewApptService(s.slug)} className="sr-only" />
                         <div className="flex-1 min-w-0">
-                          <div className="text-[12px] font-medium" style={{ color: B.nv }}>{s.name}</div>
-                          <div className="text-[10px] text-[#5a7a6e]">{s.tag} &middot; {s.price}</div>
+                          <div className="text-[13px] font-medium" style={{ color: B.nv }}>{s.name}</div>
+                          <div className="text-[10px] text-[#5a7a6e]">{s.tag}</div>
                         </div>
                       </label>
                     ))}
