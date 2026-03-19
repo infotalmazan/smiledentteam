@@ -181,6 +181,7 @@ const SVC_LIST = SERVICES.map(s => s.name)
 const SVC_URL: Record<string, string> = {
   'Implant Dentar': '/servicii/implant-dentar',
   'Coroane Dentare': '/servicii/coroane-dentare',
+  'Dinți Ficși / All-On': '/servicii/dinti-ficsi-all-on',
   'Digital Check-Up': '/digital-checkup',
   'Consultație Online': '/consultatie-online',
 }
@@ -419,6 +420,7 @@ function Services() {
         {SERVICES.map((s, i) => {
           const svcHref = s.slug === 'implantologie' ? '/servicii/implant-dentar'
             : s.slug === 'protetica' ? '/servicii/coroane-dentare'
+            : s.slug === 'allon' ? '/servicii/dinti-ficsi-all-on'
             : s.slug === 'digital-checkup' ? '/digital-checkup'
             : s.slug === 'consultatie-online' ? '/consultatie-online'
             : '/servicii'
