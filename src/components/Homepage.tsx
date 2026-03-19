@@ -182,6 +182,10 @@ const SVC_URL: Record<string, string> = {
   'Implant Dentar': '/servicii/implant-dentar',
   'Coroane Dentare': '/servicii/coroane-dentare',
   'Dinți Ficși / All-On': '/servicii/dinti-ficsi-all-on',
+  'Fațete Dentare': '/servicii/fatete-dentare',
+  'Ortodonție Digitală': '/servicii/ortodontie-digitala',
+  'Terapie & Profilaxie': '/servicii/terapie-profilaxie',
+  'Chirurgie Orală': '/servicii/chirurgie-orala',
   'Digital Check-Up': '/digital-checkup',
   'Consultație Online': '/consultatie-online',
 }
@@ -421,6 +425,10 @@ function Services() {
           const svcHref = s.slug === 'implantologie' ? '/servicii/implant-dentar'
             : s.slug === 'protetica' ? '/servicii/coroane-dentare'
             : s.slug === 'allon' ? '/servicii/dinti-ficsi-all-on'
+            : s.slug === 'estetica' ? '/servicii/fatete-dentare'
+            : s.slug === 'ortodontie' ? '/servicii/ortodontie-digitala'
+            : s.slug === 'terapie' ? '/servicii/terapie-profilaxie'
+            : s.slug === 'chirurgie' ? '/servicii/chirurgie-orala'
             : s.slug === 'digital-checkup' ? '/digital-checkup'
             : s.slug === 'consultatie-online' ? '/consultatie-online'
             : '/servicii'
