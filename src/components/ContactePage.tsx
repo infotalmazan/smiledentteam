@@ -512,7 +512,7 @@ export function ContactePage() {
           </div>
           <div>
             <div className="text-[11px] font-bold text-white tracking-[.15em] uppercase mb-5">Clinica</div>
-            {[['Despre noi','/despre-noi'],['Echipa','/echipa'],['Ambasadori','/ambasadori'],['Tehnologii','/tehnologii'],['Blog','/'],['Cariere','/cariere'],['Contacte','/contacte']].map(([s,h]) => (
+            {[['Despre noi','/despre-noi'],['Echipa','/echipa'],['Ambasadori','/ambasadori'],['Tehnologii','/tehnologii'],['Blog','/blog'],['Cariere','/cariere'],['Contacte','/contacte']].map(([s,h]) => (
               <a key={s} href={h} className={cn(
                 'block text-[13px] mb-2.5 no-underline hover:text-white transition-colors',
                 s === 'Contacte' ? 'text-pink-500 font-semibold' : 'text-white/[.58]'
