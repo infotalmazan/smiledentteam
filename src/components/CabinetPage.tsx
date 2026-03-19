@@ -91,24 +91,27 @@ const notifIcon = (t: string) => {
 /* ─── Modal wrapper ─── */
 function Modal({ children, onClose, wide }: { children: React.ReactNode; onClose: () => void; wide?: boolean }) {
   return (
-    <div
-      className="fixed z-[200] flex items-center justify-center"
-      style={{ top: 0, left: 0, right: 0, bottom: 0 }}
-      onClick={onClose}
-    >
+    <div className="fixed inset-0 z-[200]" onClick={onClose}>
       <div className="absolute inset-0 bg-black/40" />
       <div
-        className="relative bg-white rounded-2xl shadow-2xl flex flex-col"
+        className="absolute bg-white rounded-2xl shadow-2xl flex flex-col overflow-hidden"
         onClick={e => e.stopPropagation()}
-        style={{ maxWidth: wide ? 640 : 460, width: 'calc(100% - 40px)', maxHeight: 'calc(100vh - 120px)' }}
+        style={{
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          maxWidth: wide ? 640 : 460,
+          width: 'calc(100% - 40px)',
+          maxHeight: 'calc(100vh - 100px)',
+        }}
       >
         <button
           onClick={onClose}
-          className="absolute top-3 right-3 w-7 h-7 rounded-full bg-gray-100 flex items-center justify-center cursor-pointer border-none hover:bg-gray-200 transition-colors z-20"
+          className="absolute top-3 right-3 w-7 h-7 rounded-full bg-gray-100/90 flex items-center justify-center cursor-pointer border-none hover:bg-gray-200 transition-colors z-20"
         >
           <X className="w-3.5 h-3.5 text-gray-500" />
         </button>
-        <div className="overflow-y-auto flex-1 rounded-2xl">
+        <div className="overflow-y-auto flex-1">
           {children}
         </div>
       </div>
