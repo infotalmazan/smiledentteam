@@ -176,8 +176,16 @@ function Navbar() {
   )
 }
 
-/* ─── Hero ────────────────────────────────── */
+/* ─── Service URL helper ─────────────────── */
 const SVC_LIST = SERVICES.map(s => s.name)
+const SVC_URL: Record<string, string> = {
+  'Implant Dentar': '/servicii/implant-dentar',
+  'Digital Check-Up': '/digital-checkup',
+  'Consultație Online': '/consultatie-online',
+}
+function getSvcUrl(name: string) { return SVC_URL[name] || '/servicii' }
+
+/* ─── Hero ────────────────────────────────── */
 
 function Hero() {
   return (
@@ -254,15 +262,15 @@ function Hero() {
         <div className="pt-6 px-6 pb-0 flex flex-col justify-start">
           <div className="text-[10px] font-bold text-sdt-600 tracking-[.22em] uppercase mb-2.5">Servicii</div>
           {SVC_LIST.map((s, i) => (
-            <div key={s}
-              className="hover-glow flex items-center justify-between py-2.5 px-2 rounded-xl cursor-pointer text-[#0a1e18] hover:text-sdt-600 hover:bg-sdt-50/60 transition-all duration-300"
+            <a key={s} href={getSvcUrl(s)}
+              className="hover-glow flex items-center justify-between py-2.5 px-2 rounded-xl cursor-pointer text-[#0a1e18] hover:text-sdt-600 hover:bg-sdt-50/60 transition-all duration-300 no-underline"
             >
               <div className="flex items-center gap-2">
                 <span className="text-[10px] text-sdt-600/30 font-bold">{String(i+1).padStart(2,'0')}</span>
                 <span className="text-[13px] font-semibold">{s}</span>
               </div>
               <ArrowRight className="w-3.5 h-3.5 text-[#5a7a6e]" />
-            </div>
+            </a>
           ))}
           {/* Locatii */}
           <div className="mt-2 pt-2.5 border-t border-sdt-600/10">
@@ -893,9 +901,9 @@ function Footer() {
           </div>
           <div>
             <div className="text-[11px] font-bold text-white tracking-[.15em] uppercase mb-5">Servicii</div>
-            <div className="text-[13px] mb-2.5 text-pink-500 cursor-pointer font-semibold">Digital Check-Up</div>
+            <a href="/digital-checkup" className="block text-[13px] mb-2.5 text-pink-500 font-semibold no-underline">Digital Check-Up</a>
             {SVC_LIST.map(s => (
-              <div key={s} className="text-[13px] mb-2.5 text-white/[.58] cursor-pointer hover:text-white transition-colors">{s}</div>
+              <a key={s} href={getSvcUrl(s)} className="block text-[13px] mb-2.5 text-white/[.58] no-underline cursor-pointer hover:text-white transition-colors">{s}</a>
             ))}
           </div>
           <div>
