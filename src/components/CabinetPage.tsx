@@ -89,14 +89,14 @@ const notifIcon = (t: string) => {
 }
 
 /* ─── Modal wrapper ─── */
-function Modal({ children, onClose }: { children: React.ReactNode; onClose: () => void }) {
+function Modal({ children, onClose, wide }: { children: React.ReactNode; onClose: () => void; wide?: boolean }) {
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center" onClick={onClose}>
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4" onClick={onClose}>
       <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" />
       <div
-        className="relative bg-white rounded-2xl shadow-2xl max-h-[90vh] overflow-y-auto animate-fadeUp"
+        className="relative bg-white rounded-2xl shadow-2xl max-h-[85vh] overflow-y-auto animate-fadeUp"
         onClick={e => e.stopPropagation()}
-        style={{ maxWidth: 560, width: '90%' }}
+        style={{ maxWidth: wide ? 640 : 560, width: '90%' }}
       >
         <button
           onClick={onClose}
@@ -445,10 +445,10 @@ export function CabinetDashboard() {
           <Modal onClose={() => { setShowNewAppointment(false); setNewApptDone(false) }}>
             <div className="p-6">
               <h2 className="text-[18px] font-semibold mb-1" style={{ color: B.nv }}>Programare noua</h2>
-              {!newApptDone && <div className="text-[12px] text-[#5a7a6e] mb-6">Pasul {newApptStep} din 3</div>}
+              {!newApptDone && <div className="text-[12px] text-[#5a7a6e] mb-4">Pasul {newApptStep} din 3</div>}
               {/* Progress bar */}
               {!newApptDone && (
-                <div className="flex gap-1 mb-6">
+                <div className="flex gap-1 mb-5">
                   {[1, 2, 3].map(s => (
                     <div key={s} className={cn('h-1 flex-1 rounded-full', s <= newApptStep ? 'bg-sdt-600' : 'bg-gray-200')} />
                   ))}
@@ -464,21 +464,23 @@ export function CabinetDashboard() {
                   <div className="text-[12px] text-[#5a7a6e]">Vei primi o notificare de confirmare.</div>
                 </div>
               ) : newApptStep === 1 ? (
-                <div className="space-y-2">
+                <div>
                   <div className="text-[13px] font-semibold mb-3" style={{ color: B.nv }}>Alege serviciul:</div>
-                  {SERVICES.map(s => (
-                    <label key={s.slug} className={cn(
-                      'flex items-center gap-3 p-3 rounded-xl border cursor-pointer transition-all',
-                      newApptService === s.slug ? 'border-sdt-400 bg-sdt-50' : 'border-[--bdr] hover:border-sdt-200'
-                    )}>
-                      <input type="radio" name="service" value={s.slug} checked={newApptService === s.slug}
-                        onChange={() => setNewApptService(s.slug)} className="accent-[#0a6b5c]" />
-                      <div>
-                        <div className="text-[13px] font-medium" style={{ color: B.nv }}>{s.name}</div>
-                        <div className="text-[10px] text-[#5a7a6e]">{s.tag} &middot; {s.price}</div>
-                      </div>
-                    </label>
-                  ))}
+                  <div className="space-y-1.5 max-h-[45vh] overflow-y-auto pr-1">
+                    {SERVICES.map(s => (
+                      <label key={s.slug} className={cn(
+                        'flex items-center gap-3 p-2.5 rounded-xl border cursor-pointer transition-all',
+                        newApptService === s.slug ? 'border-sdt-400 bg-sdt-50' : 'border-[--bdr] hover:border-sdt-200'
+                      )}>
+                        <input type="radio" name="service" value={s.slug} checked={newApptService === s.slug}
+                          onChange={() => setNewApptService(s.slug)} className="accent-[#0a6b5c]" />
+                        <div className="flex-1 min-w-0">
+                          <div className="text-[12px] font-medium" style={{ color: B.nv }}>{s.name}</div>
+                          <div className="text-[10px] text-[#5a7a6e]">{s.tag} &middot; {s.price}</div>
+                        </div>
+                      </label>
+                    ))}
+                  </div>
                   <Button className="w-full mt-4 bg-sdt-600 hover:bg-sdt-700 text-white text-[12px]"
                     disabled={!newApptService} onClick={() => setNewApptStep(2)}>
                     Continua <ChevronRight className="w-4 h-4 ml-1" />
