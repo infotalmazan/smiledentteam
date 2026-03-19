@@ -558,6 +558,53 @@ function Reviews() {
   )
 }
 
+/* ─── Despre Noi Preview ─────────────────── */
+function DespreNoiPreview() {
+  return (
+    <section className="py-24 px-[52px]">
+      <div className="grid grid-cols-2 gap-16 items-center">
+        {/* Left — Photo Grid */}
+        <div className="grid grid-cols-2 gap-3">
+          <div className="rounded-xl overflow-hidden h-[200px]">
+            <img src="https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=400&h=300&fit=crop" alt="Clinica SDT" className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
+          </div>
+          <div className="rounded-xl overflow-hidden h-[200px]">
+            <img src="https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?w=400&h=300&fit=crop" alt="Echipa medicala" className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
+          </div>
+          <div className="rounded-xl overflow-hidden h-[200px] col-span-2">
+            <img src="https://images.unsplash.com/photo-1606811841689-23dfddce3e95?w=600&h=250&fit=crop" alt="Consultatie pacient" className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
+          </div>
+        </div>
+        {/* Right — Text */}
+        <div>
+          <SHead
+            eyebrow="Despre Smile Dent Team"
+            title={<>15 ani de excelenta in <span className="text-pink-500">stomatologie digitala</span></>}
+            sub="De la o clinica cu 8 specialisti in 2009 la o retea internationala cu 600+ profesionisti in 9 filiale. Povestea noastra e despre curaj, inovatie si mii de zambete transformate."
+          />
+          <div className="grid grid-cols-3 gap-4 mb-8">
+            {[
+              [STATS.years, 'ani de excelenta'],
+              [STATS.patients, 'pacienti tratati'],
+              [STATS.locations, 'filiale active'],
+            ].map(([n, l]) => (
+              <div key={l} className="text-center p-3 rounded-lg border" style={{ borderColor: `${B.p}15`, background: `${B.p}06` }}>
+                <div className="font-display text-xl font-semibold text-sdt-600">{n}</div>
+                <div className="text-[11px] text-[#5a7a6e] mt-0.5">{l}</div>
+              </div>
+            ))}
+          </div>
+          <a href="/despre-noi" className="no-underline">
+            <Button className="btn-shine font-bold rounded-full">
+              Descopera povestea noastra <ArrowRight className="w-4 h-4 ml-1" />
+            </Button>
+          </a>
+        </div>
+      </div>
+    </section>
+  )
+}
+
 /* ─── FAQ ─────────────────────────────────── */
 const FAQS = [
   { q:'Ce este Digital Check-Up?', a:'O procedura moderna care combina Protocol Fotografic, Scanner 3Shape, Radiografie 3D si Consultatie Personalizata pentru o analiza completa a sanatatii dentare.' },
@@ -787,7 +834,7 @@ function Footer() {
           </div>
           <div>
             <div className="text-[11px] font-bold text-white tracking-[.15em] uppercase mb-5">Clinica</div>
-            {[['Despre noi','/'],['Echipa','/echipa'],['Ambasadori','/ambasadori'],['Tehnologii','/'],['Blog','/'],['Cariere','/'],['Contacte','/']].map(([s,h]) => (
+            {[['Despre noi','/despre-noi'],['Echipa','/echipa'],['Ambasadori','/ambasadori'],['Tehnologii','/'],['Blog','/'],['Cariere','/'],['Contacte','/']].map(([s,h]) => (
               <a key={s} href={h} className="block text-[13px] mb-2.5 text-white/[.58] no-underline hover:text-white transition-colors">{s}</a>
             ))}
           </div>
@@ -851,6 +898,7 @@ export function Homepage() {
       <Reviews/>
       <VideoReels/>
       <Ambasadori/>
+      <DespreNoiPreview/>
       <FAQ/>
       <Appointment/>
       <Footer/>
