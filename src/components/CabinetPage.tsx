@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Logo } from './Logo'
 import { BRAND as B, SERVICES, LOCATIONS } from '@/lib/brand'
 import {
@@ -20,11 +20,11 @@ import {
   Search, Upload, Download, Grid3X3, List, Filter,
   Users, Heart, CreditCard, Shield, AlertTriangle,
   ChevronDown, ChevronUp, Eye, Trash2, Globe, Lock,
-  BookOpen, Activity, ArrowRight
+  BookOpen, Activity, ArrowRight, Bot, ShoppingBag, ShoppingCart, Plus, Minus, Star, Sparkles, Package
 } from 'lucide-react'
 
 /* ─── Types ─── */
-type NavId = 'dashboard' | 'programari' | 'tratamente' | 'documente' | 'mesaje' | 'notificari' | 'familie' | 'plati' | 'setari'
+type NavId = 'dashboard' | 'programari' | 'tratamente' | 'documente' | 'mesaje' | 'notificari' | 'familie' | 'plati' | 'setari' | 'aisuport' | 'shop'
 
 const NAV_ITEMS: { icon: typeof Calendar; label: string; id: NavId }[] = [
   { icon: Activity, label: 'Dashboard', id: 'dashboard' },
@@ -35,6 +35,8 @@ const NAV_ITEMS: { icon: typeof Calendar; label: string; id: NavId }[] = [
   { icon: Bell, label: 'Notificari', id: 'notificari' },
   { icon: Users, label: 'Familie', id: 'familie' },
   { icon: CreditCard, label: 'Plati', id: 'plati' },
+  { icon: Bot, label: 'AI Suport', id: 'aisuport' },
+  { icon: ShoppingBag, label: 'Shop', id: 'shop' },
   { icon: Settings, label: 'Setari', id: 'setari' },
 ]
 
@@ -126,7 +128,12 @@ export function CabinetDashboard() {
   // Nav
   const [activeNav, setActiveNav] = useState<NavId>('dashboard')
 
-  // Appointments
+  // Toast
+  const [toast, setToast] = useState<string | null>(null)
+  useEffect(() => { if (toast) { const t = setTimeout(() => setToast(null), 3000); return () => clearTimeout(t) } }, [toast])
+
+  // Appointments (local state for mutations)
+  const [localAppts, setLocalAppts] = useState(APPOINTMENTS)
   const [apptTab, setApptTab] = useState<'future' | 'past'>('future')
   const [selectedAppointment, setSelectedAppointment] = useState<Appointment | null>(null)
   const [showNewAppointment, setShowNewAppointment] = useState(false)
@@ -164,9 +171,29 @@ export function CabinetDashboard() {
     return s
   })
 
-  // Family
+  // Family (local for mutations)
+  const [localFamily, setLocalFamily] = useState(FAMILY)
   const [selectedMember, setSelectedMember] = useState<FamilyMember | null>(null)
   const [showAddMember, setShowAddMember] = useState(false)
+  const [addMemberName, setAddMemberName] = useState('')
+  const [addMemberRelation, setAddMemberRelation] = useState('')
+  const [addMemberPhone, setAddMemberPhone] = useState('')
+
+  // Chat ref for auto-scroll
+  const messagesEndRef = useRef<HTMLDivElement>(null)
+  useEffect(() => { messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' }) }, [activeConvo, localMessages])
+
+  // AI Suport
+  const [aiMessages, setAiMessages] = useState<{role:'ai'|'user';text:string}[]>([
+    { role: 'ai', text: 'Buna! Sunt asistentul virtual Smile Dent Team. Cu ce te pot ajuta?' }
+  ])
+  const [aiInput, setAiInput] = useState('')
+  const [aiTyping, setAiTyping] = useState(false)
+
+  // Shop
+  const [shopCategory, setShopCategory] = useState('all')
+  const [localCart, setLocalCart] = useState<{id:string;qty:number}[]>([])
+  const [showCart, setShowCart] = useState(false)
 
   // Payments
   const [expandedPayment, setExpandedPayment] = useState<string | null>(null)
@@ -181,15 +208,27 @@ export function CabinetDashboard() {
   const [notifPrefs, setNotifPrefs] = useState({ programari: true, tratamente: true, mesaje: true, sistem: false })
   const [settSaved, setSettSaved] = useState(false)
 
+  // Escape closes modals
+  useEffect(() => {
+    const h = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setSelectedAppointment(null); setShowNewAppointment(false); setSelectedDoc(null)
+        setSelectedMember(null); setShowAddMember(false); setShowCart(false)
+      }
+    }
+    window.addEventListener('keydown', h); return () => window.removeEventListener('keydown', h)
+  }, [])
+
   // Derived counts
   const unreadMessages = CONVERSATIONS.reduce((a, c) => a + c.unread, 0)
   const unreadNotifs = NOTIFICATIONS.filter(n => !readNotifs.has(n.id)).length
+  const cartCount = localCart.reduce((a, c) => a + c.qty, 0)
 
   /* ─── Section renderers ─── */
 
   // ━━━ 1. DASHBOARD ━━━
   const renderDashboard = () => {
-    const futureAppts = APPOINTMENTS.filter(a => a.status === 'confirmed' || a.status === 'pending')
+    const futureAppts = localAppts.filter(a => a.status === 'confirmed' || a.status === 'pending')
     const nextAppt = futureAppts[0]
     const activeTreatments = TREATMENTS.filter(t => t.status === 'active')
 
@@ -214,8 +253,10 @@ export function CabinetDashboard() {
             { I: FileText, l: 'Documente', v: String(DOCUMENTS.length), c: '#2563EB' },
             { I: MessageCircle, l: 'Mesaje necitite', v: String(unreadMessages), c: '#e8157a' },
             { I: CheckCircle, l: 'Tratamente finalizate', v: String(TREATMENTS.filter(t => t.status === 'completed').length), c: '#059669' },
-          ] as const).map((s, i) => (
-            <Card key={i} className="border-[--bdr]">
+          ] as const).map((s, i) => {
+            const navTargets: NavId[] = ['programari', 'documente', 'mesaje', 'tratamente']
+            return (
+            <Card key={i} className="border-[--bdr] cursor-pointer hover:border-sdt-200 transition-all" onClick={() => setActiveNav(navTargets[i])}>
               <CardContent className="p-5 flex items-center gap-4">
                 <div className="w-11 h-11 rounded-xl flex items-center justify-center" style={{ background: `${s.c}12` }}>
                   <s.I className="w-5 h-5" style={{ color: s.c }} strokeWidth={1.5} />
@@ -226,7 +267,8 @@ export function CabinetDashboard() {
                 </div>
               </CardContent>
             </Card>
-          ))}
+            )
+          })}
         </div>
 
         <div className="grid grid-cols-[1fr_340px] gap-6">
@@ -325,12 +367,12 @@ export function CabinetDashboard() {
 
   // ━━━ 2. PROGRAMARI ━━━
   const renderProgramari = () => {
-    const future = APPOINTMENTS.filter(a => a.status === 'confirmed' || a.status === 'pending')
-    const past = APPOINTMENTS.filter(a => a.status === 'completed' || a.status === 'cancelled')
+    const future = localAppts.filter(a => a.status === 'confirmed' || a.status === 'pending')
+    const past = localAppts.filter(a => a.status === 'completed' || a.status === 'cancelled')
     const items = apptTab === 'future' ? future : past
 
     const calDays = Array.from({ length: 31 }, (_, i) => i + 1)
-    const apptDays = new Set(APPOINTMENTS.map(a => {
+    const apptDays = new Set(localAppts.map(a => {
       const d = a.date.split(' ')[0]
       return parseInt(d, 10)
     }))
@@ -441,9 +483,17 @@ export function CabinetDashboard() {
                 </div>
               )}
               <div className="flex gap-2">
-                <Button className="flex-1 text-[12px] bg-green-600 hover:bg-green-700 text-white">Confirma</Button>
-                <Button variant="outline" className="flex-1 text-[12px] border-sdt-200 text-sdt-600">Reprogrameaza</Button>
-                <Button variant="outline" className="text-[12px] border-red-200 text-red-500 hover:bg-red-50">Anuleaza</Button>
+                <Button className="flex-1 text-[12px] bg-green-600 hover:bg-green-700 text-white" onClick={() => {
+                  setLocalAppts(prev => prev.map(a => a.id === selectedAppointment.id ? { ...a, status: 'confirmed' } : a))
+                  setSelectedAppointment(null); setToast('Programare confirmata cu succes!')
+                }}>Confirma</Button>
+                <Button variant="outline" className="flex-1 text-[12px] border-sdt-200 text-sdt-600" onClick={() => {
+                  setSelectedAppointment(null); setShowNewAppointment(true); setNewApptStep(1); setNewApptDone(false)
+                }}>Reprogrameaza</Button>
+                <Button variant="outline" className="text-[12px] border-red-200 text-red-500 hover:bg-red-50" onClick={() => {
+                  setLocalAppts(prev => prev.map(a => a.id === selectedAppointment.id ? { ...a, status: 'cancelled' } : a))
+                  setSelectedAppointment(null); setToast('Programare anulata.')
+                }}>Anuleaza</Button>
               </div>
             </div>
           </Modal>
@@ -910,17 +960,7 @@ export function CabinetDashboard() {
                   </div>
                 </div>
               ))}
-              {/* Typing indicator */}
-              <div className="flex justify-start">
-                <div className="bg-gray-100 px-4 py-2.5 rounded-2xl rounded-bl-md">
-                  <div className="flex gap-1">
-                    <span className="w-1.5 h-1.5 rounded-full bg-gray-400 animate-bounce" style={{ animationDelay: '0ms' }} />
-                    <span className="w-1.5 h-1.5 rounded-full bg-gray-400 animate-bounce" style={{ animationDelay: '150ms' }} />
-                    <span className="w-1.5 h-1.5 rounded-full bg-gray-400 animate-bounce" style={{ animationDelay: '300ms' }} />
-                  </div>
-                  <div className="text-[9px] text-[#5a7a6e] mt-1">Dr. scrie...</div>
-                </div>
-              </div>
+              <div ref={messagesEndRef} />
             </div>
 
             {/* Input */}
@@ -1028,7 +1068,7 @@ export function CabinetDashboard() {
         healthStatus: 'green' as const, healthNote: 'Sanatate buna, tratament in progres',
         treatmentsActive: TREATMENTS.filter(t => t.status === 'active' && !t.name.includes('Ana') && !t.name.includes('Sofia')).length,
       },
-      ...FAMILY,
+      ...localFamily,
     ]
 
     return (
@@ -1123,33 +1163,36 @@ export function CabinetDashboard() {
               <h2 className="text-[18px] font-semibold mb-5" style={{ color: B.nv }}>Adauga membru familie</h2>
               <div className="space-y-4">
                 <div>
-                  <label className="text-[12px] font-medium block mb-1" style={{ color: B.nv }}>Prenume</label>
-                  <Input className="text-[12px]" placeholder="Prenumele membrului" />
-                </div>
-                <div>
-                  <label className="text-[12px] font-medium block mb-1" style={{ color: B.nv }}>Nume</label>
-                  <Input className="text-[12px]" placeholder="Numele de familie" />
-                </div>
-                <div>
-                  <label className="text-[12px] font-medium block mb-1" style={{ color: B.nv }}>Data nasterii</label>
-                  <Input className="text-[12px]" placeholder="DD/MM/YYYY" />
+                  <label className="text-[12px] font-medium block mb-1" style={{ color: B.nv }}>Prenume si Nume</label>
+                  <Input className="text-[12px]" placeholder="ex: Maria Moraru" value={addMemberName} onChange={e => setAddMemberName(e.target.value)} />
                 </div>
                 <div>
                   <label className="text-[12px] font-medium block mb-1" style={{ color: B.nv }}>Relatie</label>
-                  <select className="w-full h-10 rounded-md border border-input bg-background px-3 text-[12px]">
-                    <option>Sotie / Sot</option>
-                    <option>Fiu</option>
-                    <option>Fiica</option>
-                    <option>Parinte</option>
-                    <option>Alta relatie</option>
+                  <select className="w-full h-10 rounded-md border border-input bg-background px-3 text-[12px]" value={addMemberRelation} onChange={e => setAddMemberRelation(e.target.value)}>
+                    <option value="">Selecteaza...</option>
+                    <option value="Sotie">Sotie / Sot</option>
+                    <option value="Fiu">Fiu</option>
+                    <option value="Fiica">Fiica</option>
+                    <option value="Parinte">Parinte</option>
+                    <option value="Alta relatie">Alta relatie</option>
                   </select>
                 </div>
                 <div>
                   <label className="text-[12px] font-medium block mb-1" style={{ color: B.nv }}>Telefon</label>
-                  <Input className="text-[12px]" placeholder="+373 ..." />
+                  <Input className="text-[12px]" placeholder="+373 ..." value={addMemberPhone} onChange={e => setAddMemberPhone(e.target.value)} />
                 </div>
               </div>
-              <Button className="w-full mt-6 bg-sdt-600 hover:bg-sdt-700 text-white text-[12px]" onClick={() => setShowAddMember(false)}>
+              <Button className="w-full mt-6 bg-sdt-600 hover:bg-sdt-700 text-white text-[12px]" disabled={!addMemberName || !addMemberRelation} onClick={() => {
+                const newMember: FamilyMember = {
+                  id: `fam-${Date.now()}`, name: addMemberName, firstName: addMemberName.split(' ')[0],
+                  relation: addMemberRelation, age: 0, dob: '', photo: `https://ui-avatars.com/api/?name=${encodeURIComponent(addMemberName)}&background=0a6b5c&color=fff`,
+                  doctor: 'Dr. Elena Rusu', lastVisit: '-', nextVisit: undefined,
+                  activeConditions: [], healthStatus: 'green', healthNote: 'Nou adaugat', treatmentsActive: 0,
+                }
+                setLocalFamily(prev => [...prev, newMember])
+                setShowAddMember(false); setAddMemberName(''); setAddMemberRelation(''); setAddMemberPhone('')
+                setToast(`${addMemberName} a fost adaugat in familie!`)
+              }}>
                 Salveaza
               </Button>
             </div>
@@ -1411,6 +1454,247 @@ export function CabinetDashboard() {
     )
   }
 
+  // ━━━ 10. AI SUPORT ━━━
+  const AI_QA: Record<string, string> = {
+    'Cum ma pregatesc pentru implant?': 'Pentru implant dentar, recomandam: 1) Consultatie initiala cu CBCT (gratuit la SDT), 2) Nu fumati cu 48h inainte, 3) Mancati bine dimineata, 4) Informati doctorul despre medicamentele curente. Procedura dureaza 30-60 min sub anestezie locala. Recuperarea e rapida — 2-3 zile. Echipa noastra va fi alaturi de tine pas cu pas!',
+    'Ce include Digital Check-Up?': 'Digital Check-Up la SDT include: scanner intraoral 3D complet, radiografie panoramica digitala, analiza CBCT (daca e necesar), evaluare parodontala, plan de tratament digital personalizat. Totul dureaza ~30 minute, 100% digital, 0 disconfort. Pret: de la 25€. Programeaza-te acum!',
+    'Programeaza vizita': 'Cu placere! Poti programa direct din sectiunea "Programari" din meniu. Alege serviciul, clinica si ora care ti se potriveste. Sau suna la +373 22 881 414 pentru programare telefonica. Te asteptam!',
+    'Despre rate 0%': 'Da, oferim rate 0% dobanda! Disponibil pentru: Implant Dentar (de la 350€), Coroane (de la 200€), All-On (de la 2997€), Ortodontie (de la 42€/luna), Fatete Dentare (de la 7000€). Plata se imparte in 6-24 rate fara dobanda. Vorbeste cu consultantul nostru pentru detalii personalizate.',
+    'Urgenta dentara': 'In caz de urgenta dentara: Suna ACUM la +373 22 881 414. Clinica Chisinau Centru accepta urgente Lun-Vin 08:00-20:00, Sam 09:00-14:00. Pana ajungi: clateste cu apa calda sarata, aplica gheata pe exterior, ia un analgezic. NU aplica aspirina direct pe dinte!',
+  }
+  const aiSend = (text: string) => {
+    if (!text.trim()) return
+    setAiMessages(prev => [...prev, { role: 'user', text }])
+    setAiInput(''); setAiTyping(true)
+    setTimeout(() => {
+      const answer = AI_QA[text] || 'Multumesc pentru intrebare! Un consultant SDT te va contacta in curand cu un raspuns detaliat. Poti suna si la +373 22 881 414 pentru asistenta imediata.'
+      setAiMessages(prev => [...prev, { role: 'ai', text: answer }])
+      setAiTyping(false)
+    }, 1500)
+  }
+  const renderAISuport = () => (
+    <div key="aisuport" className="animate-fadeUp">
+      <div className="rounded-2xl border border-[--bdr] overflow-hidden bg-white" style={{ height: 'calc(100vh - 140px)' }}>
+        {/* Header */}
+        <div className="px-6 py-4 flex items-center gap-3" style={{ background: `linear-gradient(135deg, ${B.p}, #059669)` }}>
+          <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
+            <Bot className="w-5 h-5 text-white" strokeWidth={1.5} />
+          </div>
+          <div>
+            <div className="text-[14px] font-semibold text-white">Asistent Virtual SDT</div>
+            <div className="text-[11px] text-white/70 flex items-center gap-1"><span className="w-1.5 h-1.5 rounded-full bg-green-300" /> Online 24/7</div>
+          </div>
+          <Badge className="ml-auto bg-white/20 text-white border-0 text-[10px]"><Sparkles className="w-3 h-3 mr-1" /> AI Powered</Badge>
+        </div>
+        {/* Messages */}
+        <div className="flex-1 overflow-y-auto p-5 space-y-3" style={{ height: 'calc(100% - 160px)' }}>
+          {aiMessages.map((m, i) => (
+            <div key={i} className={cn('flex', m.role === 'user' ? 'justify-end' : 'justify-start')}>
+              {m.role === 'ai' && <div className="w-7 h-7 rounded-full bg-sdt-100 flex items-center justify-center mr-2 flex-shrink-0 mt-1"><Bot className="w-3.5 h-3.5 text-sdt-600" /></div>}
+              <div className={cn('max-w-[75%] px-4 py-2.5 rounded-2xl text-[12px] leading-relaxed',
+                m.role === 'user' ? 'bg-sdt-600 text-white rounded-br-md' : 'bg-gray-100 rounded-bl-md'
+              )} style={m.role === 'ai' ? { color: B.nv } : undefined}>{m.text}</div>
+            </div>
+          ))}
+          {aiTyping && (
+            <div className="flex justify-start">
+              <div className="w-7 h-7 rounded-full bg-sdt-100 flex items-center justify-center mr-2 flex-shrink-0"><Bot className="w-3.5 h-3.5 text-sdt-600" /></div>
+              <div className="bg-gray-100 px-4 py-2.5 rounded-2xl rounded-bl-md">
+                <div className="flex gap-1">
+                  <span className="w-1.5 h-1.5 rounded-full bg-gray-400 animate-bounce" style={{ animationDelay: '0ms' }} />
+                  <span className="w-1.5 h-1.5 rounded-full bg-gray-400 animate-bounce" style={{ animationDelay: '150ms' }} />
+                  <span className="w-1.5 h-1.5 rounded-full bg-gray-400 animate-bounce" style={{ animationDelay: '300ms' }} />
+                </div>
+              </div>
+            </div>
+          )}
+          {aiMessages.length === 1 && (
+            <div className="flex flex-wrap gap-2 mt-2">
+              {Object.keys(AI_QA).map(q => (
+                <button key={q} onClick={() => aiSend(q)} className="px-3 py-2 rounded-xl border border-sdt-200 bg-sdt-50 text-[11px] font-medium text-sdt-700 cursor-pointer hover:bg-sdt-100 transition-colors">{q}</button>
+              ))}
+            </div>
+          )}
+        </div>
+        {/* Input */}
+        <div className="px-4 py-3 border-t border-[--bdr] flex items-center gap-2">
+          <Input placeholder="Scrie o intrebare..." className="flex-1 text-[12px]" value={aiInput}
+            onChange={e => setAiInput(e.target.value)} onKeyDown={e => e.key === 'Enter' && aiSend(aiInput)} />
+          <button onClick={() => aiSend(aiInput)} className="w-9 h-9 rounded-lg flex items-center justify-center cursor-pointer border-none bg-sdt-600 hover:bg-sdt-700 transition-colors">
+            <Send className="w-4 h-4 text-white" />
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+
+  // ━━━ 11. SHOP ━━━
+  const SHOP_PRODUCTS = [
+    { id: 'p1', name: 'Periuta electrica Oral-B iO', desc: 'Series 9, cu senzor de presiune si timer', price: 149, cat: 'periute', rec: true, dr: 'Dr. Elena Rusu' },
+    { id: 'p2', name: 'Pasta Sensodyne Pronamel', desc: 'Protectie email, pentru dinti sensibili', price: 8, cat: 'paste', rec: false, dr: '' },
+    { id: 'p3', name: 'Apa de gura Listerine Total', desc: 'Protectie completa 6 in 1, 500ml', price: 6, cat: 'accesorii', rec: false, dr: '' },
+    { id: 'p4', name: 'Ata dentara Oral-B Satin', desc: 'Cu ceara, mentol, 50m', price: 4, cat: 'accesorii', rec: false, dr: '' },
+    { id: 'p5', name: 'Irigator oral Waterpik', desc: 'Ultra Professional, 10 nivele presiune', price: 89, cat: 'accesorii', rec: true, dr: 'Dr. Andrei Moraru' },
+    { id: 'p6', name: 'Kit albire profesionala SDT', desc: 'Gutiere personalizate + gel profesional, 14 zile', price: 199, cat: 'kituri', rec: true, dr: 'Dr. Marina Calinescu' },
+    { id: 'p7', name: 'Gutiera bruxism (noapte)', desc: 'Protectie personalizata contra bruxismului', price: 79, cat: 'kituri', rec: false, dr: '' },
+    { id: 'p8', name: 'Set travel igiena dentara', desc: 'Periuta + pasta + ata + etui, format calatorie', price: 29, cat: 'kituri', rec: false, dr: '' },
+    { id: 'p9', name: 'Periuta interdentara TePe', desc: 'Set 6 buc, diferite dimensiuni, ISO 1-5', price: 5, cat: 'periute', rec: false, dr: '' },
+    { id: 'p10', name: 'Gel fluorid profesional', desc: 'Aplicare acasa, intarire email, 50ml', price: 15, cat: 'paste', rec: false, dr: '' },
+  ]
+  const SHOP_CATS = [
+    { id: 'all', label: 'Toate' }, { id: 'periute', label: 'Periute' },
+    { id: 'paste', label: 'Paste & Geluri' }, { id: 'accesorii', label: 'Accesorii' }, { id: 'kituri', label: 'Kituri profesionale' },
+  ]
+  const addToCart = (pid: string) => {
+    setLocalCart(prev => {
+      const existing = prev.find(c => c.id === pid)
+      if (existing) return prev.map(c => c.id === pid ? { ...c, qty: c.qty + 1 } : c)
+      return [...prev, { id: pid, qty: 1 }]
+    })
+    setToast('Produs adaugat in cos!')
+  }
+  const cartTotal = localCart.reduce((a, c) => {
+    const p = SHOP_PRODUCTS.find(pr => pr.id === c.id)
+    return a + (p ? p.price * c.qty : 0)
+  }, 0)
+  const renderShop = () => {
+    const filtered = shopCategory === 'all' ? SHOP_PRODUCTS : SHOP_PRODUCTS.filter(p => p.cat === shopCategory)
+    const recommended = SHOP_PRODUCTS.filter(p => p.rec)
+    return (
+      <div key="shop" className="animate-fadeUp">
+        <div className="flex justify-between items-center mb-6">
+          <h1 className="font-display text-[22px] font-semibold" style={{ color: B.nv }}>Produse de ingrijire</h1>
+          <Button className="text-[12px] bg-sdt-600 hover:bg-sdt-700 text-white relative" onClick={() => setShowCart(true)}>
+            <ShoppingCart className="w-4 h-4 mr-2" /> Cosul meu
+            {cartCount > 0 && <span className="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-pink-500 text-[9px] font-bold text-white flex items-center justify-center">{cartCount}</span>}
+          </Button>
+        </div>
+        {/* Recommended */}
+        {recommended.length > 0 && (
+          <div className="mb-6">
+            <div className="flex items-center gap-2 mb-3">
+              <Sparkles className="w-4 h-4 text-pink-500" />
+              <span className="text-[13px] font-semibold" style={{ color: B.nv }}>Recomandat pentru tine</span>
+            </div>
+            <div className="grid grid-cols-3 gap-3">
+              {recommended.map(p => (
+                <Card key={p.id} className="border-pink-100 bg-pink-50/30">
+                  <CardContent className="p-4">
+                    <div className="w-full h-20 rounded-lg bg-gradient-to-br from-sdt-100 to-sdt-50 flex items-center justify-center mb-3">
+                      <Package className="w-8 h-8 text-sdt-400" strokeWidth={1.2} />
+                    </div>
+                    <div className="text-[12px] font-semibold mb-0.5" style={{ color: B.nv }}>{p.name}</div>
+                    <div className="text-[10px] text-[#5a7a6e] mb-2">{p.desc}</div>
+                    {p.dr && <div className="text-[9px] text-pink-500 mb-2 flex items-center gap-1"><Star className="w-3 h-3" /> Recomandat de {p.dr}</div>}
+                    <div className="flex items-center justify-between">
+                      <span className="text-[16px] font-display font-semibold" style={{ color: B.p }}>{p.price}&euro;</span>
+                      <Button size="sm" className="text-[10px] bg-sdt-600 hover:bg-sdt-700 text-white h-7" onClick={() => addToCart(p.id)}>
+                        <Plus className="w-3 h-3 mr-1" /> Adauga
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
+        )}
+        {/* Categories */}
+        <div className="flex gap-1 mb-4 bg-gray-100 rounded-xl p-1 w-fit">
+          {SHOP_CATS.map(c => (
+            <button key={c.id} onClick={() => setShopCategory(c.id)} className={cn(
+              'px-3 py-1.5 rounded-lg text-[11px] font-medium border-none cursor-pointer transition-all',
+              shopCategory === c.id ? 'bg-white text-sdt-700 shadow-sm' : 'bg-transparent text-[#5a7a6e]'
+            )}>{c.label}</button>
+          ))}
+        </div>
+        {/* Grid */}
+        <div className="grid grid-cols-3 gap-4">
+          {filtered.map(p => {
+            const inCart = localCart.find(c => c.id === p.id)
+            return (
+              <Card key={p.id} className="border-[--bdr] hover:border-sdt-200 transition-all">
+                <CardContent className="p-4">
+                  <div className="w-full h-24 rounded-lg bg-gradient-to-br from-gray-100 to-gray-50 flex items-center justify-center mb-3">
+                    <Package className="w-8 h-8 text-gray-300" strokeWidth={1.2} />
+                  </div>
+                  <div className="text-[12px] font-semibold mb-0.5" style={{ color: B.nv }}>{p.name}</div>
+                  <div className="text-[10px] text-[#5a7a6e] mb-2">{p.desc}</div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-[16px] font-display font-semibold" style={{ color: B.p }}>{p.price}&euro;</span>
+                    {inCart ? (
+                      <div className="flex items-center gap-1.5">
+                        <button onClick={() => setLocalCart(prev => prev.map(c => c.id === p.id ? { ...c, qty: Math.max(0, c.qty - 1) } : c).filter(c => c.qty > 0))}
+                          className="w-6 h-6 rounded-md bg-gray-100 flex items-center justify-center cursor-pointer border-none hover:bg-gray-200"><Minus className="w-3 h-3" /></button>
+                        <span className="text-[12px] font-semibold w-4 text-center">{inCart.qty}</span>
+                        <button onClick={() => addToCart(p.id)}
+                          className="w-6 h-6 rounded-md bg-sdt-100 flex items-center justify-center cursor-pointer border-none hover:bg-sdt-200"><Plus className="w-3 h-3 text-sdt-700" /></button>
+                      </div>
+                    ) : (
+                      <Button size="sm" className="text-[10px] bg-sdt-600 hover:bg-sdt-700 text-white h-7" onClick={() => addToCart(p.id)}>
+                        <Plus className="w-3 h-3 mr-1" /> Adauga
+                      </Button>
+                    )}
+                  </div>
+                </CardContent>
+              </Card>
+            )
+          })}
+        </div>
+        {/* Cart modal */}
+        {showCart && (
+          <Modal onClose={() => setShowCart(false)}>
+            <div className="p-6">
+              <h2 className="text-[18px] font-semibold mb-4" style={{ color: B.nv }}>Cosul tau ({cartCount} produse)</h2>
+              {localCart.length === 0 ? (
+                <div className="text-center py-8">
+                  <ShoppingCart className="w-10 h-10 text-gray-300 mx-auto mb-3" />
+                  <div className="text-[13px] text-[#5a7a6e]">Cosul este gol</div>
+                </div>
+              ) : (
+                <div className="space-y-3 mb-4">
+                  {localCart.map(ci => {
+                    const p = SHOP_PRODUCTS.find(pr => pr.id === ci.id)
+                    if (!p) return null
+                    return (
+                      <div key={ci.id} className="flex items-center gap-3 p-3 rounded-lg bg-gray-50">
+                        <div className="w-10 h-10 rounded-lg bg-sdt-50 flex items-center justify-center flex-shrink-0">
+                          <Package className="w-5 h-5 text-sdt-400" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <div className="text-[12px] font-semibold truncate" style={{ color: B.nv }}>{p.name}</div>
+                          <div className="text-[11px] text-[#5a7a6e]">{p.price}&euro; x {ci.qty}</div>
+                        </div>
+                        <div className="flex items-center gap-1.5">
+                          <button onClick={() => setLocalCart(prev => prev.map(c => c.id === ci.id ? { ...c, qty: Math.max(0, c.qty - 1) } : c).filter(c => c.qty > 0))}
+                            className="w-6 h-6 rounded-md bg-white flex items-center justify-center cursor-pointer border border-[--bdr] hover:bg-gray-100"><Minus className="w-3 h-3" /></button>
+                          <span className="text-[12px] font-semibold w-4 text-center">{ci.qty}</span>
+                          <button onClick={() => addToCart(ci.id)}
+                            className="w-6 h-6 rounded-md bg-white flex items-center justify-center cursor-pointer border border-[--bdr] hover:bg-gray-100"><Plus className="w-3 h-3" /></button>
+                        </div>
+                        <span className="text-[13px] font-semibold w-14 text-right" style={{ color: B.nv }}>{p.price * ci.qty}&euro;</span>
+                      </div>
+                    )
+                  })}
+                </div>
+              )}
+              {localCart.length > 0 && (
+                <>
+                  <div className="flex justify-between items-center p-3 rounded-lg bg-sdt-50 border border-sdt-100 mb-4">
+                    <span className="text-[13px] font-semibold" style={{ color: B.nv }}>Total</span>
+                    <span className="text-[18px] font-display font-semibold" style={{ color: B.p }}>{cartTotal}&euro;</span>
+                  </div>
+                  <Button className="w-full bg-sdt-600 hover:bg-sdt-700 text-white text-[12px]" onClick={() => {
+                    setShowCart(false); setLocalCart([]); setToast('Comanda a fost trimisa! Te vom contacta pentru livrare.')
+                  }}>Trimite comanda</Button>
+                </>
+              )}
+            </div>
+          </Modal>
+        )}
+      </div>
+    )
+  }
+
   /* ─── Section router ─── */
   const renderSection = () => {
     switch (activeNav) {
@@ -1422,6 +1706,8 @@ export function CabinetDashboard() {
       case 'notificari': return renderNotificari()
       case 'familie': return renderFamilie()
       case 'plati': return renderPlati()
+      case 'aisuport': return renderAISuport()
+      case 'shop': return renderShop()
       case 'setari': return renderSetari()
     }
   }
@@ -1429,6 +1715,12 @@ export function CabinetDashboard() {
   /* ═══ RENDER ═══ */
   return (
     <div className="min-h-screen bg-[#f8faf9]">
+      {/* Toast */}
+      {toast && (
+        <div className="fixed top-4 right-4 z-[300] px-5 py-3 rounded-xl bg-sdt-700 text-white text-[12px] font-medium shadow-xl flex items-center gap-2 animate-fadeUp">
+          <CheckCircle className="w-4 h-4" /> {toast}
+        </div>
+      )}
       {/* ━━━ Top Bar ━━━ */}
       <header className="bg-white border-b border-[--bdr] px-6 py-3 flex items-center justify-between sticky top-0 z-50">
         <div className="flex items-center gap-6">
