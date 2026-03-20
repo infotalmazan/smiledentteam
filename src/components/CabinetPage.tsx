@@ -1120,73 +1120,56 @@ export function CabinetDashboard() {
       ...localFamily,
     ]
 
-    return (
-      <div key="familie" className="animate-fadeUp">
-        <div className="flex justify-between items-center mb-6">
-          <h1 className="font-display text-[22px] font-semibold" style={{ color: B.nv }}>Familia Moraru</h1>
-          <Button className="text-[12px] bg-sdt-600 hover:bg-sdt-700 text-white" onClick={() => setShowAddMember(true)}>
-            <Users className="w-4 h-4 mr-2" /> Adauga membru
-          </Button>
-        </div>
+    // If a member is selected, show inline detail page instead of grid
+    if (selectedMember) {
+      return (
+        <div key="familie-detail" className="animate-fadeUp">
+          {/* Back + header */}
+          <button onClick={() => { setSelectedMember(null); setFamilyDetailTab('overview') }}
+            className="flex items-center gap-2 text-[12px] text-sdt-600 font-medium mb-5 bg-transparent border-none cursor-pointer hover:text-sdt-700 transition-colors">
+            <ArrowRight className="w-3.5 h-3.5 rotate-180" /> Inapoi la Familie
+          </button>
 
-        <div className="grid grid-cols-4 gap-4">
-          {allMembers.map(m => (
-            <Card key={m.id} className="border-[--bdr] cursor-pointer hover:border-sdt-200 transition-all" onClick={() => 'treatmentsActive' in m && m.id !== PATIENT.id ? setSelectedMember(m as FamilyMember) : setSelectedMember(null)}>
-              <CardContent className="p-5 text-center">
-                <div className="relative inline-block mb-3">
-                  <img src={m.photo} alt="" className="w-16 h-16 rounded-full object-cover mx-auto" />
-                  <span className={cn('absolute bottom-0 right-0 w-4 h-4 rounded-full border-2 border-white', healthDot(m.healthStatus))} />
-                </div>
-                <div className="text-[14px] font-semibold" style={{ color: B.nv }}>{m.name}</div>
-                <div className="text-[11px] text-[#5a7a6e]">{m.relation} &middot; {m.age} ani</div>
-                <div className="text-[10px] text-[#5a7a6e] mt-1">{m.doctor}</div>
-                <div className="text-[10px] mt-2 text-[#5a7a6e]">Ultima vizita: {m.lastVisit}</div>
-                {m.treatmentsActive > 0 && (
-                  <Badge className="mt-2 text-[9px] bg-sdt-100 text-sdt-700 border-0">{m.treatmentsActive} tratament{m.treatmentsActive > 1 ? 'e' : ''} activ{m.treatmentsActive > 1 ? 'e' : ''}</Badge>
-                )}
-                {m.healthStatus !== 'green' && (
-                  <div className="mt-2 p-2 rounded-lg bg-amber-50 border border-amber-100">
-                    <div className="flex items-center gap-1 text-[10px] text-amber-600 font-semibold">
-                      <AlertTriangle className="w-3 h-3" /> Reminder
-                    </div>
-                    <div className="text-[9px] text-amber-500 mt-0.5">{m.healthNote}</div>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-
-        {/* Family member detail modal */}
-        {selectedMember && (
-          <Modal onClose={() => { setSelectedMember(null); setFamilyDetailTab('overview') }} wide>
-            <div className="p-6">
-              <div className="flex items-center gap-4 mb-5">
+          {/* Member header card */}
+          <Card className="border-[--bdr] mb-6">
+            <CardContent className="p-6">
+              <div className="flex items-center gap-5">
                 <div className="relative">
-                  <img src={selectedMember.photo} alt="" className="w-16 h-16 rounded-full object-cover" />
-                  <span className={cn('absolute bottom-0 right-0 w-4 h-4 rounded-full border-2 border-white', healthDot(selectedMember.healthStatus))} />
+                  <img src={selectedMember.photo} alt="" className="w-20 h-20 rounded-full object-cover" />
+                  <span className={cn('absolute bottom-1 right-1 w-5 h-5 rounded-full border-2 border-white', healthDot(selectedMember.healthStatus))} />
                 </div>
-                <div>
-                  <div className="text-[16px] font-semibold" style={{ color: B.nv }}>{selectedMember.name}</div>
-                  <div className="text-[12px] text-[#5a7a6e]">{selectedMember.relation} &middot; {selectedMember.age} ani</div>
-                  <div className="text-[11px] text-[#5a7a6e]">{selectedMember.doctor}</div>
+                <div className="flex-1">
+                  <div className="text-[20px] font-display font-semibold" style={{ color: B.nv }}>{selectedMember.name}</div>
+                  <div className="text-[12px] text-[#5a7a6e] mt-0.5">{selectedMember.relation} &middot; {selectedMember.age} ani</div>
+                  <div className="text-[11px] text-[#5a7a6e] mt-0.5 flex items-center gap-1"><User className="w-3 h-3" /> {selectedMember.doctor}</div>
+                  {selectedMember.nextVisit && <div className="text-[11px] text-sdt-600 mt-1 flex items-center gap-1"><Calendar className="w-3 h-3" /> Urmatoarea vizita: {selectedMember.nextVisit}</div>}
+                </div>
+                <div className="flex gap-2">
+                  <Button className="text-[11px] bg-sdt-600 hover:bg-sdt-700 text-white" onClick={() => { setSelectedMember(null); setActiveNav('programari'); setShowNewAppointment(true) }}>
+                    <Calendar className="w-3.5 h-3.5 mr-1.5" /> Programeaza
+                  </Button>
+                  <Button variant="outline" className="text-[11px] border-sdt-200 text-sdt-600" onClick={() => setActiveNav('mesaje')}>
+                    <MessageCircle className="w-3.5 h-3.5 mr-1.5" /> Mesaj
+                  </Button>
                 </div>
               </div>
+            </CardContent>
+          </Card>
 
-              {/* Tab bar */}
-              <div className="flex gap-1 mb-5 bg-gray-100 rounded-xl p-1">
-                {([
-                  { id: 'overview' as const, label: 'Prezentare' },
-                  { id: 'programari' as const, label: 'Programari' },
-                  { id: 'tratamente' as const, label: 'Tratamente' },
-                  { id: 'documente' as const, label: 'Documente' },
-                ]).map(tab => (
-                  <button key={tab.id} onClick={() => setFamilyDetailTab(tab.id)} className={cn(
-                    'flex-1 px-3 py-2 rounded-lg text-[11px] font-medium border-none cursor-pointer transition-all',
-                    familyDetailTab === tab.id ? 'bg-white text-sdt-700 shadow-sm' : 'bg-transparent text-[#5a7a6e]'
-                  )}>{tab.label}</button>
-                ))}
-              </div>
+          {/* Tabs */}
+          <div className="flex gap-1 mb-6 bg-gray-100 rounded-xl p-1 w-fit">
+            {([
+              { id: 'overview' as const, label: 'Prezentare' },
+              { id: 'programari' as const, label: 'Programari' },
+              { id: 'tratamente' as const, label: 'Tratamente' },
+              { id: 'documente' as const, label: 'Documente' },
+            ]).map(tab => (
+              <button key={tab.id} onClick={() => setFamilyDetailTab(tab.id)} className={cn(
+                'px-4 py-2 rounded-lg text-[12px] font-medium border-none cursor-pointer transition-all',
+                familyDetailTab === tab.id ? 'bg-white text-sdt-700 shadow-sm' : 'bg-transparent text-[#5a7a6e]'
+              )}>{tab.label}</button>
+            ))}
+          </div>
 
               {/* Tab: Overview */}
               {familyDetailTab === 'overview' && (
@@ -1313,13 +1296,51 @@ export function CabinetDashboard() {
                 </div>
               )}
 
-              <Button className="w-full mt-6 bg-sdt-600 hover:bg-sdt-700 text-white text-[12px]"
-                onClick={() => { setSelectedMember(null); setFamilyDetailTab('overview'); setActiveNav('programari'); setShowNewAppointment(true) }}>
-                <Calendar className="w-4 h-4 mr-2" /> Programeaza pentru {selectedMember.firstName}
-              </Button>
-            </div>
-          </Modal>
-        )}
+        </div>
+      )
+    }
+
+    // Normal grid view
+    return (
+      <div key="familie" className="animate-fadeUp">
+        <div className="flex justify-between items-center mb-6">
+          <h1 className="font-display text-[22px] font-semibold" style={{ color: B.nv }}>Familia Moraru</h1>
+          <Button className="text-[12px] bg-sdt-600 hover:bg-sdt-700 text-white" onClick={() => setShowAddMember(true)}>
+            <Users className="w-4 h-4 mr-2" /> Adauga membru
+          </Button>
+        </div>
+
+        <div className="grid grid-cols-4 gap-4">
+          {allMembers.map(m => (
+            <Card key={m.id} className="border-[--bdr] cursor-pointer hover:border-sdt-200 transition-all" onClick={() => {
+              if ('treatmentsActive' in m) {
+                setSelectedMember(m as FamilyMember); setFamilyDetailTab('overview')
+              }
+            }}>
+              <CardContent className="p-5 text-center">
+                <div className="relative inline-block mb-3">
+                  <img src={m.photo} alt="" className="w-16 h-16 rounded-full object-cover mx-auto" />
+                  <span className={cn('absolute bottom-0 right-0 w-4 h-4 rounded-full border-2 border-white', healthDot(m.healthStatus))} />
+                </div>
+                <div className="text-[14px] font-semibold" style={{ color: B.nv }}>{m.name}</div>
+                <div className="text-[11px] text-[#5a7a6e]">{m.relation} &middot; {m.age} ani</div>
+                <div className="text-[10px] text-[#5a7a6e] mt-1">{m.doctor}</div>
+                <div className="text-[10px] mt-2 text-[#5a7a6e]">Ultima vizita: {m.lastVisit}</div>
+                {m.treatmentsActive > 0 && (
+                  <Badge className="mt-2 text-[9px] bg-sdt-100 text-sdt-700 border-0">{m.treatmentsActive} tratament{m.treatmentsActive > 1 ? 'e' : ''} activ{m.treatmentsActive > 1 ? 'e' : ''}</Badge>
+                )}
+                {m.healthStatus !== 'green' && (
+                  <div className="mt-2 p-2 rounded-lg bg-amber-50 border border-amber-100">
+                    <div className="flex items-center gap-1 text-[10px] text-amber-600 font-semibold">
+                      <AlertTriangle className="w-3 h-3" /> Reminder
+                    </div>
+                    <div className="text-[9px] text-amber-500 mt-0.5">{m.healthNote}</div>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          ))}
+        </div>
 
         {/* Add member modal */}
         {showAddMember && (
