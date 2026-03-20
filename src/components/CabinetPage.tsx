@@ -178,6 +178,7 @@ export function CabinetDashboard() {
   const [addMemberName, setAddMemberName] = useState('')
   const [addMemberRelation, setAddMemberRelation] = useState('')
   const [addMemberPhone, setAddMemberPhone] = useState('')
+  const [familyDetailTab, setFamilyDetailTab] = useState<'overview' | 'programari' | 'tratamente' | 'documente'>('overview')
 
   // Chat ref for auto-scroll
   const messagesEndRef = useRef<HTMLDivElement>(null)
@@ -194,6 +195,10 @@ export function CabinetDashboard() {
   const [shopCategory, setShopCategory] = useState('all')
   const [localCart, setLocalCart] = useState<{id:string;qty:number}[]>([])
   const [showCart, setShowCart] = useState(false)
+  const [checkoutStep, setCheckoutStep] = useState(0) // 0=cart, 1=address, 2=payment, 3=confirmed
+  const [checkoutAddress, setCheckoutAddress] = useState('')
+  const [checkoutPhone, setCheckoutPhone] = useState(PATIENT.phone)
+  const [checkoutPayMethod, setCheckoutPayMethod] = useState('card')
 
   // Payments
   const [expandedPayment, setExpandedPayment] = useState<string | null>(null)
@@ -708,6 +713,63 @@ export function CabinetDashboard() {
                         </div>
                       </div>
 
+                      {/* Visual progress segments */}
+                      <div className="flex items-center gap-2 mb-4">
+                        {t.steps.map((step, i) => (
+                          <div key={i} className="flex-1 h-2 rounded-full" style={{
+                            background: step.status === 'done' ? '#059669' : step.status === 'current' ? B.p : '#e5e7eb'
+                          }} />
+                        ))}
+                      </div>
+
+                      {/* Info grid */}
+                      <div className="grid grid-cols-2 gap-2 mb-4">
+                        {[
+                          { icon: Calendar, label: 'Data incepere', value: t.steps[0]?.date || '-' },
+                          { icon: User, label: 'Doctor responsabil', value: t.doctor },
+                          { icon: Activity, label: 'Dinte', value: t.tooth ? `#${t.tooth}` : 'General' },
+                          { icon: Clock, label: 'Urmatoarea etapa', value: t.steps.find(s => s.status === 'current')?.name || t.steps.find(s => s.status === 'upcoming')?.name || 'Finalizat' },
+                        ].map((info, i) => (
+                          <div key={i} className="p-3 rounded-lg bg-gray-50 flex items-center gap-2.5">
+                            <div className="w-7 h-7 rounded-lg bg-white flex items-center justify-center flex-shrink-0">
+                              <info.icon className="w-3.5 h-3.5 text-sdt-600" strokeWidth={1.5} />
+                            </div>
+                            <div>
+                              <div className="text-[9px] text-[#5a7a6e]">{info.label}</div>
+                              <div className="text-[11px] font-semibold" style={{ color: B.nv }}>{info.value}</div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+
+                      {/* Cost breakdown visual */}
+                      <div className="mb-4">
+                        <div className="text-[12px] font-semibold mb-2" style={{ color: B.nv }}>Cost tratament</div>
+                        <div className="h-3 bg-gray-100 rounded-full overflow-hidden mb-2">
+                          <div className="h-full rounded-full" style={{ width: `${paidPct}%`, background: 'linear-gradient(90deg, #059669, #10b981)' }} />
+                        </div>
+                        <div className="flex items-center justify-between">
+                          <span className="text-[11px] text-[#5a7a6e]">Achitat: <span className="font-semibold text-green-600">{t.paid}&euro;</span> / {t.totalCost}&euro;</span>
+                          {remaining > 0 && <Badge className="text-[9px] bg-amber-100 text-amber-700 border-0">Ramas: {remaining}&euro;</Badge>}
+                        </div>
+                      </div>
+
+                      {/* Clinical notes */}
+                      <div className="mb-4">
+                        <div className="text-[12px] font-semibold mb-2" style={{ color: B.nv }}>Note clinice</div>
+                        <div className="space-y-2">
+                          {[
+                            { date: t.steps.find(s => s.status === 'done')?.date || '10 Feb 2026', doctor: t.doctor, note: `Procedura ${t.name.toLowerCase()} decurge conform planului. Pacientul coopereaza bine.` },
+                            { date: t.steps[0]?.date || '5 Feb 2026', doctor: t.doctor, note: 'Evaluare initiala efectuata. Plan de tratament stabilit si prezentat pacientului.' },
+                          ].map((cn_note, i) => (
+                            <div key={i} className="p-3 rounded-lg bg-gray-50 border-l-2 border-sdt-400">
+                              <div className="text-[10px] text-[#5a7a6e] mb-1">{cn_note.date} &middot; {cn_note.doctor}</div>
+                              <div className="text-[11px]" style={{ color: B.nv }}>{cn_note.note}</div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
                       {/* Documents */}
                       {t.documents.length > 0 && (
                         <div>
@@ -721,19 +783,6 @@ export function CabinetDashboard() {
                           </div>
                         </div>
                       )}
-
-                      {/* Cost breakdown */}
-                      <div>
-                        <div className="text-[12px] font-semibold mb-2" style={{ color: B.nv }}>Cost tratament</div>
-                        <div className="flex justify-between text-[11px] mb-1">
-                          <span className="text-[#5a7a6e]">Platit: {t.paid}&euro;</span>
-                          <span className="text-[#5a7a6e]">Rest: {remaining}&euro;</span>
-                          <span className="font-semibold" style={{ color: B.nv }}>Total: {t.totalCost}&euro;</span>
-                        </div>
-                        <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
-                          <div className="h-full bg-green-500 rounded-full" style={{ width: `${paidPct}%` }} />
-                        </div>
-                      </div>
 
                       {t.notes && <div className="p-3 rounded-lg bg-sdt-50 text-[11px] text-[#5a7a6e]">{t.notes}</div>}
                     </div>
@@ -1110,9 +1159,9 @@ export function CabinetDashboard() {
 
         {/* Family member detail modal */}
         {selectedMember && (
-          <Modal onClose={() => setSelectedMember(null)}>
+          <Modal onClose={() => { setSelectedMember(null); setFamilyDetailTab('overview') }} wide>
             <div className="p-6">
-              <div className="flex items-center gap-4 mb-6">
+              <div className="flex items-center gap-4 mb-5">
                 <div className="relative">
                   <img src={selectedMember.photo} alt="" className="w-16 h-16 rounded-full object-cover" />
                   <span className={cn('absolute bottom-0 right-0 w-4 h-4 rounded-full border-2 border-white', healthDot(selectedMember.healthStatus))} />
@@ -1124,32 +1173,148 @@ export function CabinetDashboard() {
                 </div>
               </div>
 
-              <div className="space-y-4">
-                <div>
-                  <div className="text-[12px] font-semibold mb-2" style={{ color: B.nv }}>Stare de sanatate</div>
-                  <div className="p-3 rounded-lg bg-sdt-50 text-[12px] text-[#5a7a6e]">{selectedMember.healthNote}</div>
-                </div>
-
-                {selectedMember.activeConditions.length > 0 && (
-                  <div>
-                    <div className="text-[12px] font-semibold mb-2" style={{ color: B.nv }}>Conditii active</div>
-                    {selectedMember.activeConditions.map((c, i) => (
-                      <div key={i} className="text-[11px] text-[#5a7a6e] flex items-center gap-2">
-                        <TrendingUp className="w-3 h-3 text-sdt-600" /> {c}
-                      </div>
-                    ))}
-                  </div>
-                )}
-
-                {selectedMember.nextVisit && (
-                  <div className="flex items-center gap-2 text-[12px] text-[#5a7a6e]">
-                    <Calendar className="w-3.5 h-3.5 text-sdt-600" /> Urmatoarea vizita: {selectedMember.nextVisit}
-                  </div>
-                )}
+              {/* Tab bar */}
+              <div className="flex gap-1 mb-5 bg-gray-100 rounded-xl p-1">
+                {([
+                  { id: 'overview' as const, label: 'Prezentare' },
+                  { id: 'programari' as const, label: 'Programari' },
+                  { id: 'tratamente' as const, label: 'Tratamente' },
+                  { id: 'documente' as const, label: 'Documente' },
+                ]).map(tab => (
+                  <button key={tab.id} onClick={() => setFamilyDetailTab(tab.id)} className={cn(
+                    'flex-1 px-3 py-2 rounded-lg text-[11px] font-medium border-none cursor-pointer transition-all',
+                    familyDetailTab === tab.id ? 'bg-white text-sdt-700 shadow-sm' : 'bg-transparent text-[#5a7a6e]'
+                  )}>{tab.label}</button>
+                ))}
               </div>
 
+              {/* Tab: Overview */}
+              {familyDetailTab === 'overview' && (
+                <div className="space-y-4">
+                  <div>
+                    <div className="text-[12px] font-semibold mb-2" style={{ color: B.nv }}>Stare de sanatate</div>
+                    <div className="p-3 rounded-lg bg-sdt-50 text-[12px] text-[#5a7a6e]">{selectedMember.healthNote}</div>
+                  </div>
+                  {selectedMember.activeConditions.length > 0 && (
+                    <div>
+                      <div className="text-[12px] font-semibold mb-2" style={{ color: B.nv }}>Conditii active</div>
+                      {selectedMember.activeConditions.map((c, i) => (
+                        <div key={i} className="text-[11px] text-[#5a7a6e] flex items-center gap-2">
+                          <TrendingUp className="w-3 h-3 text-sdt-600" /> {c}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                  {selectedMember.nextVisit && (
+                    <div className="flex items-center gap-2 text-[12px] text-[#5a7a6e]">
+                      <Calendar className="w-3.5 h-3.5 text-sdt-600" /> Urmatoarea vizita: {selectedMember.nextVisit}
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* Tab: Programari */}
+              {familyDetailTab === 'programari' && (
+                <div className="space-y-3">
+                  {[
+                    { service: 'Control ortodontic', doctor: 'Dr. Elena Rusu', date: '25 Mar 2026', time: '10:00', status: 'confirmed' },
+                    { service: 'Ajustare aparat dentar', doctor: 'Dr. Elena Rusu', date: '10 Feb 2026', time: '14:00', status: 'completed' },
+                    { service: 'Consultatie initiala', doctor: 'Dr. Andrei Moraru', date: '15 Ian 2026', time: '11:00', status: 'completed' },
+                  ].map((a, i) => {
+                    const sb = statusBadge(a.status)
+                    return (
+                      <div key={i} className="flex items-center gap-3 p-3 rounded-xl border border-[--bdr] bg-white">
+                        <div className="text-center w-[44px]">
+                          <div className="text-[14px] font-semibold" style={{ color: B.nv }}>{a.date.split(' ')[0]}</div>
+                          <div className="text-[9px] text-[#5a7a6e]">{a.date.split(' ')[1]}</div>
+                        </div>
+                        <div className="h-8 w-px bg-[--bdr]" />
+                        <div className="flex-1 min-w-0">
+                          <div className="text-[12px] font-semibold" style={{ color: B.nv }}>{a.service}</div>
+                          <div className="text-[10px] text-[#5a7a6e]">{a.doctor} &middot; {a.time}</div>
+                        </div>
+                        <Badge className={cn('text-[9px] font-bold border-0', sb.cls)}>{sb.label}</Badge>
+                      </div>
+                    )
+                  })}
+                </div>
+              )}
+
+              {/* Tab: Tratamente */}
+              {familyDetailTab === 'tratamente' && (
+                <div className="space-y-3">
+                  {[
+                    { name: 'Aparat dentar metalic', doctor: 'Dr. Elena Rusu', progress: 45, status: 'active',
+                      steps: [
+                        { name: 'Consultatie + amprente', done: true },
+                        { name: 'Montare aparat', done: true },
+                        { name: 'Control lunar 1', done: true },
+                        { name: 'Control lunar 2', done: false },
+                        { name: 'Ajustare arce', done: false },
+                      ]
+                    },
+                    { name: 'Sigilare molari permanenti', doctor: 'Dr. Andrei Moraru', progress: 100, status: 'completed',
+                      steps: [
+                        { name: 'Curatare profesionala', done: true },
+                        { name: 'Aplicare sigilant', done: true },
+                        { name: 'Control', done: true },
+                      ]
+                    },
+                  ].map((t, i) => {
+                    const sb = statusBadge(t.status)
+                    return (
+                      <div key={i} className="p-4 rounded-xl border border-[--bdr] bg-white">
+                        <div className="flex items-center justify-between mb-2">
+                          <div className="text-[13px] font-semibold" style={{ color: B.nv }}>{t.name}</div>
+                          <Badge className={cn('text-[9px] font-bold border-0', sb.cls)}>{sb.label}</Badge>
+                        </div>
+                        <div className="text-[10px] text-[#5a7a6e] mb-2">{t.doctor}</div>
+                        <div className="flex items-center gap-2 mb-3">
+                          <div className="h-1.5 flex-1 bg-gray-100 rounded-full overflow-hidden">
+                            <div className="h-full rounded-full" style={{ width: `${t.progress}%`, background: B.p }} />
+                          </div>
+                          <span className="text-[10px] text-[#5a7a6e]">{t.progress}%</span>
+                        </div>
+                        <div className="space-y-1.5">
+                          {t.steps.map((step, si) => (
+                            <div key={si} className="flex items-center gap-2 text-[11px]">
+                              {step.done
+                                ? <CheckCircle className="w-3.5 h-3.5 text-green-500 flex-shrink-0" />
+                                : <Clock className="w-3.5 h-3.5 text-gray-300 flex-shrink-0" />}
+                              <span className={step.done ? 'text-[#5a7a6e]' : 'text-gray-400'}>{step.name}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )
+                  })}
+                </div>
+              )}
+
+              {/* Tab: Documente */}
+              {familyDetailTab === 'documente' && (
+                <div className="space-y-2">
+                  {[
+                    { name: 'Radiografie panoramica', type: 'DICOM', date: '15 Ian 2026', size: '12.5 MB' },
+                    { name: 'Plan tratament ortodontic', type: 'PDF', date: '16 Ian 2026', size: '2.1 MB' },
+                    { name: 'Fotografii intra-orale', type: 'IMG', date: '15 Ian 2026', size: '8.3 MB' },
+                  ].map((d, i) => (
+                    <div key={i} className="flex items-center gap-3 p-3 rounded-xl border border-[--bdr] bg-white">
+                      <div className="w-10 h-10 rounded-lg bg-gray-50 flex items-center justify-center flex-shrink-0">
+                        <FileText className="w-5 h-5 text-gray-300" strokeWidth={1} />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="text-[12px] font-semibold truncate" style={{ color: B.nv }}>{d.name}</div>
+                        <div className="text-[10px] text-[#5a7a6e]">{d.date} &middot; {d.size}</div>
+                      </div>
+                      <Badge className={cn('text-[8px] font-bold border-0', typeBadge(d.type))}>{d.type}</Badge>
+                    </div>
+                  ))}
+                </div>
+              )}
+
               <Button className="w-full mt-6 bg-sdt-600 hover:bg-sdt-700 text-white text-[12px]"
-                onClick={() => { setSelectedMember(null); setActiveNav('programari'); setShowNewAppointment(true) }}>
+                onClick={() => { setSelectedMember(null); setFamilyDetailTab('overview'); setActiveNav('programari'); setShowNewAppointment(true) }}>
                 <Calendar className="w-4 h-4 mr-2" /> Programeaza pentru {selectedMember.firstName}
               </Button>
             </div>
@@ -1530,16 +1695,16 @@ export function CabinetDashboard() {
 
   // ━━━ 11. SHOP ━━━
   const SHOP_PRODUCTS = [
-    { id: 'p1', name: 'Periuta electrica Oral-B iO', desc: 'Series 9, cu senzor de presiune si timer', price: 149, cat: 'periute', rec: true, dr: 'Dr. Elena Rusu' },
-    { id: 'p2', name: 'Pasta Sensodyne Pronamel', desc: 'Protectie email, pentru dinti sensibili', price: 8, cat: 'paste', rec: false, dr: '' },
-    { id: 'p3', name: 'Apa de gura Listerine Total', desc: 'Protectie completa 6 in 1, 500ml', price: 6, cat: 'accesorii', rec: false, dr: '' },
-    { id: 'p4', name: 'Ata dentara Oral-B Satin', desc: 'Cu ceara, mentol, 50m', price: 4, cat: 'accesorii', rec: false, dr: '' },
-    { id: 'p5', name: 'Irigator oral Waterpik', desc: 'Ultra Professional, 10 nivele presiune', price: 89, cat: 'accesorii', rec: true, dr: 'Dr. Andrei Moraru' },
-    { id: 'p6', name: 'Kit albire profesionala SDT', desc: 'Gutiere personalizate + gel profesional, 14 zile', price: 199, cat: 'kituri', rec: true, dr: 'Dr. Marina Calinescu' },
-    { id: 'p7', name: 'Gutiera bruxism (noapte)', desc: 'Protectie personalizata contra bruxismului', price: 79, cat: 'kituri', rec: false, dr: '' },
-    { id: 'p8', name: 'Set travel igiena dentara', desc: 'Periuta + pasta + ata + etui, format calatorie', price: 29, cat: 'kituri', rec: false, dr: '' },
-    { id: 'p9', name: 'Periuta interdentara TePe', desc: 'Set 6 buc, diferite dimensiuni, ISO 1-5', price: 5, cat: 'periute', rec: false, dr: '' },
-    { id: 'p10', name: 'Gel fluorid profesional', desc: 'Aplicare acasa, intarire email, 50ml', price: 15, cat: 'paste', rec: false, dr: '' },
+    { id: 'p1', name: 'Periuta electrica Oral-B iO', desc: 'Series 9, cu senzor de presiune AI, 7 moduri de curatare, display color', price: 149, cat: 'periute', rec: true, dr: 'Dr. Elena Rusu', img: 'https://images.unsplash.com/photo-1559467278-020eed80e22f?w=300&h=300&fit=crop' },
+    { id: 'p2', name: 'Pasta Sensodyne Pronamel', desc: 'Formula avansata pentru protectia emailului, fluor optimizat', price: 8, cat: 'paste', rec: false, dr: '', img: 'https://images.unsplash.com/photo-1609840114035-3c981b782dfe?w=300&h=300&fit=crop' },
+    { id: 'p3', name: 'Apa de gura Listerine Total', desc: 'Protectie completa 6 in 1, antibacterian 24h, 500ml', price: 6, cat: 'accesorii', rec: false, dr: '', img: 'https://images.unsplash.com/photo-1585386959984-a4155224a1ad?w=300&h=300&fit=crop' },
+    { id: 'p4', name: 'Ata dentara Oral-B Satin', desc: 'Cu ceara si mentol, aluneca usor, 50m', price: 4, cat: 'accesorii', rec: false, dr: '', img: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=300&h=300&fit=crop' },
+    { id: 'p5', name: 'Irigator oral Waterpik', desc: 'Ultra Professional WP-660, 10 nivele presiune, rezervor 650ml', price: 89, cat: 'accesorii', rec: true, dr: 'Dr. Andrei Moraru', img: 'https://images.unsplash.com/photo-1612888564537-2e1c2e620161?w=300&h=300&fit=crop' },
+    { id: 'p6', name: 'Kit albire profesionala SDT', desc: 'Gutiere personalizate + gel 16% carbamid peroxid, rezultat in 14 zile', price: 199, cat: 'kituri', rec: true, dr: 'Dr. Marina Calinescu', img: 'https://images.unsplash.com/photo-1606811841689-23dfddce3e95?w=300&h=300&fit=crop' },
+    { id: 'p7', name: 'Gutiera bruxism (noapte)', desc: 'Personalizata dupa amprenta, material medical moale, protectie completa', price: 79, cat: 'kituri', rec: false, dr: '', img: 'https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?w=300&h=300&fit=crop' },
+    { id: 'p8', name: 'Set travel igiena dentara', desc: 'Periuta pliabila + mini pasta + ata + etui premium', price: 29, cat: 'kituri', rec: false, dr: '', img: 'https://images.unsplash.com/photo-1607613009820-a29f7bb81c04?w=300&h=300&fit=crop' },
+    { id: 'p9', name: 'Periuta interdentara TePe', desc: 'Set 8 buc, 4 dimensiuni diferite, maner ergonomic', price: 5, cat: 'periute', rec: false, dr: '', img: 'https://images.unsplash.com/photo-1559467278-020eed80e22f?w=300&h=300&fit=crop' },
+    { id: 'p10', name: 'Gel fluorid profesional', desc: 'Elmex Gelee, intarire email, aplicare saptamanala, tub 25g', price: 15, cat: 'paste', rec: false, dr: '', img: 'https://images.unsplash.com/photo-1609840114035-3c981b782dfe?w=300&h=300&fit=crop' },
   ]
   const SHOP_CATS = [
     { id: 'all', label: 'Toate' }, { id: 'periute', label: 'Periute' },
@@ -1580,9 +1745,7 @@ export function CabinetDashboard() {
               {recommended.map(p => (
                 <Card key={p.id} className="border-pink-100 bg-pink-50/30">
                   <CardContent className="p-4">
-                    <div className="w-full h-20 rounded-lg bg-gradient-to-br from-sdt-100 to-sdt-50 flex items-center justify-center mb-3">
-                      <Package className="w-8 h-8 text-sdt-400" strokeWidth={1.2} />
-                    </div>
+                    <img src={p.img} alt={p.name} className="w-full h-20 rounded-lg object-cover mb-3" />
                     <div className="text-[12px] font-semibold mb-0.5" style={{ color: B.nv }}>{p.name}</div>
                     <div className="text-[10px] text-[#5a7a6e] mb-2">{p.desc}</div>
                     {p.dr && <div className="text-[9px] text-pink-500 mb-2 flex items-center gap-1"><Star className="w-3 h-3" /> Recomandat de {p.dr}</div>}
@@ -1614,9 +1777,7 @@ export function CabinetDashboard() {
             return (
               <Card key={p.id} className="border-[--bdr] hover:border-sdt-200 transition-all">
                 <CardContent className="p-4">
-                  <div className="w-full h-24 rounded-lg bg-gradient-to-br from-gray-100 to-gray-50 flex items-center justify-center mb-3">
-                    <Package className="w-8 h-8 text-gray-300" strokeWidth={1.2} />
-                  </div>
+                  <img src={p.img} alt={p.name} className="w-full h-24 rounded-lg object-cover mb-3" />
                   <div className="text-[12px] font-semibold mb-0.5" style={{ color: B.nv }}>{p.name}</div>
                   <div className="text-[10px] text-[#5a7a6e] mb-2">{p.desc}</div>
                   <div className="flex items-center justify-between">
@@ -1642,51 +1803,148 @@ export function CabinetDashboard() {
         </div>
         {/* Cart modal */}
         {showCart && (
-          <Modal onClose={() => setShowCart(false)}>
+          <Modal onClose={() => { setShowCart(false); setCheckoutStep(0) }} wide>
             <div className="p-6">
-              <h2 className="text-[18px] font-semibold mb-4" style={{ color: B.nv }}>Cosul tau ({cartCount} produse)</h2>
-              {localCart.length === 0 ? (
-                <div className="text-center py-8">
-                  <ShoppingCart className="w-10 h-10 text-gray-300 mx-auto mb-3" />
-                  <div className="text-[13px] text-[#5a7a6e]">Cosul este gol</div>
-                </div>
-              ) : (
-                <div className="space-y-3 mb-4">
-                  {localCart.map(ci => {
-                    const p = SHOP_PRODUCTS.find(pr => pr.id === ci.id)
-                    if (!p) return null
-                    return (
-                      <div key={ci.id} className="flex items-center gap-3 p-3 rounded-lg bg-gray-50">
-                        <div className="w-10 h-10 rounded-lg bg-sdt-50 flex items-center justify-center flex-shrink-0">
-                          <Package className="w-5 h-5 text-sdt-400" />
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <div className="text-[12px] font-semibold truncate" style={{ color: B.nv }}>{p.name}</div>
-                          <div className="text-[11px] text-[#5a7a6e]">{p.price}&euro; x {ci.qty}</div>
-                        </div>
-                        <div className="flex items-center gap-1.5">
-                          <button onClick={() => setLocalCart(prev => prev.map(c => c.id === ci.id ? { ...c, qty: Math.max(0, c.qty - 1) } : c).filter(c => c.qty > 0))}
-                            className="w-6 h-6 rounded-md bg-white flex items-center justify-center cursor-pointer border border-[--bdr] hover:bg-gray-100"><Minus className="w-3 h-3" /></button>
-                          <span className="text-[12px] font-semibold w-4 text-center">{ci.qty}</span>
-                          <button onClick={() => addToCart(ci.id)}
-                            className="w-6 h-6 rounded-md bg-white flex items-center justify-center cursor-pointer border border-[--bdr] hover:bg-gray-100"><Plus className="w-3 h-3" /></button>
-                        </div>
-                        <span className="text-[13px] font-semibold w-14 text-right" style={{ color: B.nv }}>{p.price * ci.qty}&euro;</span>
-                      </div>
-                    )
-                  })}
-                </div>
-              )}
-              {localCart.length > 0 && (
-                <>
-                  <div className="flex justify-between items-center p-3 rounded-lg bg-sdt-50 border border-sdt-100 mb-4">
-                    <span className="text-[13px] font-semibold" style={{ color: B.nv }}>Total</span>
-                    <span className="text-[18px] font-display font-semibold" style={{ color: B.p }}>{cartTotal}&euro;</span>
+              {/* Progress steps */}
+              <div className="flex items-center gap-2 mb-5">
+                {['Cos', 'Adresa', 'Plata', 'Confirmare'].map((label, i) => (
+                  <div key={i} className="flex items-center gap-2 flex-1">
+                    <div className={cn(
+                      'w-7 h-7 rounded-full flex items-center justify-center text-[10px] font-bold flex-shrink-0',
+                      i <= checkoutStep ? 'bg-sdt-600 text-white' : 'bg-gray-200 text-gray-400'
+                    )}>{i + 1}</div>
+                    <span className={cn('text-[11px] font-medium', i <= checkoutStep ? 'text-sdt-700' : 'text-gray-400')}>{label}</span>
+                    {i < 3 && <div className={cn('flex-1 h-px', i < checkoutStep ? 'bg-sdt-400' : 'bg-gray-200')} />}
                   </div>
-                  <Button className="w-full bg-sdt-600 hover:bg-sdt-700 text-white text-[12px]" onClick={() => {
-                    setShowCart(false); setLocalCart([]); setToast('Comanda a fost trimisa! Te vom contacta pentru livrare.')
-                  }}>Trimite comanda</Button>
+                ))}
+              </div>
+
+              {checkoutStep === 0 && (
+                <>
+                  <h2 className="text-[18px] font-semibold mb-4" style={{ color: B.nv }}>Cosul tau ({cartCount} produse)</h2>
+                  {localCart.length === 0 ? (
+                    <div className="text-center py-8">
+                      <ShoppingCart className="w-10 h-10 text-gray-300 mx-auto mb-3" />
+                      <div className="text-[13px] text-[#5a7a6e]">Cosul este gol</div>
+                    </div>
+                  ) : (
+                    <div className="space-y-3 mb-4">
+                      {localCart.map(ci => {
+                        const p = SHOP_PRODUCTS.find(pr => pr.id === ci.id)
+                        if (!p) return null
+                        return (
+                          <div key={ci.id} className="flex items-center gap-3 p-3 rounded-lg bg-gray-50">
+                            <img src={p.img} alt={p.name} className="w-10 h-10 rounded-lg object-cover flex-shrink-0" />
+                            <div className="flex-1 min-w-0">
+                              <div className="text-[12px] font-semibold truncate" style={{ color: B.nv }}>{p.name}</div>
+                              <div className="text-[11px] text-[#5a7a6e]">{p.price}&euro; x {ci.qty}</div>
+                            </div>
+                            <div className="flex items-center gap-1.5">
+                              <button onClick={() => setLocalCart(prev => prev.map(c => c.id === ci.id ? { ...c, qty: Math.max(0, c.qty - 1) } : c).filter(c => c.qty > 0))}
+                                className="w-6 h-6 rounded-md bg-white flex items-center justify-center cursor-pointer border border-[--bdr] hover:bg-gray-100"><Minus className="w-3 h-3" /></button>
+                              <span className="text-[12px] font-semibold w-4 text-center">{ci.qty}</span>
+                              <button onClick={() => addToCart(ci.id)}
+                                className="w-6 h-6 rounded-md bg-white flex items-center justify-center cursor-pointer border border-[--bdr] hover:bg-gray-100"><Plus className="w-3 h-3" /></button>
+                            </div>
+                            <span className="text-[13px] font-semibold w-14 text-right" style={{ color: B.nv }}>{p.price * ci.qty}&euro;</span>
+                          </div>
+                        )
+                      })}
+                    </div>
+                  )}
+                  {localCart.length > 0 && (
+                    <>
+                      <div className="flex justify-between items-center p-3 rounded-lg bg-sdt-50 border border-sdt-100 mb-4">
+                        <span className="text-[13px] font-semibold" style={{ color: B.nv }}>Total</span>
+                        <span className="text-[18px] font-display font-semibold" style={{ color: B.p }}>{cartTotal}&euro;</span>
+                      </div>
+                      <Button className="w-full bg-sdt-600 hover:bg-sdt-700 text-white text-[12px]" onClick={() => setCheckoutStep(1)}>
+                        Continua <ChevronRight className="w-4 h-4 ml-1" />
+                      </Button>
+                    </>
+                  )}
                 </>
+              )}
+
+              {checkoutStep === 1 && (
+                <>
+                  <h2 className="text-[18px] font-semibold mb-4" style={{ color: B.nv }}>Adresa de livrare</h2>
+                  <div className="space-y-4 mb-6">
+                    <div>
+                      <label className="text-[12px] font-medium block mb-1" style={{ color: B.nv }}>Nume complet</label>
+                      <Input className="text-[12px]" defaultValue={PATIENT.name} />
+                    </div>
+                    <div>
+                      <label className="text-[12px] font-medium block mb-1" style={{ color: B.nv }}>Adresa livrare</label>
+                      <Input className="text-[12px]" placeholder="Str., nr., bl., ap., oras" value={checkoutAddress} onChange={e => setCheckoutAddress(e.target.value)} />
+                    </div>
+                    <div>
+                      <label className="text-[12px] font-medium block mb-1" style={{ color: B.nv }}>Telefon</label>
+                      <Input className="text-[12px]" value={checkoutPhone} onChange={e => setCheckoutPhone(e.target.value)} />
+                    </div>
+                  </div>
+                  <div className="flex gap-2">
+                    <Button variant="outline" className="text-[12px]" onClick={() => setCheckoutStep(0)}>Inapoi</Button>
+                    <Button className="flex-1 bg-sdt-600 hover:bg-sdt-700 text-white text-[12px]" onClick={() => setCheckoutStep(2)}>
+                      Continua <ChevronRight className="w-4 h-4 ml-1" />
+                    </Button>
+                  </div>
+                </>
+              )}
+
+              {checkoutStep === 2 && (
+                <>
+                  <h2 className="text-[18px] font-semibold mb-4" style={{ color: B.nv }}>Metoda de plata</h2>
+                  <div className="space-y-2 mb-6">
+                    {[
+                      { id: 'card', label: 'Card bancar', desc: 'Visa / Mastercard' },
+                      { id: 'transfer', label: 'Transfer bancar', desc: 'Plata in avans' },
+                      { id: 'clinic', label: 'La clinica', desc: 'Platesti la ridicare' },
+                    ].map(m => (
+                      <label key={m.id} className={cn(
+                        'flex items-center gap-3 p-3 rounded-xl border cursor-pointer transition-all',
+                        checkoutPayMethod === m.id ? 'border-sdt-400 bg-sdt-50' : 'border-[--bdr] hover:border-sdt-200'
+                      )}>
+                        <input type="radio" name="paymethod" value={m.id} checked={checkoutPayMethod === m.id}
+                          onChange={() => setCheckoutPayMethod(m.id)} className="accent-[#0a6b5c]" />
+                        <div>
+                          <div className="text-[12px] font-medium" style={{ color: B.nv }}>{m.label}</div>
+                          <div className="text-[10px] text-[#5a7a6e]">{m.desc}</div>
+                        </div>
+                      </label>
+                    ))}
+                  </div>
+                  <div className="p-3 rounded-lg bg-gray-50 mb-4 space-y-1">
+                    <div className="text-[12px] font-semibold" style={{ color: B.nv }}>Sumar comanda</div>
+                    <div className="text-[11px] text-[#5a7a6e]">{cartCount} produse &middot; Livrare gratuita</div>
+                    <div className="flex justify-between items-center pt-2 border-t border-gray-200 mt-2">
+                      <span className="text-[13px] font-semibold" style={{ color: B.nv }}>Total de plata</span>
+                      <span className="text-[18px] font-display font-semibold" style={{ color: B.p }}>{cartTotal}&euro;</span>
+                    </div>
+                  </div>
+                  <div className="flex gap-2">
+                    <Button variant="outline" className="text-[12px]" onClick={() => setCheckoutStep(1)}>Inapoi</Button>
+                    <Button className="flex-1 bg-sdt-600 hover:bg-sdt-700 text-white text-[12px]" onClick={() => setCheckoutStep(3)}>
+                      Plaseaza comanda
+                    </Button>
+                  </div>
+                </>
+              )}
+
+              {checkoutStep === 3 && (
+                <div className="text-center py-6">
+                  <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-4">
+                    <CheckCircle className="w-8 h-8 text-green-600" />
+                  </div>
+                  <div className="text-[18px] font-semibold mb-1" style={{ color: B.nv }}>Comanda confirmata!</div>
+                  <div className="text-[13px] text-[#5a7a6e] mb-1">Numar comanda: <span className="font-semibold" style={{ color: B.nv }}>#SDT-2026-{String(Math.floor(Math.random() * 900) + 100)}</span></div>
+                  <div className="text-[12px] text-[#5a7a6e] mb-6">Livrare estimata: 2-3 zile lucratoare</div>
+                  <Button className="bg-sdt-600 hover:bg-sdt-700 text-white text-[12px]" onClick={() => {
+                    setShowCart(false); setCheckoutStep(0); setLocalCart([]); setCheckoutAddress(''); setToast('Comanda plasata cu succes!')
+                  }}>
+                    Inapoi la Shop
+                  </Button>
+                </div>
               )}
             </div>
           </Modal>
